@@ -1,0 +1,36 @@
+<div class=""
+     style="display: flex; justify-content: center; flex-direction: column; align-items: center; height: 100vh; width: 100%">
+  <div class="" style="position: relative;
+   width: 700px; display: flex; justify-content: center;
+    align-items: center;
+    margin-right: 70px;
+">
+    <img alt="play" ngSrc="assets/img/pl.svg" height="218" width="470">
+  </div>
+  <h1 class="coming-soon">WE’RE COMING SOON</h1>
+  <div class="description-container">
+    <p class="description">Hey There, we want to tell you that we are the team that will allow you to enjoy the best
+      deals of all games united in one space.
+      You will be constantly updated and wil benefit from different types of packages tailored to you.</p>
+  </div>
+  <div class="" style="display: flex;">
+    @for (img of images; track $index) {
+    <img ngSrc="{{img}}" height="23" width="22" alt="{{img}}">
+    }
+  </div>
+  <div class="follow-us">
+    <p>Follow Us</p>
+    <div class="" style="display: flex; gap: 38px">
+      <a href="{{fb}}" target="_blank">
+        <img ngSrc="assets/img/fb.svg" height="32" width="32" alt="Facebook">
+      </a>
+      <a href="{{X}}" target="_blank">
+        <img ngSrc="assets/img/X.svg" height="32" width="32" alt="X">
+      </a>
+      <a href="{{instagram}}" target="_blank">
+        <img ngSrc="assets/img/Inst.svg" height="32" width="32" alt="Instagram">
+      </a>
+    </div>
+  </div>
+
+</div>

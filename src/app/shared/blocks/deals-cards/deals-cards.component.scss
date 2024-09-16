@@ -1,0 +1,38 @@
+.deals{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  margin-top: 32px;
+  h3{
+    color: #FFF;
+    leading-trim: both;
+    text-edge: cap;
+    font-family: Jura,sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: unset;
+  }
+  &__see-all{
+    color: #FFF;
+    opacity: 0.6;
+    leading-trim: both;
+    text-edge: cap;
+    font-family: Jura,sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+}
+.deals__cards{
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  border-radius: 12px;
+  overflow: hidden;
+}

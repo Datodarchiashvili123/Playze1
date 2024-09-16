@@ -1,0 +1,102 @@
+.slide{
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 12px;
+  overflow: hidden;
+  //width: 280px !important;
+  //margin-right: 10px;
+  //margin-left: 10px;
+  //&:first-child{
+  //  margin-left: 0;
+  //}
+  position: relative;
+
+  &:hover{
+    .slide__description{
+        background-color: #242424;
+    }
+  }
+
+  img{
+    width: 280px;
+    height: 131px;
+    flex-shrink: 0;
+    position: relative;
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+  }
+  &__tag{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 24px;
+    background: rgba(0, 0, 0, 0.40);
+    right: 25px;
+    top: 8px;
+    span{
+      color: #FFF;
+      font-family: Jura,sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+  }
+  &__description{
+    display: flex;
+    width: 280px;
+    height: 100px;
+    padding: 12px 12px 26px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    background: #1B1B1B;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+
+    &__title{
+      color: #FFF;
+      font-family: Jura,sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      display: flex;
+      flex-shrink: 0;
+      height: 38px;
+    }
+    &__price-container{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      align-self: stretch;
+      &__from{
+        color: #FFF;
+        font-family: Jura,sans-serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        opacity: 0.6;
+      }
+      &__price{
+        color: #C9FF58;
+        font-family: Jura,sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+    }
+  }
+}
+
+//.slick-list{
+//  margin-left: -10px;
+//}

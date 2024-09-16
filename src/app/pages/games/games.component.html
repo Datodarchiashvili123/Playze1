@@ -1,0 +1,54 @@
+<div class="">
+    <div class="games-component-container">
+        <div class="">
+
+            <h1 class="page__title">Popular Games</h1>
+            <p class="page__description">This collection of PC games on sale is an ultimate place to view the best that
+                the
+                gaming industry has to offer to its consumers. Explore over 100,000 games with the most popular PC games
+                being
+                shown first. How do we determine the popularity of games? It's simple! The more users visit the price
+                comparison
+                of a game, the higher this game is in our popularity
+                ranking! We aggregate clicks only from the last 72 hours to make sure the ranking keeps up with…</p>
+        </div>
+        <div class="presets">
+            <app-tag (tagClicked)="onSortChange($event)" [value]="'Popularity'" [isActive]="orderBy=='Popularity'"
+                     [text]="'Most Popular'"></app-tag>
+            <app-tag (tagClicked)="onSortChange($event)" [value]="'PriceHighest'" [text]="'Premium'"
+                     [isActive]="orderBy=='PriceHighest'"></app-tag>
+            <app-tag (tagClicked)="onSortChange($event)" [value]="'PriceLowest'" [text]="'Best Deals'"
+                     [isActive]="orderBy=='PriceLowest'"></app-tag>
+            <app-tag (tagClicked)="onSortChange($event)" [value]="'AZ'" [text]="'A to Z'"
+                     [isActive]="orderBy=='AZ'"></app-tag>
+        </div>
+        <app-filters
+                (filtersChanged)="handleFilterChange($event)"
+                (searchChanged)="handleSearchChange($event)"
+        ></app-filters>
+
+        <div class="" style="display: flex; justify-content: space-between;">
+            <div class="">
+                @for (game of games; track $index) {
+                    <div class="" style="display: flex;"
+                         (mouseenter)="onMouseEnter(game.gameId, game.name, game.headerImageUrl)"
+                         (mouseleave)="onMouseLeave()">
+                        <app-game-card [game]="game"></app-game-card>
+                    </div>
+                }
+                <app-pagination (pageChange)="onPageChange($event)" [currentPage]="currentPage"
+                                [totalPages]="totalPages"></app-pagination>
+            </div>
+
+            <div class="sidebar">
+                <div class="games-card" style="position: sticky; top: 500px">
+                                        <app-game-detail-card [gameId]="hoveredGameId" [gameName]="hoveredGameName"
+                                                              [gameImage]="hoveredGameImage"></app-game-detail-card>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>

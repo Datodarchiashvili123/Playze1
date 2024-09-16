@@ -1,0 +1,9 @@
+<div class="search">
+    <img src="assets/svg/search.svg" width="14" height="14" alt="search">
+    <input  [(ngModel)]="searchInput"
+            type="text"
+           (input)="onInput($event)"
+           (focus)="onFocus()"
+           (blur)="onBlur()"
+           placeholder="What game are you searching for?">
+</div>

@@ -1,0 +1,68 @@
+<div class="side-nav">
+    <h4 class="side-nav__title">{{ gameName }}</h4>
+    @if (gameDetailCard?.contentUrls[0]?.thumbnailPath) {
+        <img [src]="gameDetailCard?.contentUrls[0]?.thumbnailPath" width="356" height="160" alt=""
+             style="margin-bottom: 24px">
+    } @else if (loadData && !gameDetailCard?.contentUrls[0]?.thumbnailPath && gameImage) {
+        <img [src]="gameImage" width="356" height="160" alt="" style="margin-bottom: 24px">
+    }
+
+    <div class="side-nav__content">
+        @if (gameDetailCard?.developers?.length > 0 && gameDetailCard?.publishers?.length > 0) {
+            <div class="mb-32">
+                <p>Developer / Publisher</p>
+                <span>{{ gameDetailCard?.developers[0]?.name + ' / ' + gameDetailCard?.publishers[0]?.name }}</span>
+                <!--            <span>Playstation PC LLC</span>-->
+            </div>
+        }
+
+        @if (gameDetailCard?.historicalLow && gameDetailCard?.historicalLowBy) {
+
+            <div class="mb-32">
+                <p class="section-title">Hisorical Low</p>
+                <span class="span-price">{{ gameDetailCard?.historicalLow }}</span>
+                <span class="span-price--description">{{ gameDetailCard?.historicalLowBy }}</span>
+                <!--            <span class="span-price&#45;&#45;description">from steam ( expired 15 hours agos)</span>-->
+            </div>
+        }
+
+        @if (gameDetailCard?.popularityPercent) {
+            <div class="mb-32">
+                <p>Reviews</p>
+                <div class="reviews" style="display: flex; justify-content: space-between">
+                    <span class="span-reviews">Steam</span>
+                    <span class="span-reviews">Popularity LVL {{ gameDetailCard?.popularityPercent }}</span>
+                </div>
+                <div class="slider">
+                    <div class="slider--secondary" [style.width.%]="gameDetailCard?.popularityPercent"></div>
+                </div>
+
+
+            </div>
+        }
+        @if (gameDetailCard?.releaseDateText) {
+            <p class="section-title mt-8">Release Date: {{ gameDetailCard?.releaseDateText }}</p>
+        }
+
+
+        <!--        <div class="mb-32">-->
+        <!--            <p>Tags</p>-->
+        <!--            <div class="" style="display: flex; gap: 12px">-->
+        <!--                <div class="tag"># Action</div>-->
+        <!--                <div class="tag"># Singleplayer</div>-->
+        <!--            </div>-->
+
+        <!--        </div>-->
+
+        <!--        <div class="mb-32">-->
+        <!--            <p>Features</p>-->
+        <!--            <div class="" style="display: flex; gap: 12px">-->
+        <!--                <div class="tag">Full controller support</div>-->
+        <!--                <div class="tag">Single-player</div>-->
+        <!--            </div>-->
+
+        <!--        </div>-->
+
+    </div>
+
+</div>

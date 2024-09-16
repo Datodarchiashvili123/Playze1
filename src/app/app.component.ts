@@ -1,19 +1,19 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {HeaderComponent} from "./header/header.component";
 import {NgOptimizedImage} from "@angular/common";
+import {TagComponent} from "./shared/tag/tag.component";
+import {FiltersComponent} from "./shared/blocks/filters/filters.component";
+import {FooterComponent} from "./footer/footer.component";
+import {SearchDropdownComponent} from "./shared/search-dropdown/search-dropdown.component";
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, NgOptimizedImage],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    standalone: true,
+    imports: [RouterOutlet, NgOptimizedImage, HeaderComponent, TagComponent, FiltersComponent, FooterComponent, SearchDropdownComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  image: string = '/assets/img/Rectangle.svg'; // Path to your image
-  fb='https://www.facebook.com/playze.io';
-  X = 'https://twitter.com/playze_io';
-  instagram='https://www.instagram.com/playze.io/';
-  // Create an array with 10 copies of the same image path
-  images: string[] = Array(22).fill(this.image);
+    title = 'play';
 }

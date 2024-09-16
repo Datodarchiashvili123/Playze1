@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 1400px;
+  position: relative;
+
+}
+
+.container-x{
+  background-size: contain;
+  background: url("/assets/svg/homePage.svg") repeat;
+  width: 100%;
+  height: 100%;
+}

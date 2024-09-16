@@ -1,0 +1,77 @@
+.search__dropdown{
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  top: -2px;
+  right: 0;
+  border-radius: 18px;
+  z-index: 10;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  p{
+    font-family: Jura, sans-serif;
+    color: #FFF;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    padding: 30px 24px 30px 30px;
+  }
+  li{
+    cursor: pointer;
+    padding: 12px 14px 12px 50px;
+    width: 100%;
+    font-family: Jura, sans-serif;
+    color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 16px;
+    &:hover{
+      background-color: #242424;
+    }
+  }
+}
+
+.searched-games{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  justify-content: space-between;
+  &:hover{
+    background-color: #242424;
+  }
+  &__container{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  img{
+    border-radius: 8px;
+  }
+  &__name{
+    color: #FFF;
+    leading-trim: both;
+    text-edge: cap;
+    font-family: Jura, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  &__price{
+    font-family: Jura, sans-serif;
+    color: #C9FF58;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+}

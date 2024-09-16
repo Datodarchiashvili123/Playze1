@@ -1,0 +1,33 @@
+<div class="card" [routerLink]="game.gameId">
+  <div class="card__img">
+    <img [ngSrc]="game.headerImageUrl" width="280" height="131" alt="{{game.name}}">
+  </div>
+  <div class="card__content">
+
+    <div class="card__info">
+      <h2>{{ game.name }}</h2>
+      <p>Release Date : {{ game.releaseDateText }}</p>
+      <p>Genres: {{ game.genresText }}</p>
+      <img ngSrc="assets/svg/windows.svg" width="16" height="16" alt="windows">
+      <img ngSrc="assets/svg/playstation.svg" width="18" height="16" alt="playstation">
+    </div>
+
+
+    <div class="card__price">
+      @if (game.lowestPriceText) {
+        <div class="" style="text-align: right">
+          <span>Official Stories:</span>
+          <p class="card__price--price">{{ game.lowestPriceText.split(' ')[0] }}</p>
+        </div>
+      } @else if (game.isFree) {
+        <span>Official Stories:</span>
+        <p class="card__price--price">Free</p>
+      }
+
+
+      <button class="card__price__button">More Details</button>
+    </div>
+
+  </div>
+
+</div>

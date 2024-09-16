@@ -1,0 +1,20 @@
+<div class="deals">
+
+  <div class="deals__left" >
+      @if (!src){
+          <div class="test"></div>
+      }
+      @if (src){
+          <img
+                  loading="lazy" fetchpriority="auto"
+                  ngSrc="{{src}}" alt="{{name}}" width="160" height="75">
+      }
+
+    <p>{{ name }}</p>
+  </div>
+
+  <div class="deals__right">
+    <div class="deals__right__discount">{{discount+'%'}}</div>
+    <p class="deals__right__price">{{price}}</p>
+  </div>
+</div>

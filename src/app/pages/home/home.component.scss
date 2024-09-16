@@ -1,0 +1,44 @@
+.home-page{
+  margin-top: 24px;
+
+}
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  margin-top: 32px;
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    h4 {
+      color: #FFF;
+      leading-trim: both;
+      text-edge: cap;
+      font-family: Jura, sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      margin-block-start: unset;
+      margin-block-end: unset;
+    }
+  }
+  &__right{
+    cursor: pointer;
+    color: #FFF;
+    leading-trim: both;
+    text-edge: cap;
+    font-family: Jura, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    opacity: 0.6;
+  }
+}
+
+.deals-container{
+  display: flex; gap: 16px
+}

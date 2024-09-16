@@ -1,0 +1,108 @@
+.card {
+  border-radius: 12px;
+  cursor: pointer;
+  box-sizing: border-box !important;
+
+  display: flex;
+  padding: 18px 40px 18px 18px;
+
+  position: relative;
+  width: 1000px;
+  //height: 192px;
+  max-height: 100%;
+  background-color: #1B1B1B;
+  margin-bottom: 20px;
+
+  &:hover {
+    background-color: #242424;
+    border-color: #C9FF58;
+
+    .card__price__button {
+      color: #121212;
+      border: 1px solid #C9FF58;
+      background: #C9FF58;
+    }
+  }
+
+  &__content {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+  }
+
+  &__price {
+    padding-top: 7px;
+
+    p {
+      color: #FFF;
+      font-family: Jura, sans-serif;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+
+    span {
+      color: #FFF;
+      font-family: Jura, sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      opacity: 0.8;
+      margin-bottom: 8px;
+    }
+
+    &__button {
+      cursor: pointer;
+      margin-top: 32px;
+      border-radius: 24px;
+      border: 1px solid #C9FF58;
+      padding: 10.5px 14px;
+      background-color: transparent;
+      color: #C9FF58;
+    }
+
+  }
+
+  &__info {
+    margin-left: 16px;
+    margin-top: 8px;
+    max-width: 520px;
+
+    h2 {
+      font-family: Jura, sans-serif;
+      color: #FFF;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: #FFF;
+      font-family: Jura, sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      opacity: 0.8;
+      margin-bottom: 8px;
+    }
+
+    img {
+      margin-right: 10px;
+    }
+  }
+
+  &__img {
+    border-radius: 8px;
+    height: 100%;
+    display: flex;
+    img {
+      border-radius: 8px;
+    }
+  }
+}

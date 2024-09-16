@@ -1,0 +1,27 @@
+<div class="search__dropdown"
+     [@dropdownState]="isBrowser && (isInputFocused || searchInput) && isVisible ? 'visible' : 'hidden'">
+    @if (suggestions && !(searchService.searchInput$ | async)) {
+        <ul>
+            <p>Trending Searches:</p>
+            @for (suggestion of suggestions; track suggestion) {
+                <li style="color: #FFFFFF; display: flex; align-items: center; gap: 10px"
+                    (click)="select(suggestion.searchItem)">
+                    <img ngSrc="assets/svg/fire.svg" alt="" width="20" height="20">
+                    {{ suggestion?.searchItem }}
+                </li>
+            }
+        </ul>
+    }
+    @if (games && (searchService.searchInput$ | async)) {
+        @for (game of games; track game) {
+            <div class="searched-games" routerLink="games/{{game.gameId}}" (click)="updateIsVisible()">
+                <div class="searched-games__container">
+                    <img src="{{game.imgUrl}}" alt="" height="60" width="160">
+                    <div class="searched-games__name">{{ game.name }}</div>
+                </div>
+                <div class="searched-games__price">{{ game.fromPrice }}</div>
+            </div>
+        }
+    }
+</div>
+

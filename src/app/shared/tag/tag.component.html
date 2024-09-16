@@ -1,0 +1,6 @@
+<button class="tag" [ngClass]="{'tag--active': isActive}" (click)="onTagClick()">
+  @if (isActive){
+    <img  ngSrc="./assets/svg/lets-icons_fire.svg" height="16" width="16" alt="svg">
+  }
+  <span>{{text}}</span>
+</button>

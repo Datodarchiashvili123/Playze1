@@ -1,0 +1,42 @@
+.tag{
+  cursor: pointer;
+  display: flex;
+  height: 32px;
+  padding: 0px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 24px;
+  background: #212121;
+
+  color: #FFF;
+  font-family: Jura, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  opacity: 0.8;
+  border: 1px solid transparent;
+
+  &:hover{
+    border: 1px solid #C9FF58;
+    background: rgba(201, 255, 88, 0.20);
+  }
+
+  &--active{
+    display: flex;
+    height: 32px;
+    padding: 0px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 24px;
+    border: 1px solid #C9FF58;
+    background: rgba(201, 255, 88, 0.20);
+  }
+}
+
+button{
+  border: 0;
+  outline: 0;
+}

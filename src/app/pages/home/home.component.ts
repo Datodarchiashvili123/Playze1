@@ -8,6 +8,12 @@ import { HomeService } from "./home.service";
 import { RouterLink } from "@angular/router";
 import { SearchDropdownComponent } from "../../shared/search-dropdown/search-dropdown.component";
 import { Meta, Title } from "@angular/platform-browser";
+import { TransferState, makeStateKey } from '@angular/core';
+
+// Define keys for TransferState caching
+const GAMES_DATA_KEY = makeStateKey<any>('gamesData');
+const NEW_DEALS_KEY = makeStateKey<any>('newDeals');
+const BEST_DEALS_KEY = makeStateKey<any>('bestDeals');
 
 @Component({
     selector: 'app-home',
@@ -32,40 +38,72 @@ export class HomeComponent implements OnInit {
     newDeals = [];
     bestDeals = [];
 
-    constructor(private homeService: HomeService, private titleService: Title, private metaService: Meta) {}
+    constructor(
+        private homeService: HomeService,
+        private titleService: Title,
+        private metaService: Meta,
+        private transferState: TransferState  // Inject TransferState to access the cached data
+    ) {}
 
     ngOnInit() {
         this.titleService.setTitle('Game Deals - Best Discount and Offers on Top Games');
-
         this.updateMetaTags();
 
-        this.homeService.getTopGameCards().subscribe((x: any) => {
-            this.gamesData = x.popularGames;
-            this.sliderData = x.popularGames.map((game: any) => ({
-                title: game.name,
-                img: game.headerImageUrl,
-                price: game.lowestPriceText,
-                hasPrice: game.hasPrice,
-                gameId: game.gameId
-            }));
+        // Check if data is already available in TransferState
+        const cachedGamesData = this.transferState.get(GAMES_DATA_KEY, null);
+        const cachedNewDeals = this.transferState.get(NEW_DEALS_KEY, null);
+        const cachedBestDeals = this.transferState.get(BEST_DEALS_KEY, null);
 
-            const keywords = x.popularGames.map((game: any) => game.name).join(', ');
+        // If gamesData is cached, use it, otherwise fetch it
+        if (cachedGamesData) {
+            this.setGameData(cachedGamesData);
+        } else {
+            this.homeService.getTopGameCards().subscribe((x: any) => {
+                this.setGameData(x);
+                // Store the data in TransferState to cache it
+                this.transferState.set(GAMES_DATA_KEY, x);
+            });
+        }
 
-            this.updateMetaTags(keywords);
-        });
+        // If newDeals is cached, use it, otherwise fetch it
+        if (cachedNewDeals) {
+            this.newDeals = cachedNewDeals;
+        } else {
+            this.homeService.getDealCards(1).subscribe((x: any) => {
+                this.newDeals = x.dealCards;
+                this.transferState.set(NEW_DEALS_KEY, this.newDeals);
+            });
+        }
 
-        this.homeService.getDealCards(1).subscribe((x: any) => {
-            this.newDeals = x.dealCards;
-        });
-
-        this.homeService.getDealCards(2).subscribe((x: any) => {
-            this.bestDeals = x.dealCards;
-        });
+        // If bestDeals is cached, use it, otherwise fetch it
+        if (cachedBestDeals) {
+            this.bestDeals = cachedBestDeals;
+        } else {
+            this.homeService.getDealCards(2).subscribe((x: any) => {
+                this.bestDeals = x.dealCards;
+                this.transferState.set(BEST_DEALS_KEY, this.bestDeals);
+            });
+        }
     }
 
+    // Helper function to set game data
+    setGameData(data: any) {
+        this.gamesData = data.popularGames;
+        this.sliderData = data.popularGames.map((game: any) => ({
+            title: game.name,
+            img: game.headerImageUrl,
+            price: game.lowestPriceText,
+            hasPrice: game.hasPrice,
+            gameId: game.gameId
+        }));
+
+        const keywords = data.popularGames.map((game: any) => game.name).join(', ');
+        this.updateMetaTags(keywords);
+    }
+
+    // Update meta tags dynamically
     updateMetaTags(keywords = '') {
         const description = `Find the best game deals on top titles with huge discounts! Explore daily offers and save big on the latest video games for all platforms. Don't miss out!`;
-
         this.removeExistingMetaTags();
 
         this.metaService.addTags([
@@ -77,6 +115,7 @@ export class HomeComponent implements OnInit {
         ]);
     }
 
+    // Remove existing meta tags
     removeExistingMetaTags() {
         const descriptionTag = this.metaService.getTag('name="description"');
         if (descriptionTag) {

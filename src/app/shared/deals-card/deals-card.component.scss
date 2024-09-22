@@ -18,6 +18,7 @@
     img{
       width: 160px;
       height: 75px;
+      aspect-ratio: 16 / 7.5; /* Maintain the width to height ratio */
       flex-shrink: 0;
       border-radius: 12px;
     }
@@ -37,6 +38,8 @@
     align-items: center;
     gap: 14px;
     justify-content: flex-end;
+    width: 157px;
+
     &__discount{
       display: flex;
       padding: 8px;
@@ -53,6 +56,8 @@
       font-style: normal;
       font-weight: 700;
       line-height: normal;
+      min-width: 41px;
+      min-height: 31px;
     }
     p{
       color: #FFF;

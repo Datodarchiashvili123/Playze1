@@ -1,14 +1,25 @@
 <div class="deals">
-  <h3 class="deals__title">{{title}}</h3>
-<!--  <div class="deals__see-all">See All (123)</div>-->
+    <h3 class="deals__title">{{ title }}</h3>
+    <!--  <div class="deals__see-all">See All (123)</div>-->
 </div>
 <div class="deals__cards">
-  @for (card of dealsCards; track card) {
-    <app-deals-card
+    @if (dealsCards) {
+
+        @for (card of dealsCards; track card) {
+            <app-deals-card
                     routerLink="games/{{card.gameId}}"
                     [name]="card.name"
                     [src]="card.headerImageUrl"
                     [discount]="card.discountPercent"
                     [price]="card.lowestPriceText.split(' ')[0]"></app-deals-card>
-  }
+        }
+    } @else {
+        <div class=""
+             style="  background: #1B1B1B;
+  width: 692px;
+  height: 91px;"
+        ></div>
+    }
+
+
 </div>

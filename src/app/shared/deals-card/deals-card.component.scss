@@ -15,6 +15,7 @@
     display: flex;
     align-items: center;
     width: 532px;
+    height: 75px;
     gap: 12px;
     img{
       width: 160px;
@@ -25,8 +26,6 @@
     }
     p{
       color: #FFF;
-      leading-trim: both;
-      text-edge: cap;
       font-family: Jura,sans-serif;
       font-size: 14px;
       font-style: normal;
@@ -50,8 +49,6 @@
       border-radius: 12px;
       background: #313131;
       color: #FFF;
-      leading-trim: both;
-      text-edge: cap;
       font-family: Jura,sans-serif;
       font-size: 12px;
       font-style: normal;
@@ -62,8 +59,6 @@
     }
     p{
       color: #FFF;
-      leading-trim: both;
-      text-edge: cap;
       font-family: Jura, sans-serif;
       font-size: 20px;
       font-style: normal;

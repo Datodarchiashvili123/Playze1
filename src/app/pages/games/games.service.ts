@@ -1,8 +1,11 @@
-import { Injectable, makeStateKey, TransferState } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { catchError, map, of, Subject, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { takeUntil } from 'rxjs/operators';
+
+// Cache duration: 24 hours in milliseconds
+const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 @Injectable({
     providedIn: 'root',
@@ -10,11 +13,11 @@ import { takeUntil } from 'rxjs/operators';
 export class GamesService {
     private cancelRequest$ = new Subject<void>(); // Subject to cancel the request
 
-    constructor(private http: HttpClient, private transferState: TransferState) {}
+    constructor(private http: HttpClient) {}
 
     private getGamesKey(pageNumber?: number, pageSize?: number, filters?: any, orderBy = 'Popularity', name?: string) {
         const filterString = filters ? JSON.stringify(filters) : '';
-        return makeStateKey(`games_${pageNumber || 1}_${pageSize || 10}_${filterString}_${orderBy}_${name || ''}`);
+        return `games_${pageNumber || 1}_${pageSize || 10}_${filterString}_${orderBy}_${name || ''}`;
     }
 
     // Cancel the ongoing request by emitting from cancelRequest$
@@ -22,12 +25,40 @@ export class GamesService {
         this.cancelRequest$.next();
     }
 
+    // Check if cached data is expired
+    private isCacheExpired(timestamp: number): boolean {
+        const now = Date.now();
+        return now - timestamp > CACHE_DURATION_MS;
+    }
+
+    // Get cached data from localStorage or sessionStorage
+    private getCachedData(key: string) {
+        const cachedItem = localStorage.getItem(key); // Use sessionStorage if desired
+        if (cachedItem) {
+            const parsedItem = JSON.parse(cachedItem);
+            if (!this.isCacheExpired(parsedItem.timestamp)) {
+                return parsedItem.data;  // Return valid cached data
+            }
+            localStorage.removeItem(key);  // Remove expired cache
+        }
+        return null;
+    }
+
+    // Set data to cache in localStorage or sessionStorage
+    private setCachedData(key: string, data: any) {
+        const cacheItem = {
+            timestamp: Date.now(),
+            data: data
+        };
+        localStorage.setItem(key, JSON.stringify(cacheItem));  // Use sessionStorage if desired
+    }
+
     getGames(pageNumber?: number, pageSize?: number, filters?: any, orderBy = 'Popularity', name?: string) {
         const gamesKey = this.getGamesKey(pageNumber, pageSize, filters, orderBy, name);
-        const cachedData = this.transferState.get(gamesKey, null);
+        const cachedData = this.getCachedData(gamesKey);
 
         if (cachedData) {
-            this.transferState.remove(gamesKey);
+            // Return cached data if valid
             return of(cachedData);
         } else {
             let apiUrl = `${environment.apiUrl}/game/games?`;
@@ -63,12 +94,11 @@ export class GamesService {
             return this.http.get(apiUrl).pipe(
                 takeUntil(this.cancelRequest$), // Cancel the request when cancelRequest$ emits
                 map((res: any) => {
-                    this.transferState.set(gamesKey, res);
+                    // Cache the response in localStorage or sessionStorage
+                    this.setCachedData(gamesKey, res);
                     return res;
                 }),
-                catchError((error: Error) => {
-                    return throwError(() => error);
-                })
+                catchError((error: Error) => throwError(() => error))
             );
         }
     }

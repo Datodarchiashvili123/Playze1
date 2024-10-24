@@ -1,13 +1,7 @@
-import { Injectable, makeStateKey, TransferState } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { catchError, map, of, throwError } from 'rxjs';
 import { environment } from "../../../environments/environment";
-import { catchError, map, of, throwError } from "rxjs";
-import { HttpClient } from "@angular/common/http";
-import { isPlatformServer } from '@angular/common';
-import { Inject, PLATFORM_ID } from '@angular/core';
-
-// Define keys for caching
-const DEAL_CARDS_KEY = (id: number) => makeStateKey(`dealCards_${id}`);
-const TOP_GAME_CARDS_KEY = makeStateKey('topGameCards');
 
 // Cache duration: 24 hours in milliseconds
 const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
@@ -17,41 +11,51 @@ const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
 })
 export class HomeService {
 
-    private cacheTimestamps: { [key: string]: number } = {};  // Store cache timestamps
+    constructor(private http: HttpClient) {}
 
-    constructor(
-        private http: HttpClient,
-        private transferState: TransferState,
-        @Inject(PLATFORM_ID) private platformId: object // Injecting platform ID to check if we're on the server
-    ) {}
-
-    // Helper function to check if cached data is still valid
-    private isCacheExpired(key: string): boolean {
+    // Check if cached data is still valid
+    private isCacheExpired(timestamp: number): boolean {
         const now = Date.now();
-        const lastUpdated = this.cacheTimestamps[key] || 0;
-        return now - lastUpdated > CACHE_DURATION_MS;
+        return now - timestamp > CACHE_DURATION_MS;
     }
 
-    // Cache `getDealCards` method using TransferState with dynamic keys and 24-hour cache
+    // Helper function to retrieve cache from localStorage (or sessionStorage)
+    private getCachedData(key: string) {
+        const cachedItem = localStorage.getItem(key); // Change to sessionStorage if needed
+        if (cachedItem) {
+            const parsedItem = JSON.parse(cachedItem);
+            if (!this.isCacheExpired(parsedItem.timestamp)) {
+                return parsedItem.data;  // Return valid cached data
+            }
+            localStorage.removeItem(key);  // Remove expired cache
+        }
+        return null;
+    }
+
+    // Helper function to set cache in localStorage (or sessionStorage)
+    private setCachedData(key: string, data: any) {
+        const cacheItem = {
+            timestamp: Date.now(),
+            data: data
+        };
+        localStorage.setItem(key, JSON.stringify(cacheItem)); // Change to sessionStorage if needed
+    }
+
+    // Fetch deal cards and cache in localStorage
     getDealCards(id: number) {
         const cacheKey = `dealCards_${id}`;
-        const cachedData = this.transferState.get(DEAL_CARDS_KEY(id), null);
+        const cachedData = this.getCachedData(cacheKey);
 
-        if (cachedData && !this.isCacheExpired(cacheKey)) {
-            // Use cached data and remove it from TransferState if on client
-            if (!isPlatformServer(this.platformId)) {
-                this.transferState.remove(DEAL_CARDS_KEY(id));
-            }
+        if (cachedData) {
+            // Return cached data if valid
             return of(cachedData);
         } else {
+            // Make API call if no valid cache is available
             return this.http.get(`${environment.apiUrl}/deal/dealcards?PresetTypeId=${id}&take=10`)
                 .pipe(
                     map((res: any) => {
-                        // Update the cache and the timestamp if on server
-                        if (isPlatformServer(this.platformId)) {
-                            this.transferState.set(DEAL_CARDS_KEY(id), res);
-                            this.cacheTimestamps[cacheKey] = Date.now(); // Set cache timestamp
-                        }
+                        // Cache the response in localStorage
+                        this.setCachedData(cacheKey, res);
                         return res;
                     }),
                     catchError((error: Error) => throwError(() => error))
@@ -59,26 +63,21 @@ export class HomeService {
         }
     }
 
-    // Cache `getTopGameCards` method using TransferState with a static key and 24-hour cache
+    // Fetch top game cards and cache in localStorage
     getTopGameCards() {
         const cacheKey = 'topGameCards';
-        const cachedData = this.transferState.get(TOP_GAME_CARDS_KEY, null);
+        const cachedData = this.getCachedData(cacheKey);
 
-        if (cachedData && !this.isCacheExpired(cacheKey)) {
-            // Use cached data and remove it from TransferState if on client
-            if (!isPlatformServer(this.platformId)) {
-                this.transferState.remove(TOP_GAME_CARDS_KEY);
-            }
+        if (cachedData) {
+            // Return cached data if valid
             return of(cachedData);
         } else {
+            // Make API call if no valid cache is available
             return this.http.get(`${environment.apiUrl}/game/gamecards`)
                 .pipe(
                     map((res: any) => {
-                        // Update the cache and the timestamp if on server
-                        if (isPlatformServer(this.platformId)) {
-                            this.transferState.set(TOP_GAME_CARDS_KEY, res);
-                            this.cacheTimestamps[cacheKey] = Date.now(); // Set cache timestamp
-                        }
+                        // Cache the response in localStorage
+                        this.setCachedData(cacheKey, res);
                         return res;
                     }),
                     catchError((error: Error) => throwError(() => error))

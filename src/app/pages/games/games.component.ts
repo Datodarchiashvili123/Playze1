@@ -1,14 +1,14 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {FiltersComponent} from "../../shared/blocks/filters/filters.component";
-import {HeaderComponent} from "../../header/header.component";
-import {NgOptimizedImage} from "@angular/common";
-import {TagComponent} from "../../shared/tag/tag.component";
-import {GameCardComponent} from "../../shared/game-card/game-card.component";
-import {PaginationComponent} from "../../shared/pagination/pagination.component";
-import {GamesService} from "./games.service";
-import {SearchDropdownComponent} from "../../shared/search-dropdown/search-dropdown.component";
-import {GameDetailCardComponent} from "../../shared/game-detail-card/game-detail-card.component";
-import {Meta, Title} from "@angular/platform-browser";
+import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
+import { FiltersComponent } from "../../shared/blocks/filters/filters.component";
+import { HeaderComponent } from "../../header/header.component";
+import { NgOptimizedImage } from "@angular/common";
+import { TagComponent } from "../../shared/tag/tag.component";
+import { GameCardComponent } from "../../shared/game-card/game-card.component";
+import { PaginationComponent } from "../../shared/pagination/pagination.component";
+import { GamesService } from "./games.service";
+import { SearchDropdownComponent } from "../../shared/search-dropdown/search-dropdown.component";
+import { GameDetailCardComponent } from "../../shared/game-detail-card/game-detail-card.component";
+import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
     selector: 'app-games',
@@ -24,7 +24,7 @@ import {Meta, Title} from "@angular/platform-browser";
         GameDetailCardComponent,
     ],
     templateUrl: './games.component.html',
-    styleUrl: './games.component.scss'
+    styleUrls: ['./games.component.scss']
 })
 export class GamesComponent implements OnInit {
     totalPages = 0;
@@ -41,7 +41,8 @@ export class GamesComponent implements OnInit {
     constructor(
         private gamesService: GamesService,
         private titleService: Title,
-        private metaService: Meta
+        private metaService: Meta,
+        private renderer: Renderer2  // Inject Renderer2 for DOM manipulation
     ) {}
 
     ngOnInit() {
@@ -49,6 +50,9 @@ export class GamesComponent implements OnInit {
 
         // Set static meta title
         this.titleService.setTitle('Popular Games - Discover Top-Rated Titles and Must-Play Releases');
+
+        // Set canonical URL
+        this.setCanonicalURL(window.location.href);  // Set the canonical URL to the current page URL
     }
 
     loadGames(page: number, filters: any = {}, orderBy?: string, name?: string) {
@@ -81,15 +85,14 @@ export class GamesComponent implements OnInit {
         this.loadGames(this.currentPage, this.currentFilters, this.orderBy, this.searchValue); // Fetch the data for the new page
     }
 
-    // In your games component
     handleFilterChange(filters: any) {
         this.currentFilters = filters;
-        this.currentPage = 1;// Update the current filters
+        this.currentPage = 1; // Update the current filters
         this.loadGames(1, this.currentFilters, this.orderBy, this.searchValue);
     }
 
     onSortChange(event: any) {
-        this.orderBy = event
+        this.orderBy = event;
         this.loadGames(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
     }
 
@@ -98,14 +101,12 @@ export class GamesComponent implements OnInit {
         this.loadGames(1, this.currentFilters, this.orderBy, this.searchValue);
     }
 
-    // Triggered on mouse enter
     onMouseEnter(gameId: any, gameName: any, gameImage: any) {
         this.hoverTimeout = setTimeout(() => {
             this.onHover(gameId, gameName, gameImage); // Only call this after 0.5 sec
         }, 500); // 0.5 seconds delay
     }
 
-    // Triggered on mouse leave, cancel the hover action if it hasn't triggered yet
     onMouseLeave() {
         if (this.hoverTimeout) {
             clearTimeout(this.hoverTimeout); // Clear the timeout if mouse leaves before 0.5 sec
@@ -114,9 +115,9 @@ export class GamesComponent implements OnInit {
     }
 
     onHover(gameId: string, gameName?: any, gameImage?: any) {
-        this.hoveredGameId = gameId;  // Store the hovered gameId
-        this.hoveredGameName = gameName;  // Store the hovered gameId
-        this.hoveredGameImage = gameImage;  // Store the hovered gameId
+        this.hoveredGameId = gameId;
+        this.hoveredGameName = gameName;
+        this.hoveredGameImage = gameImage;
     }
 
     @HostListener('window:scroll', ['$event'])
@@ -125,5 +126,20 @@ export class GamesComponent implements OnInit {
         const sidebar = document.querySelector('.games-card') as HTMLElement;
 
         sidebar.scrollTop = scrollTop;
+    }
+
+    // Method to dynamically set the canonical URL
+    setCanonicalURL(url: string) {
+        const link: HTMLLinkElement = this.renderer.createElement('link');
+        link.setAttribute('rel', 'canonical');
+        link.setAttribute('href', url);
+
+        // Remove any existing canonical tag before adding a new one
+        const existingCanonical = document.querySelector('link[rel="canonical"]');
+        if (existingCanonical) {
+            this.renderer.removeChild(document.head, existingCanonical);
+        }
+
+        this.renderer.appendChild(document.head, link);
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Renderer2 } from '@angular/core';
 import { NgOptimizedImage } from "@angular/common";
 import { SlickCarouselModule } from "ngx-slick-carousel";
 import { ItemSliderComponent } from "../../shared/item-slider/item-slider.component";
@@ -8,12 +8,6 @@ import { HomeService } from "./home.service";
 import { RouterLink } from "@angular/router";
 import { SearchDropdownComponent } from "../../shared/search-dropdown/search-dropdown.component";
 import { Meta, Title } from "@angular/platform-browser";
-import { TransferState, makeStateKey } from '@angular/core';
-
-// Define keys for TransferState caching
-const GAMES_DATA_KEY = makeStateKey<any>('gamesData');
-const NEW_DEALS_KEY = makeStateKey<any>('newDeals');
-const BEST_DEALS_KEY = makeStateKey<any>('bestDeals');
 
 @Component({
     selector: 'app-home',
@@ -28,7 +22,7 @@ const BEST_DEALS_KEY = makeStateKey<any>('bestDeals');
         SearchDropdownComponent
     ],
     templateUrl: './home.component.html',
-    styleUrl: './home.component.scss',
+    styleUrls: ['./home.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit {
@@ -42,68 +36,44 @@ export class HomeComponent implements OnInit {
         private homeService: HomeService,
         private titleService: Title,
         private metaService: Meta,
-        private transferState: TransferState  // Inject TransferState to access the cached data
+        private renderer: Renderer2 // Inject Renderer2 for DOM manipulation
     ) {}
 
     ngOnInit() {
         this.titleService.setTitle('Game Deals - Best Discount and Offers on Top Games');
+
         this.updateMetaTags();
 
-        // Check if data is already available in TransferState
-        const cachedGamesData = this.transferState.get(GAMES_DATA_KEY, null);
-        const cachedNewDeals = this.transferState.get(NEW_DEALS_KEY, null);
-        const cachedBestDeals = this.transferState.get(BEST_DEALS_KEY, null);
+        // Set the canonical URL dynamically
+        this.setCanonicalURL(window.location.href);
 
-        // If gamesData is cached, use it, otherwise fetch it
-        if (cachedGamesData) {
-            this.setGameData(cachedGamesData);
-        } else {
-            this.homeService.getTopGameCards().subscribe((x: any) => {
-                this.setGameData(x);
-                // Store the data in TransferState to cache it
-                this.transferState.set(GAMES_DATA_KEY, x);
-            });
-        }
+        this.homeService.getTopGameCards().subscribe((x: any) => {
+            this.gamesData = x.popularGames;
+            this.sliderData = x.popularGames.map((game: any) => ({
+                title: game.name,
+                img: game.headerImageUrl,
+                price: game.lowestPriceText,
+                hasPrice: game.hasPrice,
+                gameId: game.gameId
+            }));
 
-        // If newDeals is cached, use it, otherwise fetch it
-        if (cachedNewDeals) {
-            this.newDeals = cachedNewDeals;
-        } else {
-            this.homeService.getDealCards(1).subscribe((x: any) => {
-                this.newDeals = x.dealCards;
-                this.transferState.set(NEW_DEALS_KEY, this.newDeals);
-            });
-        }
+            const keywords = x.popularGames.map((game: any) => game.name).join(', ');
 
-        // If bestDeals is cached, use it, otherwise fetch it
-        if (cachedBestDeals) {
-            this.bestDeals = cachedBestDeals;
-        } else {
-            this.homeService.getDealCards(2).subscribe((x: any) => {
-                this.bestDeals = x.dealCards;
-                this.transferState.set(BEST_DEALS_KEY, this.bestDeals);
-            });
-        }
+            this.updateMetaTags(keywords);
+        });
+
+        this.homeService.getDealCards(1).subscribe((x: any) => {
+            this.newDeals = x.dealCards;
+        });
+
+        this.homeService.getDealCards(2).subscribe((x: any) => {
+            this.bestDeals = x.dealCards;
+        });
     }
 
-    // Helper function to set game data
-    setGameData(data: any) {
-        this.gamesData = data.popularGames;
-        this.sliderData = data.popularGames.map((game: any) => ({
-            title: game.name,
-            img: game.headerImageUrl,
-            price: game.lowestPriceText,
-            hasPrice: game.hasPrice,
-            gameId: game.gameId
-        }));
-
-        const keywords = data.popularGames.map((game: any) => game.name).join(', ');
-        this.updateMetaTags(keywords);
-    }
-
-    // Update meta tags dynamically
     updateMetaTags(keywords = '') {
         const description = `Find the best game deals on top titles with huge discounts! Explore daily offers and save big on the latest video games for all platforms. Don't miss out!`;
+
         this.removeExistingMetaTags();
 
         this.metaService.addTags([
@@ -115,7 +85,6 @@ export class HomeComponent implements OnInit {
         ]);
     }
 
-    // Remove existing meta tags
     removeExistingMetaTags() {
         const descriptionTag = this.metaService.getTag('name="description"');
         if (descriptionTag) {
@@ -126,5 +95,20 @@ export class HomeComponent implements OnInit {
         if (keywordsTag) {
             this.metaService.removeTag('name="keywords"');
         }
+    }
+
+    // Method to dynamically set the canonical URL
+    setCanonicalURL(url: string) {
+        const link: HTMLLinkElement = this.renderer.createElement('link');
+        link.setAttribute('rel', 'canonical');
+        link.setAttribute('href', url);
+
+        // Remove any existing canonical tag before adding a new one
+        const existingCanonical = document.querySelector('link[rel="canonical"]');
+        if (existingCanonical) {
+            this.renderer.removeChild(document.head, existingCanonical);
+        }
+
+        this.renderer.appendChild(document.head, link);
     }
 }

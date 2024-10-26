@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, Renderer2 } from '@angular/core';
-import { NgOptimizedImage } from "@angular/common";
+import {Component, OnInit, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser, NgOptimizedImage} from "@angular/common";
 import { SlickCarouselModule } from "ngx-slick-carousel";
 import { ItemSliderComponent } from "../../shared/item-slider/item-slider.component";
 import { DealsCardComponent } from "../../shared/deals-card/deals-card.component";
@@ -36,8 +36,9 @@ export class HomeComponent implements OnInit {
         private homeService: HomeService,
         private titleService: Title,
         private metaService: Meta,
-        private renderer: Renderer2 // Inject Renderer2 for DOM manipulation
-    ) {}
+        private renderer: Renderer2, // Inject Renderer2 for DOM manipulation
+        @Inject(PLATFORM_ID) private platformId: Object
+) {}
 
     ngOnInit() {
         this.titleService.setTitle('Game Deals - Best Discount and Offers on Top Games');
@@ -45,7 +46,10 @@ export class HomeComponent implements OnInit {
         this.updateMetaTags();
 
         // Set the canonical URL dynamically
-        this.setCanonicalURL(window.location.href);
+        if(isPlatformBrowser(this.platformId)){
+            this.setCanonicalURL(window.location.href);
+        }
+
 
         this.homeService.getTopGameCards().subscribe((x: any) => {
             this.gamesData = x.popularGames;

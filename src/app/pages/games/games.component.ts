@@ -1,7 +1,7 @@
-import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
+import {Component, HostListener, Inject, OnInit, PLATFORM_ID, Renderer2} from '@angular/core';
 import { FiltersComponent } from "../../shared/blocks/filters/filters.component";
 import { HeaderComponent } from "../../header/header.component";
-import { NgOptimizedImage } from "@angular/common";
+import {isPlatformBrowser, NgOptimizedImage} from "@angular/common";
 import { TagComponent } from "../../shared/tag/tag.component";
 import { GameCardComponent } from "../../shared/game-card/game-card.component";
 import { PaginationComponent } from "../../shared/pagination/pagination.component";
@@ -39,6 +39,7 @@ export class GamesComponent implements OnInit {
     private hoverTimeout: any;
 
     constructor(
+        @Inject(PLATFORM_ID) private platformId: Object,
         private gamesService: GamesService,
         private titleService: Title,
         private metaService: Meta,
@@ -52,7 +53,9 @@ export class GamesComponent implements OnInit {
         this.titleService.setTitle('Popular Games - Discover Top-Rated Titles and Must-Play Releases');
 
         // Set canonical URL
-        this.setCanonicalURL(window.location.href);  // Set the canonical URL to the current page URL
+        if(isPlatformBrowser(this.platformId)){
+            this.setCanonicalURL(window.location.href);  // Set the canonical URL to the current page URL
+        }
     }
 
     loadGames(page: number, filters: any = {}, orderBy?: string, name?: string) {

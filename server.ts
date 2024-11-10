@@ -73,3 +73,4 @@ function run(): void {
 }
 
 run();
+

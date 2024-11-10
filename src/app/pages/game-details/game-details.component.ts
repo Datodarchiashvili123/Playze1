@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID, Renderer2} from '@angular/core';
 import { GameDetailsService } from './game-details.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
+import {isPlatformBrowser, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import { SearchDropdownComponent } from '../../shared/search-dropdown/search-dropdown.component';
 import { GameDetailCardComponent } from '../../shared/game-detail-card/game-detail-card.component';
 
@@ -58,12 +58,14 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     private routeSub: Subscription | undefined;
 
     constructor(
+        @Inject(PLATFORM_ID) private platformId: Object,
         private route: ActivatedRoute,
         private gameDetailsService: GameDetailsService,
         private sanitizer: DomSanitizer,
         private titleService: Title,
         private metaService: Meta,
         private renderer: Renderer2  // Inject Renderer2 for DOM manipulation
+
     ) {
         this.gameId = this.route.snapshot.paramMap.get('id');
     }
@@ -124,7 +126,9 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
         ]);
 
         // Add or update the canonical tag
-        this.setCanonicalURL(window.location.href);  // Set the canonical URL to the current page URL
+        if(isPlatformBrowser(this.platformId)) {
+            this.setCanonicalURL(window.location.href);  // Set the canonical URL to the current page URL
+        }
     }
 
     // Method to remove existing meta tags

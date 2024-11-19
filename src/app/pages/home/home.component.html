@@ -1,7 +1,7 @@
 
-<div class="home-page" style="">
-    <div class="" style="border-radius: 12px; overflow: hidden">
-        <img priority ngSrc="assets/cover.webp" width="1400" height="280" alt="most popular games">
+<div class="home-page">
+    <div class="home-page-main-photo">
+        <img priority src="assets/cover.webp" alt="most popular games">
     </div>
     <!-- You can now use your library component in app.component.html -->
     <div class="slider-header">
@@ -20,10 +20,10 @@
     }
     <div class="deals-container">
         @if (newDeals) {
-            <app-deals-cards [title]="'New Deals'" [dealsCards]="newDeals"/>
+            <app-deals-cards [title]="'New Deals'" [dealsCards]="newDeals" class="deals-box"/>
         }
         @if (bestDeals) {
-            <app-deals-cards [title]="'Best Deals'" [dealsCards]="bestDeals"/>
+            <app-deals-cards [title]="'Best Deals'" [dealsCards]="bestDeals" class="deals-box"/>
         }
     </div>
 </div>

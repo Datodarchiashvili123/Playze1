@@ -5,6 +5,10 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body{
   background-color: #121212;
   box-sizing: border-box;
@@ -13,6 +17,7 @@ body{
   font-style: normal;
   display: unset;
   margin: 0;
+  overflow-x: hidden;
 }
 
 h3{

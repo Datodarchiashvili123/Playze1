@@ -37,14 +37,17 @@ export class GamesComponent implements OnInit {
     hoveredGameName: string | null = null;
     hoveredGameImage: string | null = null;
     private hoverTimeout: any;
-
+    mobileSize: boolean;
+  
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
         private gamesService: GamesService,
         private titleService: Title,
         private metaService: Meta,
         private renderer: Renderer2  // Inject Renderer2 for DOM manipulation
-    ) {}
+    ) {
+      this.mobileSize = isPlatformBrowser(this.platformId) ? window.innerWidth <= 768 : false;
+    }
 
     ngOnInit() {
         this.loadGames(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
@@ -129,6 +132,13 @@ export class GamesComponent implements OnInit {
         const sidebar = document.querySelector('.games-card') as HTMLElement;
 
         sidebar.scrollTop = scrollTop;
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(): void {
+      if (isPlatformBrowser(this.platformId)) {
+        this.mobileSize = window.innerWidth <= 768;
+      }
     }
 
     // Method to dynamically set the canonical URL

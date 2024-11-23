@@ -1,3 +1,9 @@
+@media screen and (max-width: 1080px) and (min-width: 769px) {
+  .sidebar {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .sidebar {
     display: none;
@@ -35,14 +41,6 @@
   line-height: normal;
 }
 
-.container {
-  display: flex;
-}
-
-.games-list {
-  flex: 1;
-}
-
 .sidebar {
   position: sticky;
   top: 10px; /* Adjust this value to control when the sticky starts */
@@ -70,15 +68,13 @@
   overflow-y: auto;
 }
 
-app-game-card {
-  width: 100%;
-}
-
 .presets {
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
   margin-top: 24px;
+  overflow-x: auto;
+  padding-bottom: 10px;
 }
 
 .games-component-container {
@@ -88,4 +84,19 @@ app-game-card {
   margin-left: auto;
   margin-right: auto;
   max-width: 1400px;
+}
+
+
+
+.game-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  .game-list {
+    margin: auto;
+    flex-grow: 1;
+  }
+  app-game-card {
+    width: 100%;
+  }
 }

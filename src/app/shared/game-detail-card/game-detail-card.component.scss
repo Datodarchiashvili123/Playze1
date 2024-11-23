@@ -1,11 +1,29 @@
+@media screen and (max-width: 768px) {
+  .side-nav {
+    &__title {
+      display: none;
+    }
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .side-nav {
+    padding: 24px 12px;
+  background: #1B1B1B;
+  width: 380px;
+  &__title {
+    display: flex;
+  }
+  }
+}
+
 .side-nav {
   box-sizing: border-box;
   border-radius: 12px;
-  background: #1B1B1B;
   display: flex;
   flex-direction: column;
-  padding: 24px 12px;
-  width: 380px;
+  max-height: fit-content;
+  width: 100%;
 
   &__title{
     color: #FFF;
@@ -14,7 +32,6 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    display: flex;
     margin-block-start: 0;
     margin-block-end: 0;
     margin-bottom: 24px;
@@ -31,6 +48,7 @@
     background-size: 100% 100%;
     background-position: center;
     padding: 36px 12px;
+    margin: auto;
 
     p {
       color: #FFF !important;

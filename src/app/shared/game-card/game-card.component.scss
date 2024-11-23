@@ -1,17 +1,112 @@
+@media screen and (max-width: 768px) and (min-width: 669px) {
+  .card {
+    &__info {
+      h2, p, .genres {
+        width: 400px;
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 668px) and (min-width: 0px) {
+  .card {
+    &__info {
+      h2, p, .genres {
+        width: 190px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    position: relative;
+    padding: 7px;
+    &__info {
+      h2, p, .genres {
+        -webkit-box-orient: horizontal;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: block;
+        overflow: hidden;
+      }
+      h2 {
+       margin: 0 0 4px 0;
+      }
+      p {
+        font-size: 12px;
+      }
+      .rel-date {
+        margin: 0;
+      }
+      .genres {
+        margin: 0 0 6px 0;
+      }
+    }
+    &__price {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      align-self: flex-end;
+      padding: 0 5px 5px 0;
+      color: #C9FF58;
+      &__button, span {
+        display: none;
+      }
+      p {
+        font-size: 18px;
+      }
+    }
+    &__img {
+      img {
+        width: 140px;
+        height: 75.5px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .card {
+    padding: 18px 40px 18px 18px;
+    &__info {
+    margin-top: 8px;
+      h2 {
+       margin-bottom: 16px;
+      }
+      p, .rel-date {
+      font-size: 14px;
+      margin-bottom: 8px;
+      }
+    }
+    &__price {
+      color: #FFF;
+      p {
+        font-size: 24px;
+      }
+    }
+    &__img {
+      img {
+        width: 280px;
+        height: 131px;
+      }
+    }
+  }
+}
+
 .card {
   border-radius: 12px;
   cursor: pointer;
   box-sizing: border-box !important;
 
   display: flex;
-  padding: 18px 40px 18px 18px;
-
+  margin: auto auto 20px auto;
   position: relative;
   max-width: 1000px;
   //height: 192px;
   max-height: 100%;
   background-color: #1B1B1B;
-  margin-bottom: 20px;
 
   &:hover {
     background-color: #242424;
@@ -26,18 +121,15 @@
 
   &__content {
     display: flex;
-    width: 100%;
     justify-content: space-between;
-
+    flex-grow: 1;
   }
 
   &__price {
     padding-top: 7px;
 
     p {
-      color: #FFF;
       font-family: Jura, sans-serif;
-      font-size: 24px;
       font-style: normal;
       font-weight: 700;
       line-height: normal;
@@ -68,8 +160,6 @@
 
   &__info {
     margin-left: 16px;
-    margin-top: 8px;
-    max-width: 520px;
 
     h2 {
       font-family: Jura, sans-serif;
@@ -78,18 +168,17 @@
       font-style: normal;
       font-weight: 700;
       line-height: normal;
-      margin-bottom: 16px;
+      text-overflow: ellipsis;
     }
 
     p {
       color: #FFF;
       font-family: Jura, sans-serif;
-      font-size: 14px;
       font-style: normal;
       font-weight: 500;
       line-height: normal;
       opacity: 0.8;
-      margin-bottom: 8px;
+      text-overflow: ellipsis;
     }
 
     img {

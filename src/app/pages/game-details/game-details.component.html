@@ -17,20 +17,30 @@
     </div>
   </div>
   <div class="shop-now">
-    <div class="shop-now__price">
-      <p class="shop-now__price__text">Official Stories:</p>
-      <p class="shop-now__price__value">
-        {{ offers?.currentPrice.split(" ")[0] }}
-      </p>
-      <p class="shop-now__price__text">Current Price</p>
+    @if (game?.about?.aboutTheGame !== '' || gallery !== undefined &&
+    gallery?.length) {
+    <h2 class="shop-now__title">{{ game?.name }}</h2>
+    }
+    <div class="shop-flex">
+      <div class="shop-now__price">
+        <p class="shop-now__price__text">Official Stories:</p>
+        <p class="shop-now__price__value">
+          {{ offers?.currentPrice.split(" ")[0] }}
+        </p>
+        <p class="shop-now__price__text">Current Price</p>
+      </div>
+      <div class="btn-div">
+        <a
+          href="{{ offers?.redirectUrl }}"
+          target="_blank"
+          style="cursor: pointer; text-decoration: none"
+        >
+          <button class="shop-now__button shop-now__button__text">
+            Shop Now
+          </button>
+        </a>
+      </div>
     </div>
-    <a
-      href="{{ offers?.redirectUrl }}"
-      target="_blank"
-      style="cursor: pointer; text-decoration: none"
-    >
-      <button class="shop-now__button shop-now__button__text">Shop Now</button>
-    </a>
   </div>
 </div>
 
@@ -121,7 +131,7 @@ gallery?.length) {
   </div>
   }
 
-  <div class="box right2" style="margin-top: 15px">
+  <div class="box right2">
     <app-game-detail-card
       [gameId]="gameId"
       [gameName]="game?.name"

@@ -78,7 +78,7 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     }
 
     loadGameDetail(gameId: any) {
-        this.gameDetailsService.getGameDetails(gameId).subscribe(res => {
+        this.gameDetailsService.getGameDetails(gameId).subscribe( res => {
             this.game = res;
             console.log(this.game);
             this.sanitizedAboutTheGame = this.sanitizer.bypassSecurityTrustHtml(this.game.about.aboutTheGame);

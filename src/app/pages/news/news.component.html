@@ -1,1 +1,67 @@
-<p>news works!</p>
+<h3 class="results-text">We found 12332 results.</h3>
+<div class="games-cards-container">
+    @for (newsCard of news; track newsCard) {
+        <div class="card-container"  [routerLink]="newsCard.route">
+            <div class="card-image">
+                <img ngSrc="{{newsCard.imgSrc}}" width="840" height="480" alt="news"/>
+            </div>
+            <div class="two-div">
+                <div class="card-text-container">
+                    <div class="card-text1">
+                        <p>Added: {{ newsCard.added }}</p>
+                        <button>Subscription</button>
+                        <div class="card-icons">
+                            @for (platform of newsCard.platforms; track platform) {
+                                <img
+                                        ngSrc='/assets/svg/{{platform}}.svg'
+                                        class="windows-img"
+                                        alt="windows"
+                                        [width]="16"
+                                        [height]="16"/>
+                            }
+                        </div>
+                    </div>
+                    <h2 class="multi-line-fixed-height">
+                        {{ newsCard.title }}
+                    </h2>
+                    <p>
+                        {{ newsCard.subTitle }}
+                    </p>
+                </div>
+                <div class="read-more-button">
+                    <h4>Read more</h4>
+                    <img ngSrc="./assets/svg/right-arrow.svg" height="16" width="18" alt="right-arrow"/>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<!--&lt;!&ndash; new section 3 &ndash;&gt;-->
+
+<!--<div class="related-news-container">-->
+<!--    <div class="related-news-img">-->
+<!--        <img src="./img/image 246.png" />-->
+<!--    </div>-->
+<!--    <div class="related-news-text-cont">-->
+<!--        <div class="related-news-text1">-->
+<!--            <p>Added : 4h ago</p>-->
+<!--            <button>Blog</button>-->
+<!--            <div class="card-icons">-->
+<!--                <img src="/img/fa_windows.svg" class="windows-img" alt="windows" />-->
+<!--                <img-->
+<!--                        src="/img/fa-brands_playstation.svg"-->
+<!--                        class="playstation-img"-->
+<!--                        alt="playstation"-->
+<!--                />-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <h3>Free games to play this weekend</h3>-->
+<!--        <p>-->
+<!--            If you seek to immerse yourself in lifelike words - here is the-->
+<!--            ranking you just can't miss.-->
+<!--        </p>-->
+<!--    </div>-->
+<!--</div>-->
+

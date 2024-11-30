@@ -21,4 +21,9 @@ export const routes: Routes = [
     loadComponent: () =>
         import('./pages/game-details/game-details.component').then((m) => m.GameDetailsComponent),
   },
+  {
+    path: 'news/:id',
+    loadComponent: () =>
+        import('./pages/news-details/news-details.component').then((m) => m.NewsDetailsComponent),
+  },
 ];

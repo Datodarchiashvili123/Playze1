@@ -27,7 +27,7 @@ export class GameDetailsService {
             this.transferState.remove(GAME_DETAILS_KEY(id));
             return of(cachedData);
         } else {
-            return this.http.get(`${environment.apiUrl}/game/gameinfo?GameId=${id}`)
+            return this.http.get(`${environment.apiUrl}/game/gameinfo?UrlName=${id}`)
                 .pipe(
                     map((res: any) => {
                         // Store the result in TransferState with the dynamic key

@@ -9,7 +9,6 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:play": "node dist/play/server/server.mjs",
-    "build:ssr": "ng build --configuration=production && ng run play:server:production"
   },
   "private": true,
   "dependencies": {

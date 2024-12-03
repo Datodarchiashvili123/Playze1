@@ -1,9 +1,10 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Inject, OnInit, Output, PLATFORM_ID} from '@angular/core';
 import {SearchComponent} from "../../search/search.component";
 import {TagComponent} from "../../tag/tag.component";
 import {FilterComponent} from "../../filter/filter.component";
 import {FiltersService} from "../../../services/filters.service";
 import {ReactiveFormsModule} from "@angular/forms";
+import { isPlatformBrowser } from '@angular/common';
 
 type FilterType = 'price' | 'developers' | 'publishers' | 'genres' | 'primaryPlatforms';
 
@@ -30,14 +31,18 @@ export class FiltersComponent implements OnInit {
     platforms: any;
     searchValue: string = '';
     private debounceTimer: any;
+    mobileSize: boolean;
 
 
     @Output() filtersChanged = new EventEmitter<any>();
     @Output() searchChanged = new EventEmitter<string>();
 
 
-    constructor(private filtersService: FiltersService) {
-
+    constructor(
+        private filtersService: FiltersService,
+        @Inject(PLATFORM_ID) private platformId: Object,
+    ) {
+        this.mobileSize = isPlatformBrowser(this.platformId) ? window.innerWidth <= 768 : false;
     }
 
     ngOnInit() {
@@ -88,5 +93,12 @@ export class FiltersComponent implements OnInit {
         this.debounceTimer = setTimeout(() => {
             this.searchChanged.emit(this.searchValue);
         }, 500); // 500 milliseconds delay
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(): void {
+      if (isPlatformBrowser(this.platformId)) {
+        this.mobileSize = window.innerWidth <= 768;
+      }
     }
 }

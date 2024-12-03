@@ -1,7 +1,18 @@
+@media screen and (max-width: 768px) {
+  .filters {
+    padding: 10px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .filters {
+    padding: 10px 23px;
+  }
+}
+
 .filters{
   z-index: 10;
   display: flex;
-  padding: 10px 23px;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
@@ -13,6 +24,12 @@
     justify-content: flex-end;
     align-items: center;
     gap: 48px;
+  }
+  .filter-svg {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 6px 6px 3px 6px;
+    border-radius: 100px;
+    cursor: pointer;
   }
 }
 

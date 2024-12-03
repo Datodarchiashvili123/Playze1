@@ -27,10 +27,10 @@
                 (searchChanged)="handleSearchChange($event)"
         ></app-filters>
 
-        <div class="" style="display: flex; justify-content: space-between;">
-            <div class="">
+        <div class="game-container">
+            <div class="game-list">
                 @for (game of games; track $index) {
-                    <div class="" style="display: flex;"
+                    <div
                          (mouseenter)="onMouseEnter(game.gameId, game.name, game.headerImageUrl)"
                          (mouseleave)="onMouseLeave()">
                         <app-game-card [game]="game"></app-game-card>

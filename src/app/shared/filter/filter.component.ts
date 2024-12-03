@@ -3,16 +3,15 @@ import {NgClass, NgOptimizedImage, NgStyle} from "@angular/common";
 import {ClickOutsideDirective} from "../../directives/click-outside.directive";
 
 @Component({
-  selector: 'app-filter',
-  standalone: true,
-  imports: [
-    NgOptimizedImage,
-    NgClass,
-    ClickOutsideDirective,
-    NgStyle
-  ],
-  templateUrl: './filter.component.html',
-  styleUrl: './filter.component.scss'
+    selector: 'app-filter',
+    imports: [
+        NgOptimizedImage,
+        NgClass,
+        ClickOutsideDirective,
+        NgStyle
+    ],
+    templateUrl: './filter.component.html',
+    styleUrl: './filter.component.scss'
 })
 export class FilterComponent {
   toggleStates: boolean[] = []; // Array to store the state of each checkbox

@@ -3,7 +3,6 @@ import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 
 @Component({
     selector: 'app-pagination',
-    standalone: true,
     imports: [
         NgOptimizedImage,
         NgForOf,

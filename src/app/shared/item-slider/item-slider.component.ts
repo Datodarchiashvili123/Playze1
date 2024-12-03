@@ -4,17 +4,15 @@ import {NgOptimizedImage} from "@angular/common";
 import {RouterLink} from "@angular/router";
 
 @Component({
-  selector: 'app-item-slider',
-  standalone: true,
+    selector: 'app-item-slider',
     imports: [
         SlickCarouselModule,
         NgOptimizedImage,
         RouterLink,
-
     ],
-  templateUrl: './item-slider.component.html',
-  styleUrl: './item-slider.component.scss',
-  encapsulation: ViewEncapsulation.None
+    templateUrl: './item-slider.component.html',
+    styleUrl: './item-slider.component.scss',
+    encapsulation: ViewEncapsulation.None
 })
 export class ItemSliderComponent {
   @Input() slides: any = [];

@@ -10,7 +10,6 @@ import { GameDetailCardComponent } from '../../shared/game-detail-card/game-deta
 
 @Component({
     selector: 'app-game-details',
-    standalone: true,
     imports: [
         SlickCarouselModule,
         NgForOf,

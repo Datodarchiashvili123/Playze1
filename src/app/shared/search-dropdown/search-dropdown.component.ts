@@ -8,9 +8,8 @@ import {ClickOutsideDirective} from "../../directives/click-outside.directive";
 
 @Component({
     selector: 'app-search-dropdown',
-    standalone: true,
-    imports: [CommonModule, NgOptimizedImage, RouterLink, ClickOutsideDirective],  // Import CommonModule for basic Angular directives
-    providers: [provideAnimations()],  // Provide animations without BrowserAnimationsModule
+    imports: [CommonModule, NgOptimizedImage, RouterLink, ClickOutsideDirective], // Import CommonModule for basic Angular directives
+    providers: [provideAnimations()], // Provide animations without BrowserAnimationsModule
     templateUrl: './search-dropdown.component.html',
     styleUrl: './search-dropdown.component.scss',
     animations: [
@@ -23,16 +22,16 @@ import {ClickOutsideDirective} from "../../directives/click-outside.directive";
             })),
             state('visible', style({
                 opacity: 1,
-                width: '700px',  // Increase width for visibility
+                width: '700px', // Increase width for visibility
                 height: '*', // Increase height for visibility
-                backgroundColor: '#1B1B1B',  // Add background color to make it more visible
+                backgroundColor: '#1B1B1B', // Add background color to make it more visible
                 border: '2px solid #C9FF58'
             })),
             transition('hidden => visible', [
-                animate('300ms ease-out')  // Slow down to 1 second for testing
+                animate('300ms ease-out') // Slow down to 1 second for testing
             ]),
             transition('visible => hidden', [
-                animate('200ms ease-in')  // Slow down to 1 second for testing
+                animate('200ms ease-in') // Slow down to 1 second for testing
             ])
         ])
     ]

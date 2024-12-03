@@ -5,7 +5,6 @@ import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'app-search',
-    standalone: true,
     imports: [
         NgOptimizedImage,
         AsyncPipe,

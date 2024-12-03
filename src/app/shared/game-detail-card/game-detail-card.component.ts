@@ -3,7 +3,6 @@ import {GameDetailCardService} from "./game-detail-card.service";
 
 @Component({
     selector: 'app-game-detail-card',
-    standalone: true,
     imports: [],
     templateUrl: './game-detail-card.component.html',
     styleUrl: './game-detail-card.component.scss'

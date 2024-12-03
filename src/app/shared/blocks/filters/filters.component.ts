@@ -10,7 +10,6 @@ type FilterType = 'price' | 'developers' | 'publishers' | 'genres' | 'primaryPla
 
 @Component({
     selector: 'app-filters',
-    standalone: true,
     imports: [
         SearchComponent,
         TagComponent,

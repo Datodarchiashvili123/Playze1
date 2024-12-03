@@ -9,7 +9,6 @@ import {SearchDropdownComponent} from "./shared/search-dropdown/search-dropdown.
 
 @Component({
     selector: 'app-root',
-    standalone: true,
     imports: [RouterOutlet, NgOptimizedImage, HeaderComponent, TagComponent, FiltersComponent, FooterComponent, SearchDropdownComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'

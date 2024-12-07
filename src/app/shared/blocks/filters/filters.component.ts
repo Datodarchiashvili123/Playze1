@@ -1,10 +1,8 @@
 import {Component, EventEmitter, HostListener, Inject, OnInit, Output, PLATFORM_ID} from '@angular/core';
-import {SearchComponent} from "../../search/search.component";
-import {TagComponent} from "../../tag/tag.component";
 import {FilterComponent} from "../../filter/filter.component";
 import {FiltersService} from "../../../services/filters.service";
 import {ReactiveFormsModule} from "@angular/forms";
-import { isPlatformBrowser } from '@angular/common';
+import {isPlatformBrowser} from '@angular/common';
 
 type FilterType = 'price' | 'developers' | 'publishers' | 'genres' | 'primaryPlatforms';
 
@@ -12,8 +10,6 @@ type FilterType = 'price' | 'developers' | 'publishers' | 'genres' | 'primaryPla
 @Component({
     selector: 'app-filters',
     imports: [
-        SearchComponent,
-        TagComponent,
         FilterComponent,
         ReactiveFormsModule
     ],
@@ -97,8 +93,8 @@ export class FiltersComponent implements OnInit {
 
     @HostListener('window:resize', ['$event'])
     onResize(): void {
-      if (isPlatformBrowser(this.platformId)) {
-        this.mobileSize = window.innerWidth <= 768;
-      }
+        if (isPlatformBrowser(this.platformId)) {
+            this.mobileSize = window.innerWidth <= 768;
+        }
     }
 }

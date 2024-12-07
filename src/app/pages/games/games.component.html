@@ -31,7 +31,7 @@
             <div class="game-list">
                 @for (game of games; track $index) {
                     <div
-                         (mouseenter)="onMouseEnter(game.gameId, game.name, game.headerImageUrl)"
+                         (mouseenter)="onMouseEnter(game.urlName, game.name, game.headerImageUrl)"
                          (mouseleave)="onMouseLeave()">
                         <app-game-card [game]="game"></app-game-card>
                     </div>

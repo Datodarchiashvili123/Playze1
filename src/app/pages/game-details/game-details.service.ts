@@ -27,7 +27,7 @@ export class GameDetailsService {
             this.transferState.remove(GAME_DETAILS_KEY(id));
             return of(cachedData);
         } else {
-            return this.http.get(`${environment.apiUrl}/game/gameinfo?UrlName=${id}`)
+            return this.http.get(`${environment.apiUrl}/game/gameinfo?urlName=${id}`)
                 .pipe(
                     map((res: any) => {
                         // Store the result in TransferState with the dynamic key
@@ -48,7 +48,7 @@ export class GameDetailsService {
             this.transferState.remove(GAME_GALLERY_KEY(id));
             return of(cachedData);
         } else {
-            return this.http.get(`${environment.apiUrl}/game/gamegallery?GameId=${id}`)
+            return this.http.get(`${environment.apiUrl}/game/gamegallery?UrlName=${id}`)
                 .pipe(
                     map((res: any) => {
                         // Store the result in TransferState with the dynamic key
@@ -69,7 +69,7 @@ export class GameDetailsService {
             this.transferState.remove(GAME_OFFERS_KEY(id));
             return of(cachedData);
         } else {
-            return this.http.get(`${environment.apiUrl}/game/gameoffers?GameId=${id}`)
+            return this.http.get(`${environment.apiUrl}/game/gameoffers?UrlName=${id}`)
                 .pipe(
                     map((res: any) => {
                         // Store the result in TransferState with the dynamic key

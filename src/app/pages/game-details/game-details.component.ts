@@ -1,24 +1,11 @@
-import {
-    Component,
-    Inject,
-    OnDestroy,
-    OnInit,
-    PLATFORM_ID,
-    Renderer2,
-} from "@angular/core";
-import { GameDetailsService } from "./game-details.service";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
-import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
-import { SlickCarouselModule } from "ngx-slick-carousel";
-import {
-    isPlatformBrowser,
-    NgForOf,
-    NgIf,
-    NgOptimizedImage,
-} from "@angular/common";
-import { SearchDropdownComponent } from "../../shared/search-dropdown/search-dropdown.component";
-import { GameDetailCardComponent } from "../../shared/game-detail-card/game-detail-card.component";
+import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID, Renderer2,} from "@angular/core";
+import {GameDetailsService} from "./game-details.service";
+import {ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs";
+import {DomSanitizer, Meta, Title} from "@angular/platform-browser";
+import {SlickCarouselModule} from "ngx-slick-carousel";
+import {isPlatformBrowser, NgForOf, NgIf, NgOptimizedImage,} from "@angular/common";
+import {GameDetailCardComponent} from "../../shared/game-detail-card/game-detail-card.component";
 
 @Component({
     selector: "app-game-details",
@@ -28,7 +15,6 @@ import { GameDetailCardComponent } from "../../shared/game-detail-card/game-deta
         NgForOf,
         NgIf,
         NgOptimizedImage,
-        SearchDropdownComponent,
         GameDetailCardComponent,
     ],
     templateUrl: "./game-details.component.html",
@@ -206,8 +192,8 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
 
         // Add new meta tags
         this.metaService.addTags([
-            { name: "description", content: description },
-            { name: "keywords", content: keywords },
+            {name: "description", content: description},
+            {name: "keywords", content: keywords},
         ]);
 
         // Add or update the canonical tag

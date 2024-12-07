@@ -4,11 +4,10 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {CommonModule, isPlatformBrowser, NgOptimizedImage} from "@angular/common";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {RouterLink} from "@angular/router";
-import {ClickOutsideDirective} from "../../directives/click-outside.directive";
 
 @Component({
     selector: 'app-search-dropdown',
-    imports: [CommonModule, NgOptimizedImage, RouterLink, ClickOutsideDirective], // Import CommonModule for basic Angular directives
+    imports: [CommonModule, NgOptimizedImage, RouterLink], // Import CommonModule for basic Angular directives
     providers: [provideAnimations()], // Provide animations without BrowserAnimationsModule
     templateUrl: './search-dropdown.component.html',
     styleUrl: './search-dropdown.component.scss',

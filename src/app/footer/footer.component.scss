@@ -3,27 +3,34 @@
     &__container {
       justify-content: center;
       text-align: center;
+
       &__content {
         order: 3;
         width: 100%;
+
         .disclaimer {
           text-align: center;
         }
+
         p {
           margin: auto 26px;
           text-align: justify;
         }
       }
+
       &__soc {
         order: 2;
         margin-bottom: 20px;
+
         h5 {
           display: none;
         }
+
         span {
           display: none;
         }
       }
+
       &__logo {
         order: 1;
         width: 100%;
@@ -36,6 +43,7 @@
   .footer {
     &__container {
       justify-content: space-between;
+
       &__soc {
         &__links {
           flex-direction: column;
@@ -57,10 +65,12 @@
     align-items: flex-start;
     flex-wrap: wrap;
     color: #fff;
+
     &__content {
       .my-auto {
         margin: auto;
         width: fit-content;
+
         .disclaimer {
           margin-block-start: 0;
           margin-block-end: 0;
@@ -72,6 +82,7 @@
           line-height: normal;
           letter-spacing: -0.232px;
         }
+
         p {
           color: #fff;
           font-family: Jura, sans-serif;
@@ -86,6 +97,7 @@
         }
       }
     }
+
     &__soc {
       h5 {
         margin-block-start: 0;
@@ -103,6 +115,7 @@
         margin-top: 20px;
         display: flex;
         gap: 20px;
+
         a {
           display: flex;
           gap: 8px;
@@ -113,6 +126,7 @@
       }
     }
   }
+
   .copyrights__container {
     width: 100%;
     height: 60px;
@@ -121,10 +135,12 @@
     align-items: center;
     padding: 40px 41px;
     background: #1b1b1b;
+
     &__terms {
       &a {
         color: unset;
       }
+
       opacity: 0.7;
       color: #fff;
       font-family: "DM Sans", sans-serif;
@@ -134,6 +150,7 @@
       line-height: normal;
       text-decoration-line: underline;
     }
+
     &__copy {
       color: #fff;
       font-family: "DM Sans", sans-serif;

@@ -1,13 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {AsyncPipe, NgOptimizedImage} from "@angular/common";
 import {SearchService} from "../../services/search.service";
 import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'app-search',
     imports: [
-        NgOptimizedImage,
-        AsyncPipe,
         FormsModule
     ],
     templateUrl: './search.component.html',

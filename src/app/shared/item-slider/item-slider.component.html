@@ -7,7 +7,7 @@
                     (beforeChange)="beforeChange($event)">
 
     @for (slide of slides; track $index) {
-        <div ngxSlickItem class="slide" routerLink="/games/{{slide.gameId}}" aria-hidden="true">
+        <div ngxSlickItem class="slide" routerLink="/games/{{slide.urlName}}" aria-hidden="true">
             <div class="slide__img-div">
                 @if (slide?.img) {
                     <img ngSrc="{{ slide.img }}" alt="{{slide.title}}" width="280" height="131">

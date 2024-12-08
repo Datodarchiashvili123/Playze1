@@ -7,7 +7,7 @@
 
         @for (card of dealsCards; track card) {
             <app-deals-card
-                    routerLink="games/{{card.gameId}}"
+                    routerLink="games/{{card.urlName}}"
                     [name]="card.name"
                     [src]="card.headerImageUrl"
                     [discount]="card.discountPercent"

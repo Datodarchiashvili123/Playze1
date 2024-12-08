@@ -62,7 +62,7 @@ export class GamesComponent implements OnInit {
             console.log(this.games);
             this.totalPages = data.totalPages;
             this.currentPage = data.currentPage;
-            this.onHover(this.games[0]?.gameId, this.games[0]?.gameName, this.games[0]?.headerImageUrl);
+            this.onHover(this.games[0]?.urlName, this.games[0]?.gameName, this.games[0]?.headerImageUrl);
             // Dynamically update meta tags based on the loaded games
             this.updateMetaTags(this.games);
         });

@@ -1,8 +1,9 @@
 import {Injectable, Inject, PLATFORM_ID, makeStateKey, TransferState} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
-import { catchError, map, of, throwError } from 'rxjs';
+import { catchError, map, throwError, of, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
@@ -10,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class GamesService {
     private cacheTTL = 300000; // Cache expiration time in milliseconds (5 minutes)
     private gamesCache: { [key: string]: { data: any; timestamp: number } } = {}; // In-memory cache
+    private cancelRequest$ = new Subject<void>(); // Subject for request cancellation
 
     // TransferState keys for SSR
     private GAMES_KEY = (key: string) => makeStateKey<any>(`GAMES_${key}`);
@@ -21,7 +23,7 @@ export class GamesService {
     ) {}
 
     /**
-     * Get games with TransferState and in-memory caching
+     * Get games with TransferState, in-memory caching, and cancelable requests
      * @param pageNumber Page number for pagination
      * @param pageSize Number of items per page
      * @param filters Object containing filter criteria
@@ -72,6 +74,7 @@ export class GamesService {
 
         // Fetch data from API and cache it
         return this.http.get(apiUrl).pipe(
+            takeUntil(this.cancelRequest$), // Cancel the request when cancelRequest$ emits
             map((res: any) => {
                 this.gamesCache[cacheKey] = { data: res, timestamp: Date.now() }; // Save to cache
                 if (!isPlatformBrowser(this.platformId)) {
@@ -81,6 +84,15 @@ export class GamesService {
             }),
             catchError((error: Error) => throwError(() => error))
         );
+    }
+
+    /**
+     * Cancel the ongoing HTTP request
+     */
+    cancelRequest() {
+        this.cancelRequest$.next();
+        this.cancelRequest$.complete(); // Prevent memory leaks
+        this.cancelRequest$ = new Subject<void>(); // Reinitialize for future requests
     }
 
     /**

@@ -21,6 +21,8 @@
     <div class="deals-container">
         @if (newDeals) {
             <app-deals-cards [title]="'New Deals'" [dealsCards]="newDeals" class="deals-box"/>
+        } @else {
+
         }
         @if (bestDeals) {
             <app-deals-cards [title]="'Best Deals'" [dealsCards]="bestDeals" class="deals-box"/>

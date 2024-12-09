@@ -1,61 +1,107 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import {Injectable, Inject, PLATFORM_ID, makeStateKey, TransferState} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class GamesService {
-    private cancelRequest$ = new Subject<void>(); // Subject to cancel the request
+    private cacheTTL = 300000; // Cache expiration time in milliseconds (5 minutes)
+    private gamesCache: { [key: string]: { data: any; timestamp: number } } = {}; // In-memory cache
+
+    // TransferState keys for SSR
+    private GAMES_KEY = (key: string) => makeStateKey<any>(`GAMES_${key}`);
 
     constructor(
         private http: HttpClient,
-        @Inject(PLATFORM_ID) private platformId: Object // Inject PLATFORM_ID to detect if in the browser
+        private transferState: TransferState,
+        @Inject(PLATFORM_ID) private platformId: Object
     ) {}
 
-    // Cancel the ongoing request by emitting from cancelRequest$
-    cancelRequest() {
-        this.cancelRequest$.next();
-    }
-
+    /**
+     * Get games with TransferState and in-memory caching
+     * @param pageNumber Page number for pagination
+     * @param pageSize Number of items per page
+     * @param filters Object containing filter criteria
+     * @param orderBy Order by criteria, default is 'Popularity'
+     * @param name Game name to search
+     * @returns Observable with the response
+     */
     getGames(pageNumber?: number, pageSize?: number, filters?: any, orderBy = 'Popularity', name?: string) {
-        let apiUrl = `${environment.apiUrl}/game/games?`;
+        // Construct a cache key based on parameters
+        const cacheKey = this.buildCacheKey(pageNumber, pageSize, filters, orderBy, name);
+        const transferStateKey = this.GAMES_KEY(cacheKey);
 
-        if (name) {
-            apiUrl += `Name=${name}`;
+        // Check in-memory cache
+        const cachedItem = this.gamesCache[cacheKey];
+        const isCacheValid =
+            cachedItem && Date.now() - cachedItem.timestamp < this.cacheTTL;
+
+        if (isCacheValid) {
+            return of(cachedItem.data);
         }
-        if (pageSize) {
-            apiUrl += `&PageSize=${pageSize}`;
+
+        // Check TransferState for SSR
+        if (this.transferState.hasKey(transferStateKey)) {
+            const cachedData = this.transferState.get(transferStateKey, null);
+            this.transferState.remove(transferStateKey); // Clean up TransferState
+            this.gamesCache[cacheKey] = { data: cachedData, timestamp: Date.now() };
+            return of(cachedData);
         }
-        if (pageNumber) {
-            apiUrl += `&PageNumber=${pageNumber}`;
-        }
+
+        // Build API URL dynamically
+        let apiUrl = `${environment.apiUrl}/game/games?`;
+        if (name) apiUrl += `Name=${name}`;
+        if (pageSize) apiUrl += `&PageSize=${pageSize}`;
+        if (pageNumber) apiUrl += `&PageNumber=${pageNumber}`;
         if (filters) {
             Object.keys(filters).forEach((key) => {
-                const filterValue = filters[key];
-                if (Array.isArray(filterValue)) {
-                    filterValue.forEach((value: any) => {
-                        if (value) {
-                            apiUrl += `&${key}=${value}`;
-                        }
+                const value = filters[key];
+                if (Array.isArray(value)) {
+                    value.forEach((val: any) => {
+                        apiUrl += `&${key}=${val}`;
                     });
-                } else if (filterValue) {
-                    apiUrl += `&${key}=${filterValue}`;
+                } else if (value !== undefined && value !== null) {
+                    apiUrl += `&${key}=${value}`;
                 }
             });
         }
-        if (orderBy) {
-            apiUrl += `&OrderBy=${orderBy}`;
-        }
+        if (orderBy) apiUrl += `&OrderBy=${orderBy}`;
 
-        // Make the HTTP request and use takeUntil to cancel if needed
+        // Fetch data from API and cache it
         return this.http.get(apiUrl).pipe(
-            takeUntil(this.cancelRequest$), // Cancel the request when cancelRequest$ emits
-            map((res: any) => res),
+            map((res: any) => {
+                this.gamesCache[cacheKey] = { data: res, timestamp: Date.now() }; // Save to cache
+                if (!isPlatformBrowser(this.platformId)) {
+                    this.transferState.set(transferStateKey, res); // Save to TransferState for SSR
+                }
+                return res;
+            }),
             catchError((error: Error) => throwError(() => error))
         );
+    }
+
+    /**
+     * Build a unique cache key based on parameters
+     */
+    private buildCacheKey(pageNumber?: number, pageSize?: number, filters?: any, orderBy = 'Popularity', name?: string): string {
+        return JSON.stringify({ pageNumber, pageSize, filters, orderBy, name });
+    }
+
+    /**
+     * Clear the entire in-memory cache
+     */
+    clearCache() {
+        this.gamesCache = {};
+    }
+
+    /**
+     * Clear specific cache by key
+     * @param cacheKey Key of the cache to clear
+     */
+    clearCacheByKey(cacheKey: string) {
+        delete this.gamesCache[cacheKey];
     }
 }

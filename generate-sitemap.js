@@ -1,26 +1,48 @@
 const fs = require('fs');
 const { SitemapStream, streamToPromise } = require('sitemap');
+const axios = require('axios'); // For making HTTP requests
 
-// Create a sitemap stream
-const sitemapStream = new SitemapStream({ hostname: 'https://playze.io' });
+(async () => {
+    // Create a sitemap stream
+    const sitemapStream = new SitemapStream({ hostname: 'https://playze.io' });
 
-// Array to store the URLs for the sitemap
-const urls = [];
-urls.push({ url: `/`, changefreq: 'daily', priority: 1 });
-urls.push({ url: `/games`, changefreq: 'daily', priority: 0.85 });
+    // Array to store the URLs for the sitemap
+    const urls = [];
+    urls.push({ url: `/`, changefreq: 'daily', priority: 1 });
+    urls.push({ url: `/games`, changefreq: 'daily', priority: 0.85 });
 
-// Assuming your game IDs range from 1 to 55
-for (let id = 1; id <= 1000; id++) {
-    urls.push({ url: `/games/${id}`, changefreq: 'monthly', priority: 0.5 });
-}
+    try {
+        // Fetch the game URL names from your backend API
+        const response = await axios.get('https://playze.betterdevjobs.com/game/gameurls'); // Replace with your API endpoint
 
-// Add URLs to the stream and generate the sitemap
-urls.forEach(url => sitemapStream.write(url));
+        console.log('API Response:', response.data); // Log the API response
 
-// End the stream
-sitemapStream.end();
+        // Access the array inside the object (e.g., response.data.games)
+        if (response.data && Array.isArray(response.data.urlNames)) {
+            response.data.urlNames.forEach((game) => {
+                urls.push({
+                    url: `/games/${game.urlName}`, // Use the dynamically fetched URL name
+                    changefreq: 'monthly',
+                    priority: 0.5,
+                });
+            });
+        } else {
+            console.error('Invalid data received from API.');
+            console.log('Expected "games" array, but got:', response.data);
+            return;
+        }
 
-// Write the sitemap to a file
-streamToPromise(sitemapStream).then((data) => {
-    fs.writeFileSync('./dist/play/browser/sitemap.xml', data.toString());
-});
+        // Add URLs to the sitemap stream
+        urls.forEach((url) => sitemapStream.write(url));
+
+        // End the stream
+        sitemapStream.end();
+
+        // Write the sitemap to a file
+        const data = await streamToPromise(sitemapStream);
+        fs.writeFileSync('./dist/play/browser/sitemap.xml', data.toString());
+        console.log('Sitemap generated successfully!');
+    } catch (error) {
+        console.error('Error generating sitemap:', error.message);
+    }
+})();

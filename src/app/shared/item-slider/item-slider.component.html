@@ -7,11 +7,13 @@
                     (beforeChange)="beforeChange($event)">
 
     @for (slide of slides; track $index) {
-        <div ngxSlickItem class="slide" routerLink="/games/{{slide.gameId}}" aria-hidden="true">
-            @if (slide?.img) {
-                <img ngSrc="{{ slide.img }}" alt="{{slide.title}}" width="280" height="131">
-            }
-            <div class="slide__tag"><span>#{{ 1 + $index }}</span></div>
+        <div ngxSlickItem class="slide" routerLink="/games/{{slide.urlName}}" aria-hidden="true">
+            <div class="slide__img-div">
+                @if (slide?.img) {
+                    <img ngSrc="{{ slide.img }}" alt="{{slide.title}}" width="280" height="131">
+                }
+                <div class="slide__img-div__tag"><span>#{{ 1 + $index }}</span></div>
+            </div>
             <div class="slide__description">
                 <p class="slide__description__title">{{ slide.title }}</p>
                 <div class="slide__description__price-container">

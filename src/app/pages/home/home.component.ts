@@ -1,25 +1,20 @@
-import {Component, OnInit, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID, Renderer2, ViewEncapsulation} from '@angular/core';
 import {isPlatformBrowser, NgOptimizedImage} from "@angular/common";
-import { SlickCarouselModule } from "ngx-slick-carousel";
-import { ItemSliderComponent } from "../../shared/item-slider/item-slider.component";
-import { DealsCardComponent } from "../../shared/deals-card/deals-card.component";
-import { DealsCardsComponent } from "../../shared/blocks/deals-cards/deals-cards.component";
-import { HomeService } from "./home.service";
-import { RouterLink } from "@angular/router";
-import { SearchDropdownComponent } from "../../shared/search-dropdown/search-dropdown.component";
-import { Meta, Title } from "@angular/platform-browser";
+import {SlickCarouselModule} from "ngx-slick-carousel";
+import {ItemSliderComponent} from "../../shared/item-slider/item-slider.component";
+import {DealsCardsComponent} from "../../shared/blocks/deals-cards/deals-cards.component";
+import {HomeService} from "./home.service";
+import {RouterLink} from "@angular/router";
+import {Meta, Title} from "@angular/platform-browser";
 
 @Component({
     selector: 'app-home',
-    standalone: true,
     imports: [
         NgOptimizedImage,
         SlickCarouselModule,
         ItemSliderComponent,
-        DealsCardComponent,
         DealsCardsComponent,
-        RouterLink,
-        SearchDropdownComponent
+        RouterLink
     ],
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
@@ -38,7 +33,8 @@ export class HomeComponent implements OnInit {
         private metaService: Meta,
         private renderer: Renderer2, // Inject Renderer2 for DOM manipulation
         @Inject(PLATFORM_ID) private platformId: Object
-) {}
+    ) {
+    }
 
     ngOnInit() {
         this.titleService.setTitle('Game Deals - Best Discount and Offers on Top Games');
@@ -46,7 +42,7 @@ export class HomeComponent implements OnInit {
         this.updateMetaTags();
 
         // Set the canonical URL dynamically
-        if(isPlatformBrowser(this.platformId)){
+        if (isPlatformBrowser(this.platformId)) {
             this.setCanonicalURL(window.location.href);
         }
 
@@ -81,7 +77,7 @@ export class HomeComponent implements OnInit {
         this.removeExistingMetaTags();
 
         this.metaService.addTags([
-            { name: 'description', content: description },
+            {name: 'description', content: description},
             {
                 name: 'keywords',
                 content: `${keywords}, popular games, video game deals, new game releases, game discounts, best game deals, cheap video games, top-rated games, gaming offers, latest game discounts, game sales, PC games, console games, Xbox deals, PlayStation deals, Steam deals, game bundles, playze.io`

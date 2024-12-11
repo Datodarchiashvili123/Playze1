@@ -1,6 +1,22 @@
+@media screen and (max-width: 768px) {
+  button {
+    display: none !important;
+  }
+  .pagination__page__container {
+    margin: auto;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .pagination__button {
+    display: flex;
+    align-items: center;
+  }
+}
+
 .pagination{
   display: flex;
-  width: 1004px;
+  max-width: 1004px;
   padding: 12px 24px 16px 24px;
   justify-content: space-between;
   align-items: center;
@@ -64,9 +80,6 @@
     border-radius: 8px;
     border: 1px solid #C9FF58;
     background: rgba(201, 255, 88, 0.10);
-    img{
-
-    }
     p{
       color: #C9FF58;
       text-align: center;
@@ -98,7 +111,3 @@
   cursor: not-allowed;
 }
 
-.pagination__button {
-  display: flex;
-  align-items: center;
-}

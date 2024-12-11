@@ -7,53 +7,18 @@
 
         @for (card of dealsCards; track card) {
             <app-deals-card
-                    routerLink="games/{{card.gameId}}"
+                    routerLink="games/{{card.urlName}}"
                     [name]="card.name"
                     [src]="card.headerImageUrl"
                     [discount]="card.discountPercent"
                     [price]="card.lowestPriceText.split(' ')[0]"></app-deals-card>
+        } @empty {
+            <div class=""
+            style="background-color: #767085"></div>
         }
     } @else {
-
         <div class=""
-             style="background: #1B1B1B; width: 692px; height: 91px;"
-        ></div>
-
-        <div class=""
-             style="background: #1B1B1B; width: 692px; height: 91px;"
-        ></div>
-
-        <div class=""
-             style="background: #1B1B1B; width: 692px; height: 91px;"
-        ></div>
-
-        <div class=""
-             style="background: #1B1B1B; width: 692px; height: 91px;"
-        ></div>
-
-        <div class=""
-             style="background: #1B1B1B; width: 692px; height: 91px;"
-        ></div>
-
-        <div class=""
-             style="background: #1B1B1B; width: 692px; height: 91px;"
-        ></div>
-
-        <div class=""
-             style="background: #1B1B1B; width: 692px; height: 91px;"
-        ></div>
-
-        <div class=""
-             style="background: #1B1B1B; width: 692px; height: 91px;"
-        ></div>
-
-        <div class=""
-             style="background: #1B1B1B; width: 692px; height: 91px;"
-        ></div>
-
-        <div class=""
-             style="background: #1B1B1B; width: 692px; height: 91px;"
-        ></div>
+             style="background-color: #767085">12</div>
     }
 
 

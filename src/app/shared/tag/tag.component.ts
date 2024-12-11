@@ -3,7 +3,6 @@ import {NgClass, NgOptimizedImage} from "@angular/common";
 
 @Component({
     selector: 'app-tag',
-    standalone: true,
     imports: [
         NgOptimizedImage,
         NgClass

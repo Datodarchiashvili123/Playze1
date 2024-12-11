@@ -2,11 +2,10 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {GameDetailCardService} from "../game-detail-card/game-detail-card.service";
 
 @Component({
-  selector: 'app-game-item-hover',
-  standalone: true,
-  imports: [],
-  templateUrl: './game-item-hover.component.html',
-  styleUrl: './game-item-hover.component.scss'
+    selector: 'app-game-item-hover',
+    imports: [],
+    templateUrl: './game-item-hover.component.html',
+    styleUrl: './game-item-hover.component.scss'
 })
 export class GameItemHoverComponent implements OnInit, OnChanges {
 

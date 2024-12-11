@@ -1,26 +1,20 @@
-import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
-import { FiltersComponent } from "../../shared/blocks/filters/filters.component";
-import { HeaderComponent } from "../../header/header.component";
-import { NgOptimizedImage } from "@angular/common";
-import { TagComponent } from "../../shared/tag/tag.component";
-import { GameCardComponent } from "../../shared/game-card/game-card.component";
-import { PaginationComponent } from "../../shared/pagination/pagination.component";
-import { GamesService } from "./games.service";
-import { SearchDropdownComponent } from "../../shared/search-dropdown/search-dropdown.component";
-import { GameDetailCardComponent } from "../../shared/game-detail-card/game-detail-card.component";
-import { Meta, Title } from "@angular/platform-browser";
+import {Component, HostListener, Inject, OnInit, PLATFORM_ID, Renderer2} from '@angular/core';
+import {FiltersComponent} from "../../shared/blocks/filters/filters.component";
+import {isPlatformBrowser} from "@angular/common";
+import {TagComponent} from "../../shared/tag/tag.component";
+import {GameCardComponent} from "../../shared/game-card/game-card.component";
+import {PaginationComponent} from "../../shared/pagination/pagination.component";
+import {GamesService} from "./games.service";
+import {GameDetailCardComponent} from "../../shared/game-detail-card/game-detail-card.component";
+import {Meta, Title} from "@angular/platform-browser";
 
 @Component({
     selector: 'app-games',
-    standalone: true,
     imports: [
         FiltersComponent,
-        HeaderComponent,
-        NgOptimizedImage,
         TagComponent,
         GameCardComponent,
         PaginationComponent,
-        SearchDropdownComponent,
         GameDetailCardComponent,
     ],
     templateUrl: './games.component.html',
@@ -37,13 +31,17 @@ export class GamesComponent implements OnInit {
     hoveredGameName: string | null = null;
     hoveredGameImage: string | null = null;
     private hoverTimeout: any;
+    mobileSize: boolean;
 
     constructor(
+        @Inject(PLATFORM_ID) private platformId: Object,
         private gamesService: GamesService,
         private titleService: Title,
         private metaService: Meta,
         private renderer: Renderer2  // Inject Renderer2 for DOM manipulation
-    ) {}
+    ) {
+        this.mobileSize = isPlatformBrowser(this.platformId) ? window.innerWidth <= 768 : false;
+    }
 
     ngOnInit() {
         this.loadGames(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
@@ -52,7 +50,9 @@ export class GamesComponent implements OnInit {
         this.titleService.setTitle('Popular Games - Discover Top-Rated Titles and Must-Play Releases');
 
         // Set canonical URL
-        this.setCanonicalURL(window.location.href);  // Set the canonical URL to the current page URL
+        if (isPlatformBrowser(this.platformId)) {
+            this.setCanonicalURL(window.location.href);  // Set the canonical URL to the current page URL
+        }
     }
 
     loadGames(page: number, filters: any = {}, orderBy?: string, name?: string) {
@@ -62,7 +62,7 @@ export class GamesComponent implements OnInit {
             console.log(this.games);
             this.totalPages = data.totalPages;
             this.currentPage = data.currentPage;
-            this.onHover(this.games[0]?.gameId, this.games[0]?.gameName, this.games[0]?.headerImageUrl);
+            this.onHover(this.games[0]?.urlName, this.games[0]?.gameName, this.games[0]?.headerImageUrl);
             // Dynamically update meta tags based on the loaded games
             this.updateMetaTags(this.games);
         });
@@ -73,7 +73,7 @@ export class GamesComponent implements OnInit {
         const baseKeywords = 'popular games, top-rated video games, new game releases, best game deals, game discounts, cheap video games, trending video games, must-play games, video game offers, gaming discounts, PC games on sale, console games deals, Xbox game deals, PlayStation game deals, Steam game sales, playze.io';
         const dynamicKeywords = `${baseKeywords}, ${gameNames}`;
 
-        this.metaService.updateTag({ name: 'keywords', content: dynamicKeywords });
+        this.metaService.updateTag({name: 'keywords', content: dynamicKeywords});
         this.metaService.updateTag({
             name: 'description',
             content: 'Explore the most popular games across all platforms! Check out top-rated titles, trending releases, and fan-favorite games. Get deals and start playing now!'
@@ -126,6 +126,13 @@ export class GamesComponent implements OnInit {
         const sidebar = document.querySelector('.games-card') as HTMLElement;
 
         sidebar.scrollTop = scrollTop;
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(): void {
+        if (isPlatformBrowser(this.platformId)) {
+            this.mobileSize = window.innerWidth <= 768;
+        }
     }
 
     // Method to dynamically set the canonical URL

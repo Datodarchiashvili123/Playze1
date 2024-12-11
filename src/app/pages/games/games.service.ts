@@ -1,128 +1,119 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import {Injectable, Inject, PLATFORM_ID, makeStateKey, TransferState} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { catchError, map, of, Subject, throwError } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { catchError, map, throwError, of, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators';
-
-// Cache duration: 24 hours in milliseconds
-const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 @Injectable({
     providedIn: 'root',
 })
 export class GamesService {
-    private cancelRequest$ = new Subject<void>(); // Subject to cancel the request
+    private cacheTTL = 300000; // Cache expiration time in milliseconds (5 minutes)
+    private gamesCache: { [key: string]: { data: any; timestamp: number } } = {}; // In-memory cache
+    private cancelRequest$ = new Subject<void>(); // Subject for request cancellation
+
+    // TransferState keys for SSR
+    private GAMES_KEY = (key: string) => makeStateKey<any>(`GAMES_${key}`);
 
     constructor(
         private http: HttpClient,
-        @Inject(PLATFORM_ID) private platformId: Object // Inject PLATFORM_ID to detect if in the browser
+        private transferState: TransferState,
+        @Inject(PLATFORM_ID) private platformId: Object
     ) {}
 
-    // Helper function to check if running in the browser
-    private isBrowser(): boolean {
-        return isPlatformBrowser(this.platformId);
-    }
+    /**
+     * Get games with TransferState, in-memory caching, and cancelable requests
+     * @param pageNumber Page number for pagination
+     * @param pageSize Number of items per page
+     * @param filters Object containing filter criteria
+     * @param orderBy Order by criteria, default is 'Popularity'
+     * @param name Game name to search
+     * @returns Observable with the response
+     */
+    getGames(pageNumber?: number, pageSize?: number, filters?: any, orderBy = 'Popularity', name?: string) {
+        // Construct a cache key based on parameters
+        const cacheKey = this.buildCacheKey(pageNumber, pageSize, filters, orderBy, name);
+        const transferStateKey = this.GAMES_KEY(cacheKey);
 
-    // Helper function to check if localStorage is available
-    private isLocalStorageAvailable(): boolean {
-        try {
-            const testKey = '__test__';
-            localStorage.setItem(testKey, 'test');
-            localStorage.removeItem(testKey);
-            return true;
-        } catch (e) {
-            return false;
+        // Check in-memory cache
+        const cachedItem = this.gamesCache[cacheKey];
+        const isCacheValid =
+            cachedItem && Date.now() - cachedItem.timestamp < this.cacheTTL;
+
+        if (isCacheValid) {
+            return of(cachedItem.data);
         }
-    }
 
-    // Helper function to check if cached data is expired
-    private isCacheExpired(timestamp: number): boolean {
-        const now = Date.now();
-        return now - timestamp > CACHE_DURATION_MS;
-    }
-
-    // Helper function to get cached data from localStorage (or sessionStorage)
-    private getCachedData(key: string) {
-        if (!this.isBrowser() || !this.isLocalStorageAvailable()) return null; // Only proceed if we're in the browser and localStorage is available
-
-        const cachedItem = localStorage.getItem(key); // Use sessionStorage if you prefer
-        if (cachedItem) {
-            const parsedItem = JSON.parse(cachedItem);
-            if (!this.isCacheExpired(parsedItem.timestamp)) {
-                return parsedItem.data;
-            }
-            localStorage.removeItem(key);  // Remove expired cache
+        // Check TransferState for SSR
+        if (this.transferState.hasKey(transferStateKey)) {
+            const cachedData = this.transferState.get(transferStateKey, null);
+            this.transferState.remove(transferStateKey); // Clean up TransferState
+            this.gamesCache[cacheKey] = { data: cachedData, timestamp: Date.now() };
+            return of(cachedData);
         }
-        return null;
+
+        // Build API URL dynamically
+        let apiUrl = `${environment.apiUrl}/game/games?`;
+        if (name) apiUrl += `Name=${name}`;
+        if (pageSize) apiUrl += `&PageSize=${pageSize}`;
+        if (pageNumber) apiUrl += `&PageNumber=${pageNumber}`;
+        if (filters) {
+            Object.keys(filters).forEach((key) => {
+                const value = filters[key];
+                if (Array.isArray(value)) {
+                    value.forEach((val: any) => {
+                        apiUrl += `&${key}=${val}`;
+                    });
+                } else if (value !== undefined && value !== null) {
+                    apiUrl += `&${key}=${value}`;
+                }
+            });
+        }
+        if (orderBy) apiUrl += `&OrderBy=${orderBy}`;
+
+        // Fetch data from API and cache it
+        return this.http.get(apiUrl).pipe(
+            takeUntil(this.cancelRequest$), // Cancel the request when cancelRequest$ emits
+            map((res: any) => {
+                this.gamesCache[cacheKey] = { data: res, timestamp: Date.now() }; // Save to cache
+                if (!isPlatformBrowser(this.platformId)) {
+                    this.transferState.set(transferStateKey, res); // Save to TransferState for SSR
+                }
+                return res;
+            }),
+            catchError((error: Error) => throwError(() => error))
+        );
     }
 
-    // Helper function to cache data in localStorage (or sessionStorage)
-    private setCachedData(key: string, data: any) {
-        if (!this.isBrowser() || !this.isLocalStorageAvailable()) return; // Only proceed if we're in the browser and localStorage is available
-
-        const cacheItem = {
-            timestamp: Date.now(),
-            data: data
-        };
-        localStorage.setItem(key, JSON.stringify(cacheItem)); // Use sessionStorage if needed
-    }
-
-    private getGamesKey(pageNumber?: number, pageSize?: number, filters?: any, orderBy = 'Popularity', name?: string) {
-        const filterString = filters ? JSON.stringify(filters) : '';
-        return `games_${pageNumber || 1}_${pageSize || 10}_${filterString}_${orderBy}_${name || ''}`;
-    }
-
-    // Cancel the ongoing request by emitting from cancelRequest$
+    /**
+     * Cancel the ongoing HTTP request
+     */
     cancelRequest() {
         this.cancelRequest$.next();
+        this.cancelRequest$.complete(); // Prevent memory leaks
+        this.cancelRequest$ = new Subject<void>(); // Reinitialize for future requests
     }
 
-    getGames(pageNumber?: number, pageSize?: number, filters?: any, orderBy = 'Popularity', name?: string) {
-        const gamesKey = this.getGamesKey(pageNumber, pageSize, filters, orderBy, name);
-        const cachedData = this.getCachedData(gamesKey);
+    /**
+     * Build a unique cache key based on parameters
+     */
+    private buildCacheKey(pageNumber?: number, pageSize?: number, filters?: any, orderBy = 'Popularity', name?: string): string {
+        return JSON.stringify({ pageNumber, pageSize, filters, orderBy, name });
+    }
 
-        if (cachedData) {
-            return of(cachedData);
-        } else {
-            let apiUrl = `${environment.apiUrl}/game/games?`;
+    /**
+     * Clear the entire in-memory cache
+     */
+    clearCache() {
+        this.gamesCache = {};
+    }
 
-            if (name) {
-                apiUrl += `Name=${name}`;
-            }
-            if (pageSize) {
-                apiUrl += `&PageSize=${pageSize}`;
-            }
-            if (pageNumber) {
-                apiUrl += `&PageNumber=${pageNumber}`;
-            }
-            if (filters) {
-                Object.keys(filters).forEach((key) => {
-                    const filterValue = filters[key];
-                    if (Array.isArray(filterValue)) {
-                        filterValue.forEach((value: any) => {
-                            if (value) {
-                                apiUrl += `&${key}=${value}`;
-                            }
-                        });
-                    } else if (filterValue) {
-                        apiUrl += `&${key}=${filterValue}`;
-                    }
-                });
-            }
-            if (orderBy) {
-                apiUrl += `&OrderBy=${orderBy}`;
-            }
-
-            // Make the HTTP request and use takeUntil to cancel if needed
-            return this.http.get(apiUrl).pipe(
-                takeUntil(this.cancelRequest$), // Cancel the request when cancelRequest$ emits
-                map((res: any) => {
-                    this.setCachedData(gamesKey, res);
-                    return res;
-                }),
-                catchError((error: Error) => throwError(() => error))
-            );
-        }
+    /**
+     * Clear specific cache by key
+     * @param cacheKey Key of the cache to clear
+     */
+    clearCacheByKey(cacheKey: string) {
+        delete this.gamesCache[cacheKey];
     }
 }

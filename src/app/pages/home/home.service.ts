@@ -1,102 +1,113 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import {Injectable, Inject, PLATFORM_ID, makeStateKey, TransferState} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { catchError, map, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-// Cache duration: 24 hours in milliseconds
-const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
-
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class HomeService {
+    private cacheTTL = 300000; // Cache expires after 5 minutes (in milliseconds)
+
+    private dealCardCache: { [id: number]: { data: any; timestamp: number } } = {};
+    private topGameCardsCache: { data: any; timestamp: number } | null = null;
+
+    // State keys for SSR TransferState
+    private DEAL_CARDS_KEY = (id: number) =>
+        makeStateKey<any>(`DEAL_CARDS_${id}`);
+    private TOP_GAME_CARDS_KEY = makeStateKey<any>('TOP_GAME_CARDS');
 
     constructor(
         private http: HttpClient,
-        @Inject(PLATFORM_ID) private platformId: Object // Injecting PLATFORM_ID to check browser
+        private transferState: TransferState,
+        @Inject(PLATFORM_ID) private platformId: Object
     ) {}
 
-    // Helper function to check if running in the browser
-    private isBrowser(): boolean {
-        return isPlatformBrowser(this.platformId);
-    }
-
-    // Helper function to check if cached data is expired
-    private isCacheExpired(timestamp: number): boolean {
-        const now = Date.now();
-        return now - timestamp > CACHE_DURATION_MS;
-    }
-
-    // Helper function to get cached data from localStorage (or sessionStorage)
-    private getCachedData(key: string) {
-        if (!this.isBrowser()) return null; // Only proceed if we're in the browser
-
-        const cachedItem = localStorage.getItem(key); // Use sessionStorage if desired
-        if (cachedItem) {
-            const parsedItem = JSON.parse(cachedItem);
-            if (!this.isCacheExpired(parsedItem.timestamp)) {
-                return parsedItem.data;
-            }
-            localStorage.removeItem(key);  // Remove expired cache
-        }
-        return null;
-    }
-
-    // Helper function to cache data in localStorage (or sessionStorage)
-    private setCachedData(key: string, data: any) {
-        if (!this.isBrowser()) return; // Only proceed if we're in the browser
-
-        const cacheItem = {
-            timestamp: Date.now(),
-            data: data
-        };
-        localStorage.setItem(key, JSON.stringify(cacheItem)); // Use sessionStorage if needed
-    }
-
-    // Generate dynamic key for deal cards
-    private getDealCardsKey(id: number): string {
-        return `dealCards_${id}`;
-    }
-
-    // Cache `getDealCards` method using localStorage with dynamic keys
+    /**
+     * Get deal cards with caching and TTL
+     * @param id PresetTypeId for deal cards
+     */
     getDealCards(id: number) {
-        const cacheKey = this.getDealCardsKey(id);
-        const cachedData = this.getCachedData(cacheKey);
+        const cachedItem = this.dealCardCache[id];
+        const isCacheValid =
+            cachedItem && Date.now() - cachedItem.timestamp < this.cacheTTL;
 
-        if (cachedData) {
-            return of(cachedData);
-        } else {
-            return this.http.get(`${environment.apiUrl}/deal/dealcards?PresetTypeId=${id}&take=10`)
-                .pipe(
-                    map((res: any) => {
-                        // Cache the result in localStorage with the dynamic key
-                        this.setCachedData(cacheKey, res);
-                        return res;
-                    }),
-                    catchError((error: Error) => throwError(() => error))
-                );
+        // Use cached data if valid
+        if (isCacheValid) {
+            return of(cachedItem.data);
         }
+
+        // Check SSR TransferState
+        if (this.transferState.hasKey(this.DEAL_CARDS_KEY(id))) {
+            const cachedData = this.transferState.get(this.DEAL_CARDS_KEY(id), null);
+            this.transferState.remove(this.DEAL_CARDS_KEY(id));
+            this.dealCardCache[id] = { data: cachedData, timestamp: Date.now() };
+            return of(cachedData);
+        }
+
+        // Fetch data from API and cache it
+        return this.http
+            .get(`${environment.apiUrl}/deal/dealcards?PresetTypeId=${id}&take=10`)
+            .pipe(
+                map((res: any) => {
+                    this.dealCardCache[id] = { data: res, timestamp: Date.now() };
+                    if (!isPlatformBrowser(this.platformId)) {
+                        this.transferState.set(this.DEAL_CARDS_KEY(id), res);
+                    }
+                    return res;
+                }),
+                catchError((error: Error) => throwError(() => error))
+            );
     }
 
-    // Static key for top game cards
-    private TOP_GAME_CARDS_KEY = 'topGameCards';
-
-    // Cache `getTopGameCards` method using localStorage with a static key
+    /**
+     * Get top game cards with caching and TTL
+     */
     getTopGameCards() {
-        const cachedData = this.getCachedData(this.TOP_GAME_CARDS_KEY);
-        if (cachedData) {
-            return of(cachedData);
-        } else {
-            return this.http.get(`${environment.apiUrl}/game/gamecards`)
-                .pipe(
-                    map((res: any) => {
-                        // Cache the result in localStorage with a static key
-                        this.setCachedData(this.TOP_GAME_CARDS_KEY, res);
-                        return res;
-                    }),
-                    catchError((error: Error) => throwError(() => error))
-                );
+        const cachedItem = this.topGameCardsCache;
+        const isCacheValid =
+            cachedItem && Date.now() - cachedItem.timestamp < this.cacheTTL;
+
+        // Use cached data if valid
+        if (isCacheValid) {
+            return of(cachedItem.data);
         }
+
+        // Check SSR TransferState
+        if (this.transferState.hasKey(this.TOP_GAME_CARDS_KEY)) {
+            const cachedData = this.transferState.get(this.TOP_GAME_CARDS_KEY, null);
+            this.transferState.remove(this.TOP_GAME_CARDS_KEY);
+            this.topGameCardsCache = { data: cachedData, timestamp: Date.now() };
+            return of(cachedData);
+        }
+
+        // Fetch data from API and cache it
+        return this.http.get(`${environment.apiUrl}/game/gamecards`).pipe(
+            map((res: any) => {
+                this.topGameCardsCache = { data: res, timestamp: Date.now() };
+                if (!isPlatformBrowser(this.platformId)) {
+                    this.transferState.set(this.TOP_GAME_CARDS_KEY, res);
+                }
+                return res;
+            }),
+            catchError((error: Error) => throwError(() => error))
+        );
+    }
+
+    /**
+     * Clear the in-memory cache manually
+     */
+    clearCache() {
+        this.dealCardCache = {};
+        this.topGameCardsCache = null;
+    }
+
+    /**
+     * Clear cache for specific deal cards
+     * @param id PresetTypeId for deal cards
+     */
+    clearDealCardCache(id: number) {
+        delete this.dealCardCache[id];
     }
 }

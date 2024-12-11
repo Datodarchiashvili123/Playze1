@@ -20,6 +20,7 @@ export class GameDetailCardService {
     }
 
     getGameDetailCard(gameId: string) {
+        debugger
         // Check cache for the given gameId
         if (this.gameDetailCache[gameId]) {
             const cachedItem = this.gameDetailCache[gameId];
@@ -35,7 +36,7 @@ export class GameDetailCardService {
         }
 
         // Fetch new data from the server
-        return this.http.get(`${environment.apiUrl}/game/detailcard?Id=${gameId}`).pipe(
+        return this.http.get(`${environment.apiUrl}/game/detailcard?urlName=${gameId}`).pipe(
             map((res: any) => {
                 // Cache the new result with timestamp
                 this.gameDetailCache[gameId] = { data: res, timestamp: Date.now() };

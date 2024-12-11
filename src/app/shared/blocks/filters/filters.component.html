@@ -8,27 +8,33 @@
                 [value]="searchValue"
                 (input)="onSearchChange($event)">
     </div>
+    @if (!mobileSize) {
+        <div class="filters__dropdown">
+            <app-filter [text]="'Genres'"
+                        [idKey]="'genreId'"
+                        [items]="genres"
+                        (filterChanged)="onFilterChange('genres', $event)"></app-filter>
+    
+            <!--        <app-filter [text]="'Platforms'"-->
+            <!--                    [idKey]="'platformId'"-->
+            <!--                    [items]="platforms"-->
+            <!--                    (filterChanged)="onFilterChange('primaryPlatforms', $event)"></app-filter>-->
+    
+            <app-filter [text]="'Developers'"
+                        [idKey]="'developerId'"
+                        [items]="developers"
+                        (filterChanged)="onFilterChange('developers', $event)"></app-filter>
+    
+            <app-filter [last]="true"
+                        [text]="'Publishers'"
+                        [items]="publishers"
+                        [idKey]="'publisherId'"
+                        (filterChanged)="onFilterChange('publishers', $event)"></app-filter>
+        </div>
+    } @else {
+        <div class="filter-svg">
+            <img src="assets/svg/filters.svg" alt="Filters">
+        </div>
+    }
 
-    <div class="filters__dropdown">
-        <app-filter [text]="'Genres'"
-                    [idKey]="'genreId'"
-                    [items]="genres"
-                    (filterChanged)="onFilterChange('genres', $event)"></app-filter>
-
-        <!--        <app-filter [text]="'Platforms'"-->
-        <!--                    [idKey]="'platformId'"-->
-        <!--                    [items]="platforms"-->
-        <!--                    (filterChanged)="onFilterChange('primaryPlatforms', $event)"></app-filter>-->
-
-        <app-filter [text]="'Developers'"
-                    [idKey]="'developerId'"
-                    [items]="developers"
-                    (filterChanged)="onFilterChange('developers', $event)"></app-filter>
-
-        <app-filter [last]="true"
-                    [text]="'Publishers'"
-                    [items]="publishers"
-                    [idKey]="'publisherId'"
-                    (filterChanged)="onFilterChange('publishers', $event)"></app-filter>
-    </div>
 </div>

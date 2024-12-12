@@ -5,7 +5,7 @@ import {PaginationComponent} from "../../shared/pagination/pagination.component"
 import {Meta, Title} from "@angular/platform-browser";
 import {TagComponent} from "../../shared/tag/tag.component";
 import {FiltersComponent} from "../../shared/blocks/filters/filters.component";
-import {PostsService} from "../../services/posts.service";
+import {GamesService} from "../games/games.service";
 
 @Component({
     selector: 'app-news',
@@ -33,7 +33,7 @@ export class NewsComponent implements OnInit {
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
-        @Inject(PostsService) private newsService: PostsService,
+        @Inject(GamesService) private newsService: GamesService,
         private titleService: Title,
         private metaService: Meta,
         private renderer: Renderer2,  // Inject Renderer2 for DOM manipulation

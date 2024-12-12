@@ -46,8 +46,6 @@ body {
         height: 160px;
         border-radius: 8px;
       }
-
-
     }
 
     .card-text-container {
@@ -73,19 +71,18 @@ body {
         }
 
         button {
-          background-color: rgb(162, 71, 251, 0.2);
           color: #ffffff;
           font-weight: 500;
           font-size: 14px;
           font-family: Jura, sans-serif;
-          border: 2px solid rgba(162, 71, 251, 0.4);
           border-radius: 20px;
           padding: 6px 12px;
           height: 24px;
-          width: 116px;
+          min-width: 116px;
           display: flex;
           justify-content: center;
           align-items: center;
+          text-transform: capitalize;	/* Transforms the first character of each word to uppercase */
         }
 
         .card-icons {
@@ -244,4 +241,13 @@ body {
   -webkit-line-clamp: 2; /* Number of lines to show */
   overflow: hidden; /* Hide overflowing text */
   text-overflow: ellipsis; /* Add ellipsis */
+}
+
+.presets {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  margin-top: 24px;
+  overflow-x: auto;
+  padding-bottom: 10px;
 }

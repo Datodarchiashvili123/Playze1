@@ -20,7 +20,6 @@ export class GameDetailCardService {
     }
 
     getGameDetailCard(gameId: string) {
-        debugger
         // Check cache for the given gameId
         if (this.gameDetailCache[gameId]) {
             const cachedItem = this.gameDetailCache[gameId];

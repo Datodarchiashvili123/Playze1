@@ -38,10 +38,11 @@ export class NewsComponent implements OnInit {
         private renderer: Renderer2,  // Inject Renderer2 for DOM manipulation
     ) {
         this.mobileSize = isPlatformBrowser(this.platformId) ? window.innerWidth <= 768 : false;
+        console.log(newsService, ' log')
     }
 
     ngOnInit() {
-        this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
+        // this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
 
         // Set static meta title
         this.titleService.setTitle('Popular Games - Discover Top-Rated Titles and Must-Play Releases');
@@ -52,16 +53,16 @@ export class NewsComponent implements OnInit {
         }
     }
 
-    loadNews(page: number, filters: any = {}, orderBy?: string, name?: string) {
-        // this.newsService.cancelRequest();
-        this.newsService.getNews(page, 10, filters, orderBy, name).subscribe((data: any) => {
-            this.news = data.results;
-            this.totalPages = data.totalPages;
-            this.currentPage = data.currentPage;
-            // Dynamically update meta tags based on the loaded games
-            this.updateMetaTags(this.news);
-        });
-    }
+    // loadNews(page: number, filters: any = {}, orderBy?: string, name?: string) {
+    //     // this.newsService.cancelRequest();
+    //     this.newsService.getNews(page, 10, filters, orderBy, name).subscribe((data: any) => {
+    //         this.news = data.results;
+    //         this.totalPages = data.totalPages;
+    //         this.currentPage = data.currentPage;
+    //         // Dynamically update meta tags based on the loaded games
+    //         this.updateMetaTags(this.news);
+    //     });
+    // }
 
     updateMetaTags(news: any[]) {
         const gameNames = news.map(news => news.name).join(', ');
@@ -75,26 +76,26 @@ export class NewsComponent implements OnInit {
         });
     }
 
-    onPageChange(newPage: number) {
-        this.currentPage = newPage;
-        this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue); // Fetch the data for the new page
-    }
-
-    handleFilterChange(filters: any) {
-        this.currentFilters = filters;
-        this.currentPage = 1; // Update the current filters
-        this.loadNews(1, this.currentFilters, this.orderBy, this.searchValue);
-    }
-
-    onSortChange(event: any) {
-        this.orderBy = event;
-        this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
-    }
-
-    handleSearchChange(search: string) {
-        this.searchValue = search;
-        this.loadNews(1, this.currentFilters, this.orderBy, this.searchValue);
-    }
+    // onPageChange(newPage: number) {
+    //     this.currentPage = newPage;
+    //     this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue); // Fetch the data for the new page
+    // }
+    //
+    // handleFilterChange(filters: any) {
+    //     this.currentFilters = filters;
+    //     this.currentPage = 1; // Update the current filters
+    //     this.loadNews(1, this.currentFilters, this.orderBy, this.searchValue);
+    // }
+    //
+    // onSortChange(event: any) {
+    //     this.orderBy = event;
+    //     this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
+    // }
+    //
+    // handleSearchChange(search: string) {
+    //     this.searchValue = search;
+    //     this.loadNews(1, this.currentFilters, this.orderBy, this.searchValue);
+    // }
 
     getBorderColorWithOpacity(color: string, opacity: number): string {
         // Assuming `color` is a valid hex code like "#3498db"

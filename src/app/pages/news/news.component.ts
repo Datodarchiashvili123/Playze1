@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, PLATFORM_ID, Renderer2} from '@angular/core';
+import {Component, inject, Inject, OnInit, PLATFORM_ID, Renderer2} from '@angular/core';
 import {isPlatformBrowser, NgOptimizedImage, NgStyle} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {PaginationComponent} from "../../shared/pagination/pagination.component";
@@ -30,12 +30,13 @@ export class NewsComponent implements OnInit {
     searchValue: string = '';
     mobileSize: boolean;
 
+    private newsService = inject(NewsService);
+
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
         private titleService: Title,
         private metaService: Meta,
         private renderer: Renderer2,  // Inject Renderer2 for DOM manipulation
-        private newsService: NewsService,
     ) {
         this.mobileSize = isPlatformBrowser(this.platformId) ? window.innerWidth <= 768 : false;
     }

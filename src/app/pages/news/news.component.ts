@@ -53,7 +53,7 @@ export class NewsComponent implements OnInit {
     }
 
     loadNews(page: number, filters: any = {}, orderBy?: string, name?: string) {
-        this.newsService.cancelRequest();
+        // this.newsService.cancelRequest();
         this.newsService.getNews(page, 10, filters, orderBy, name).subscribe((data: any) => {
             this.news = data.results;
             this.totalPages = data.totalPages;

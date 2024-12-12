@@ -29,10 +29,10 @@ export class NewsComponent implements OnInit {
     searchValue: string = '';
     mobileSize: boolean;
 
-    private newsService = inject(NewsService);
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
+        @Inject(NewsService) private newsService: NewsService,
         private titleService: Title,
         private metaService: Meta,
         private renderer: Renderer2,  // Inject Renderer2 for DOM manipulation

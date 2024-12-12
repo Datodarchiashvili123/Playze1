@@ -32,10 +32,10 @@ export class NewsComponent implements OnInit {
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
-        private newsService: NewsService,
         private titleService: Title,
         private metaService: Meta,
-        private renderer: Renderer2  // Inject Renderer2 for DOM manipulation
+        private renderer: Renderer2,  // Inject Renderer2 for DOM manipulation
+        private newsService: NewsService,
     ) {
         this.mobileSize = isPlatformBrowser(this.platformId) ? window.innerWidth <= 768 : false;
     }
@@ -56,7 +56,6 @@ export class NewsComponent implements OnInit {
         this.newsService.cancelRequest();
         this.newsService.getNews(page, 10, filters, orderBy, name).subscribe((data: any) => {
             this.news = data.results;
-            console.log(this.news);
             this.totalPages = data.totalPages;
             this.currentPage = data.currentPage;
             // Dynamically update meta tags based on the loaded games

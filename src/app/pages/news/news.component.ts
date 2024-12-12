@@ -1,12 +1,11 @@
 import {Component, Inject, OnInit, PLATFORM_ID, Renderer2} from '@angular/core';
 import {isPlatformBrowser, NgOptimizedImage, NgStyle} from "@angular/common";
 import {RouterLink} from "@angular/router";
-import {NewsService} from "./news.service";
 import {PaginationComponent} from "../../shared/pagination/pagination.component";
-import {GamesService} from "../games/games.service";
 import {Meta, Title} from "@angular/platform-browser";
 import {TagComponent} from "../../shared/tag/tag.component";
 import {FiltersComponent} from "../../shared/blocks/filters/filters.component";
+import {NewsService} from "./news.service";
 
 @Component({
     selector: 'app-news',

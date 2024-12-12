@@ -5,7 +5,7 @@ import {PaginationComponent} from "../../shared/pagination/pagination.component"
 import {Meta, Title} from "@angular/platform-browser";
 import {TagComponent} from "../../shared/tag/tag.component";
 import {FiltersComponent} from "../../shared/blocks/filters/filters.component";
-import {GamesService} from "../games/games.service";
+import {PostsService} from "../../services/posts.service";
 
 @Component({
     selector: 'app-news',
@@ -32,7 +32,7 @@ export class NewsComponent implements OnInit {
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
-        @Inject(GamesService) private newsService: GamesService,
+        @Inject(PostsService) private newsService: PostsService,
         private titleService: Title,
         private metaService: Meta,
         private renderer: Renderer2,  // Inject Renderer2 for DOM manipulation
@@ -54,7 +54,7 @@ export class NewsComponent implements OnInit {
 
     loadNews(page: number, filters: any = {}, orderBy?: string, name?: string) {
         this.newsService.cancelRequest();
-        this.newsService.getGames(page, 10, filters, orderBy, name).subscribe((data: any) => {
+        this.newsService.getNews(page, 10, filters, orderBy, name).subscribe((data: any) => {
             this.news = data.results;
             this.totalPages = data.totalPages;
             this.currentPage = data.currentPage;

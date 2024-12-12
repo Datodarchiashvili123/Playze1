@@ -30,6 +30,7 @@ export class NewsComponent implements OnInit {
     mobileSize: boolean;
 
 
+
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
         @Inject(PostsService) private newsService: PostsService,

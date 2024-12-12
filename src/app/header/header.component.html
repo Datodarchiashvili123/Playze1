@@ -1,46 +1,43 @@
 <header class="header--container">
-  <div class="header">
-    <img
-      [ngSrc]="'assets/svg/playze.svg'"
-      width="114"
-      height="68"
-      alt="playze"
-      routerLink="/"
-      class="logo"
-    />
-    @if (mobileSize) {
-      <div class="mobile-func-div">
-        <div class="mobile-search">
-          <img src="assets/svg/search.svg" width="18" height="18" alt="search">
-       </div>
-   
-       <button
-         class="hamburger"
-         (click)="toggleMenu()"
-         aria-label="Toggle menu"
-         [class.expanded]="isMenuOpen"
-       >
-         <span></span>
-         <span></span>
-         <span></span>
-       </button>
-      </div>
-    }
-    <nav [ngClass]="{ open: isMenuOpen }">
-      <ul>
-        <li
-          routerLink="/"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          (click)="isMenuOpen = !isMenuOpen"
-        >
-          Home
-        </li>
-        <li routerLink="/games" routerLinkActive="active" (click)="isMenuOpen = !isMenuOpen">Games</li>
-      </ul>
-      @if (!mobileSize) {
-        <app-search></app-search>
-      }
-    </nav>
-  </div>
+    <div class="header">
+        <img
+                [ngSrc]="'assets/svg/playze.svg'"
+                width="114"
+                height="68"
+                alt="playze"
+                routerLink="/"
+                class="logo"
+        />
+        @if (mobileSize) {
+            <div class="mobile-func-div">
+                <div class="mobile-search">
+                    <img src="assets/svg/search.svg" width="18" height="18" alt="search">
+                </div>
+
+                <button
+                        class="hamburger"
+                        (click)="toggleMenu()"
+                        aria-label="Toggle menu"
+                        [class.expanded]="isMenuOpen"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        }
+        <nav [ngClass]="{ open: isMenuOpen }">
+            <ul>
+                <li     routerLink="/"
+                        routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                        (click)="isMenuOpen = !isMenuOpen">Home</li>
+                <li routerLink="/games" routerLinkActive="active" (click)="isMenuOpen = !isMenuOpen">Games</li>
+                <li routerLink="/news" routerLinkActive="active" (click)="isMenuOpen = !isMenuOpen">News</li>
+            </ul>
+            @if (!mobileSize) {
+                <app-search></app-search>
+            }
+        </nav>
+    </div>
 </header>

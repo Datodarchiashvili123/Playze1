@@ -9,7 +9,6 @@ import {NewsService} from "./news.service";
 
 @Component({
     selector: 'app-news',
-    standalone: true,
     imports: [
         NgOptimizedImage,
         RouterLink,

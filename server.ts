@@ -4,6 +4,8 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
+import {Environment} from "@angular/cli/lib/config/workspace-schema";
+import {environment} from "./src/environments/environment";
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -36,7 +38,7 @@ export function app(): express.Express {
 
   // Serve environment-specific robots.txt
   server.get('/robots.txt', (req, res, next) => {
-    const isProduction = process.env['VERCEL_ENV'] === 'production';
+    const isProduction = environment.production ;
     debugger
     console.log(
       `Serving ${isProduction ? 'production' : 'development'} robots.txt`)

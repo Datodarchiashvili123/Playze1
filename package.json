@@ -5,10 +5,10 @@
     "ng": "ng",
     "postbuild": "node generate-sitemap.js",
     "start": "ng serve",
-    "build": "ng build --configuration production",
+    "build": "ng build --configuration NODE_ENV",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:play": "node dist/play/server/server.mjs"
+    "serve:ssr:play": "NODE_ENV=NODE_ENV node dist/play/server/server.mjs"
   },
   "private": true,
   "dependencies": {

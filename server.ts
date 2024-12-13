@@ -41,18 +41,13 @@ export function app(): express.Express {
     });
 
     // Serve environment-specific robots.txt
-    server.get('/robots.txt', (req, res, next) => {
-        const isProduction = process.env['VERCEL_ENV'] === 'production';
-        console.log(`Serving ${isProduction ? 'production' : 'development'} robots.txt`);
-        const robotsContent = isProduction
-            ? `User-agent: *
-Disallow:
-Sitemap: https://playze.io/sitemap.xml`
-            : `User-agent: *
-Disallow: /`;
+    const nonIndexableRobotsContent = 'User-agent: *\nDisallow: /';
+    const indexableRobotsContent = 'User-agent: *\nDisallow:';
+    const isProduction = process.env['VERCEL_ENV'] === 'production';
 
+    server.get('/robots.txt', (req, res) => {
         res.type('text/plain');
-        res.send(robotsContent);
+        res.send(isProduction ? indexableRobotsContent : nonIndexableRobotsContent);
     });
 
     // All regular routes use the Angular engine

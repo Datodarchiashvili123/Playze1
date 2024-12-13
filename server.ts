@@ -1,85 +1,90 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { CommonEngine } from '@angular/ssr/node';
+import {APP_BASE_HREF} from '@angular/common';
+import {CommonEngine} from '@angular/ssr/node';
 import express from 'express';
-import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {dirname, join, resolve} from 'node:path';
 import bootstrap from './src/main.server';
-import {Environment} from "@angular/cli/lib/config/workspace-schema";
-import {environment} from "./src/environments/environment";
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
-  const server = express();
-  const serverDistFolder = dirname(fileURLToPath(import.meta.url));
-  const browserDistFolder = resolve(serverDistFolder, '../browser');
-  const indexHtml = join(serverDistFolder, 'index.server.html');
+    const server = express();
+    const serverDistFolder = dirname(fileURLToPath(import.meta.url));
+    const browserDistFolder = resolve(serverDistFolder, '../browser');
+    const indexHtml = join(serverDistFolder, 'index.server.html');
 
-  const commonEngine = new CommonEngine();
+    const commonEngine = new CommonEngine();
 
-  server.set('view engine', 'html');
-  server.set('views', browserDistFolder);
+    server.set('view engine', 'html');
+    server.set('views', browserDistFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
-  // Serve static files from /browser
-  server.get('*.*', express.static(browserDistFolder, {
-    maxAge: '1y'
-  }));
+    // Example Express Rest API endpoints
+    // server.get('/api/**', (req, res) => { });
 
-  // Serve the Google verification HTML file
-  server.get('/google7ff99fd29e799a03.html', (req, res, next) => {
-    res.sendFile(join(browserDistFolder, 'google7ff99fd29e799a03.html'), (err) => {
-      if (err) {
-        console.error('Error serving google verification file:', err);
-        next(err);
-      }
+    // Serve static files from /browser
+    server.get('*.*', express.static(browserDistFolder, {
+        maxAge: '1y',
+        setHeaders: (res, path) => {
+            if (path.endsWith('robots.txt')) {
+                res.setHeader('Cache-Control', 'public, max-age=0'); // Prevent caching robots.txt
+            }
+        },
+    }));
+
+    // Serve the Google verification HTML file
+    server.get('/google7ff99fd29e799a03.html', (req, res, next) => {
+        res.sendFile(join(browserDistFolder, 'google7ff99fd29e799a03.html'), (err) => {
+            if (err) {
+                console.error('Error serving google verification file:', err);
+                next(err);
+            }
+        });
     });
-  });
 
-  // Serve environment-specific robots.txt
-  server.get('/robots.txt', (req, res, next) => {
-    const isProduction = environment.production ;
-    debugger
-    console.log(
-      `Serving ${isProduction ? 'production' : 'development'} robots.txt`)
-    const robotsContent = isProduction
-        ? `User-agent: *
+    // Serve environment-specific robots.txt
+    server.get('/robots.txt', (req, res, next) => {
+        const isProduction = process.env['VERCEL_ENV'] === 'production';
+        console.log(`Serving ${isProduction ? 'production' : 'development'} robots.txt`);
+        const robotsContent = isProduction
+            ? `User-agent: *
 Disallow:
 Sitemap: https://playze.io/sitemap.xml`
-        : `User-agent: *
+            : `User-agent: *
 Disallow: /`;
 
-    res.type('text/plain');
-    res.send(robotsContent);
-  });
+        res.type('text/plain');
+        res.send(robotsContent);
+    });
 
-  // All regular routes use the Angular engine
-  server.get('*', (req, res, next) => {
-    const { protocol, originalUrl, baseUrl, headers } = req;
+    // All regular routes use the Angular engine
+    server.get('*', (req, res, next) => {
+        const {protocol, originalUrl, baseUrl, headers} = req;
 
-    commonEngine
-      .render({
-        bootstrap,
-        documentFilePath: indexHtml,
-        url: `${protocol}://${headers.host}${originalUrl}`,
-        publicPath: browserDistFolder,
-        providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
-      })
-      .then((html) => res.send(html))
-      .catch((err) => next(err));
-  });
+        commonEngine
+            .render({
+                bootstrap,
+                documentFilePath: indexHtml,
+                url: `${protocol}://${headers.host}${originalUrl}`,
+                publicPath: browserDistFolder,
+                providers: [{provide: APP_BASE_HREF, useValue: baseUrl}],
+            })
+            .then((html) => res.send(html))
+            .catch((err) => {
+                console.error('Error rendering Angular app:', err);
+                next(err);
+            });
+    });
 
-  return server;
+    return server;
 }
 
 function run(): void {
-  const port = process.env['PORT'] || 4000;
+    const port = process.env['PORT'] || 4000;
 
-  // Start up the Node server
-  const server = app();
-  server.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
-  });
+    // Start up the Node server
+    const server = app();
+    server.listen(port, () => {
+        console.log(`Node Express server listening on http://localhost:${port}`);
+    });
 }
 
 run();

@@ -34,13 +34,18 @@ export function app(): express.Express {
     });
   });
 
+  // Serve environment-specific robots.txt
   server.get('/robots.txt', (req, res, next) => {
-    res.sendFile(join(__dirname, 'dist', 'play', 'assets', 'robots.txt'), (err) => {
-      if (err) {
-        console.error('Error serving robots.txt:', err);
-        next(err);
-      }
-    });
+    const isProduction = process.env['NODE_ENV'] === 'production';
+    const robotsContent = isProduction
+        ? `User-agent: *
+Disallow:
+Sitemap: https://playze.io/sitemap.xml`
+        : `User-agent: *
+Disallow: /`;
+
+    res.type('text/plain');
+    res.send(robotsContent);
   });
 
   // All regular routes use the Angular engine

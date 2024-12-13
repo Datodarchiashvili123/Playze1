@@ -36,7 +36,7 @@ export function app(): express.Express {
 
   // Serve environment-specific robots.txt
   server.get('/robots.txt', (req, res, next) => {
-    const isProduction = process.env['NODE_ENV'] === 'production';
+    const isProduction = process.env['VERCEL_ENV='] === 'production';
     debugger
     console.log(
       `Serving ${isProduction ? 'production' : 'development'} robots.txt`)

@@ -5,7 +5,7 @@
     "ng": "ng",
     "postbuild": "node generate-sitemap.js",
     "start": "ng serve",
-    "build": "ng build --configuration NODE_ENV",
+    "build": "ng build ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:play": "NODE_ENV=NODE_ENV node dist/play/server/server.mjs"

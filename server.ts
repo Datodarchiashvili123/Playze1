@@ -44,6 +44,7 @@ export function app(): express.Express {
     const nonIndexableRobotsContent = 'User-agent: *\nDisallow: /';
     const indexableRobotsContent = 'User-agent: *\nDisallow:';
     const isProduction = process.env['VERCEL_ENV'] === 'production';
+    console.log(isProduction, ' isProduction')
 
     server.get('/robots.txt', (req, res) => {
         res.type('text/plain');

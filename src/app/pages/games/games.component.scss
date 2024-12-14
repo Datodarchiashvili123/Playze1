@@ -93,7 +93,7 @@
   justify-content: space-between;
   gap: 10px;
   .game-list {
-    margin: auto;
+    margin: 0 auto;
     flex-grow: 1;
   }
   app-game-card {

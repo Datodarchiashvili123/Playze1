@@ -78,26 +78,26 @@ export class NewsComponent implements OnInit {
         });
     }
 
-    // onPageChange(newPage: number) {
-    //     this.currentPage = newPage;
-    //     this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue); // Fetch the data for the new page
-    // }
-    //
-    // handleFilterChange(filters: any) {
-    //     this.currentFilters = filters;
-    //     this.currentPage = 1; // Update the current filters
-    //     this.loadNews(1, this.currentFilters, this.orderBy, this.searchValue);
-    // }
-    //
-    // onSortChange(event: any) {
-    //     this.orderBy = event;
-    //     this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
-    // }
-    //
-    // handleSearchChange(search: string) {
-    //     this.searchValue = search;
-    //     this.loadNews(1, this.currentFilters, this.orderBy, this.searchValue);
-    // }
+    onPageChange(newPage: number) {
+        this.currentPage = newPage;
+        this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue); // Fetch the data for the new page
+    }
+
+    handleFilterChange(filters: any) {
+        this.currentFilters = filters;
+        this.currentPage = 1; // Update the current filters
+        this.loadNews(1, this.currentFilters, this.orderBy, this.searchValue);
+    }
+
+    onSortChange(event: any) {
+        this.orderBy = event;
+        this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
+    }
+
+    handleSearchChange(search: string) {
+        this.searchValue = search;
+        this.loadNews(1, this.currentFilters, this.orderBy, this.searchValue);
+    }
 
     getBorderColorWithOpacity(color: string, opacity: number): string {
         // Assuming `color` is a valid hex code like "#3498db"

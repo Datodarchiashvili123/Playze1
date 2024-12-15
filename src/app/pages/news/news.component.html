@@ -1,91 +1,91 @@
-<!--<div class="presets">-->
-<!--    <app-tag (tagClicked)="onSortChange($event)" [value]="'Popularity'" [isActive]="orderBy=='Popularity'"-->
-<!--             [text]="'Most Popular'"></app-tag>-->
-<!--    <app-tag (tagClicked)="onSortChange($event)" [value]="'PriceHighest'" [text]="'Premium'"-->
-<!--             [isActive]="orderBy=='PriceHighest'"></app-tag>-->
-<!--    <app-tag (tagClicked)="onSortChange($event)" [value]="'PriceLowest'" [text]="'Best Deals'"-->
-<!--             [isActive]="orderBy=='PriceLowest'"></app-tag>-->
-<!--    <app-tag (tagClicked)="onSortChange($event)" [value]="'AZ'" [text]="'A to Z'"-->
-<!--             [isActive]="orderBy=='AZ'"></app-tag>-->
-<!--</div>-->
-<!--<app-filters-->
-<!--        (filtersChanged)="handleFilterChange($event)"-->
-<!--        (searchChanged)="handleSearchChange($event)"-->
-<!--&gt;</app-filters>-->
+<div class="presets">
+    <app-tag (tagClicked)="onSortChange($event)" [value]="'Popularity'" [isActive]="orderBy=='Popularity'"
+             [text]="'Most Popular'"></app-tag>
+    <app-tag (tagClicked)="onSortChange($event)" [value]="'PriceHighest'" [text]="'Premium'"
+             [isActive]="orderBy=='PriceHighest'"></app-tag>
+    <app-tag (tagClicked)="onSortChange($event)" [value]="'PriceLowest'" [text]="'Best Deals'"
+             [isActive]="orderBy=='PriceLowest'"></app-tag>
+    <app-tag (tagClicked)="onSortChange($event)" [value]="'AZ'" [text]="'A to Z'"
+             [isActive]="orderBy=='AZ'"></app-tag>
+</div>
+<app-filters
+        (filtersChanged)="handleFilterChange($event)"
+        (searchChanged)="handleSearchChange($event)"
+></app-filters>
 
-<!--<h3 class="results-text">We found 12332 results.</h3>-->
-<!--<div class="games-cards-container">-->
-<!--    @for (newsCard of news; track newsCard) {-->
-<!--        <div class="card-container" [routerLink]="newsCard.urlName">-->
-<!--            <div class="card-image">-->
-<!--                @if(newsCard.imgSrc){-->
-<!--                    <img ngSrc="{{newsCard.imgSrc}}" width="840" height="480" alt="news"/>-->
-<!--                }-->
-<!--            </div>-->
-<!--            <div class="two-div">-->
-<!--                <div class="card-text-container">-->
-<!--                    <div class="card-text1">-->
-<!--                        <p>Added: {{ newsCard.publishDate }}</p>-->
-<!--                        <button [ngStyle]="{-->
-<!--                                            'background-color': getBorderColorWithOpacity(newsCard.typeColor,0.7),-->
-<!--                                            'border': '2px solid ' + newsCard.typeColor-->
-<!--                                          }">{{ newsCard.type }}-->
-<!--                        </button>-->
-<!--                        <div class="card-icons">-->
-<!--                            @for (platform of newsCard.platforms; track platform) {-->
-<!--                                <img-->
-<!--                                        ngSrc='/assets/svg/{{platform}}.svg'-->
-<!--                                        class="windows-img"-->
-<!--                                        alt="windows"-->
-<!--                                        [width]="16"-->
-<!--                                        [height]="16"/>-->
-<!--                            }-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <h2 class="multi-line-fixed-height">-->
-<!--                        {{ newsCard.primaryKeyword }}-->
-<!--                    </h2>-->
-<!--                    <p>-->
-<!--                        {{ newsCard.headline }}-->
-<!--                    </p>-->
-<!--                </div>-->
-<!--                <div class="read-more-button">-->
-<!--                    <h4>Read more</h4>-->
-<!--                    <img ngSrc="./assets/svg/right-arrow.svg" height="16" width="18" alt="right-arrow"/>-->
-<!--                </div>-->
+<h3 class="results-text">We found 12332 results.</h3>
+<div class="games-cards-container">
+    @for (newsCard of news; track newsCard) {
+        <div class="card-container" [routerLink]="newsCard.urlName">
+            <div class="card-image">
+                @if(newsCard.imageUrl){
+                    <img ngSrc="{{newsCard.imageUrl}}" width="840" height="480" alt="news"/>
+                }
+            </div>
+            <div class="two-div">
+                <div class="card-text-container">
+                    <div class="card-text1">
+                        <p>Added: {{ newsCard.publishDate }}</p>
+                        <button [ngStyle]="{
+                                            'background-color': getBorderColorWithOpacity(newsCard.typeColor,0.7),
+                                            'border': '2px solid ' + newsCard.typeColor
+                                          }">{{ newsCard.type }}
+                        </button>
+                        <div class="card-icons">
+                            @for (platform of newsCard.platforms; track platform) {
+                                <img
+                                        ngSrc='/assets/svg/{{platform}}.svg'
+                                        class="windows-img"
+                                        alt="windows"
+                                        [width]="16"
+                                        [height]="16"/>
+                            }
+                        </div>
+                    </div>
+                    <h2 class="multi-line-fixed-height">
+                        {{ newsCard.primaryKeyword }}
+                    </h2>
+                    <p>
+                        {{ newsCard.headline }}
+                    </p>
+                </div>
+                <div class="read-more-button">
+                    <h4>Read more</h4>
+                    <img ngSrc="./assets/svg/right-arrow.svg" height="16" width="18" alt="right-arrow"/>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<app-pagination (pageChange)="onPageChange($event)" [currentPage]="currentPage"
+                [totalPages]="totalPages"></app-pagination>
+
+
+<!--&lt;!&ndash; new section 3 &ndash;&gt;-->
+
+<!--<div class="related-news-container">-->
+<!--    <div class="related-news-img">-->
+<!--        <img src="./img/image 246.png" />-->
+<!--    </div>-->
+<!--    <div class="related-news-text-cont">-->
+<!--        <div class="related-news-text1">-->
+<!--            <p>Added : 4h ago</p>-->
+<!--            <button>Blog</button>-->
+<!--            <div class="card-icons">-->
+<!--                <img src="/img/fa_windows.svg" class="windows-img" alt="windows" />-->
+<!--                <img-->
+<!--                        src="/img/fa-brands_playstation.svg"-->
+<!--                        class="playstation-img"-->
+<!--                        alt="playstation"-->
+<!--                />-->
 <!--            </div>-->
 <!--        </div>-->
-<!--    }-->
+<!--        <h3>Free games to play this weekend</h3>-->
+<!--        <p>-->
+<!--            If you seek to immerse yourself in lifelike words - here is the-->
+<!--            ranking you just can't miss.-->
+<!--        </p>-->
+<!--    </div>-->
 <!--</div>-->
-
-<!--<app-pagination (pageChange)="onPageChange($event)" [currentPage]="currentPage"-->
-<!--                [totalPages]="totalPages"></app-pagination>-->
-
-
-<!--&lt;!&ndash;&lt;!&ndash; new section 3 &ndash;&gt;&ndash;&gt;-->
-
-<!--&lt;!&ndash;<div class="related-news-container">&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="related-news-img">&ndash;&gt;-->
-<!--&lt;!&ndash;        <img src="./img/image 246.png" />&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="related-news-text-cont">&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="related-news-text1">&ndash;&gt;-->
-<!--&lt;!&ndash;            <p>Added : 4h ago</p>&ndash;&gt;-->
-<!--&lt;!&ndash;            <button>Blog</button>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="card-icons">&ndash;&gt;-->
-<!--&lt;!&ndash;                <img src="/img/fa_windows.svg" class="windows-img" alt="windows" />&ndash;&gt;-->
-<!--&lt;!&ndash;                <img&ndash;&gt;-->
-<!--&lt;!&ndash;                        src="/img/fa-brands_playstation.svg"&ndash;&gt;-->
-<!--&lt;!&ndash;                        class="playstation-img"&ndash;&gt;-->
-<!--&lt;!&ndash;                        alt="playstation"&ndash;&gt;-->
-<!--&lt;!&ndash;                />&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--&lt;!&ndash;        <h3>Free games to play this weekend</h3>&ndash;&gt;-->
-<!--&lt;!&ndash;        <p>&ndash;&gt;-->
-<!--&lt;!&ndash;            If you seek to immerse yourself in lifelike words - here is the&ndash;&gt;-->
-<!--&lt;!&ndash;            ranking you just can't miss.&ndash;&gt;-->
-<!--&lt;!&ndash;        </p>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
 

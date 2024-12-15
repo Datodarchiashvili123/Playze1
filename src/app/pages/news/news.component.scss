@@ -1,3 +1,21 @@
+.page__title {
+  color: #FFF;
+  font-family: Jura, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-block-start: 32px;
+  margin-block-end: 22px;
+}
+.page__description {
+  color: rgba(#FFF, 0.7);
+  font-family: Jura, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
 * {
   margin: 0;
   padding: 0;

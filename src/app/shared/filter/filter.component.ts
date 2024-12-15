@@ -17,11 +17,7 @@ export class FilterComponent {
     @Input() last = false;
     @Input() text = 'Price';
     @Input() idKey = 'genreId'; // Add this input to accept the correct ID key
-    @Input() items = [{
-        genreId: 1,
-        name: 'Price',
-    }];
-
+    @Input() items: any;
     @Output() filterChanged = new EventEmitter<any>();
     selectedItems: number[] = []; // Stores the IDs of selected items.
 

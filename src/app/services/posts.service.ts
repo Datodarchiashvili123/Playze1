@@ -16,7 +16,7 @@ export class PostsService {
   private cancelRequest$ = new Subject<void>(); // Subject for request cancellation
 
   // TransferState keys for SSR
-  private GAMES_KEY = (key: string) => makeStateKey<any>(`GAMES_${key}`);
+  private NEWS_KEY = (key: string) => makeStateKey<any>(`NEWS_${key}`);
 
   constructor(
       private http: HttpClient,
@@ -35,10 +35,10 @@ export class PostsService {
    * @param name Game name to search
    * @returns Observable with the response
    */
-  getGames(pageNumber?: number, pageSize?: number, filters?: any, orderBy = 'Popularity', name?: string) {
+  getGames(pageNumber?: number, pageSize?: number, filters?: any, orderBy?: any, name?: string) {
     // Construct a cache key based on parameters
     const cacheKey = this.buildCacheKey(pageNumber, pageSize, filters, orderBy, name);
-    const transferStateKey = this.GAMES_KEY(cacheKey);
+    const transferStateKey = this.NEWS_KEY(cacheKey);
 
     // Check in-memory cache
     const cachedItem = this.gamesCache[cacheKey];
@@ -102,7 +102,7 @@ export class PostsService {
   /**
    * Build a unique cache key based on parameters
    */
-  private buildCacheKey(pageNumber?: number, pageSize?: number, filters?: any, orderBy = 'Popularity', name?: string): string {
+  private buildCacheKey(pageNumber?: number, pageSize?: number, filters?: any, orderBy?: any, name?: string): string {
     return JSON.stringify({ pageNumber, pageSize, filters, orderBy, name });
   }
 

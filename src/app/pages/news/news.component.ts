@@ -1,4 +1,4 @@
-import {Component, inject, Inject, OnInit, PLATFORM_ID, Renderer2} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID, Renderer2} from '@angular/core';
 import {isPlatformBrowser, NgOptimizedImage, NgStyle} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {PaginationComponent} from "../../shared/pagination/pagination.component";
@@ -6,6 +6,8 @@ import {Meta, Title} from "@angular/platform-browser";
 import {TagComponent} from "../../shared/tag/tag.component";
 import {FiltersComponent} from "../../shared/blocks/filters/filters.component";
 import {PostsService} from "../../services/posts.service";
+import {SocMediasComponent} from "../../shared/soc-medias/soc-medias.component";
+import {FiltersForNewsComponent} from "../../shared/blocks/filters-for-news/filters-for-news.component";
 
 @Component({
     selector: 'app-news',
@@ -15,7 +17,9 @@ import {PostsService} from "../../services/posts.service";
         NgStyle,
         PaginationComponent,
         TagComponent,
-        FiltersComponent
+        FiltersComponent,
+        SocMediasComponent,
+        FiltersForNewsComponent
     ],
     templateUrl: './news.component.html',
     styleUrl: './news.component.scss'
@@ -28,7 +32,6 @@ export class NewsComponent implements OnInit {
     orderBy: string = 'Popularity';
     searchValue: string = '';
     mobileSize: boolean;
-
 
 
     constructor(

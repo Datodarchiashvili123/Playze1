@@ -58,7 +58,7 @@ export class PostsService {
     }
 
     // Build API URL dynamically
-    let apiUrl = `${environment.apiUrl}/game/games?`;
+    let apiUrl = `${environment.apiUrl}/announcement/announcements?`;
     if (name) apiUrl += `Name=${name}`;
     if (pageSize) apiUrl += `&PageSize=${pageSize}`;
     if (pageNumber) apiUrl += `&PageNumber=${pageNumber}`;

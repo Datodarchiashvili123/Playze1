@@ -43,7 +43,7 @@ export class NewsComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
+        this.loadNews(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
 
         // Set static meta title
         this.titleService.setTitle('Popular Games - Discover Top-Rated Titles and Must-Play Releases');
@@ -54,16 +54,17 @@ export class NewsComponent implements OnInit {
         }
     }
 
-    // loadNews(page: number, filters: any = {}, orderBy?: string, name?: string) {
-    //     // this.newsService.cancelRequest();
-    //     this.newsService.getNews(page, 10, filters, orderBy, name).subscribe((data: any) => {
-    //         this.news = data.results;
-    //         this.totalPages = data.totalPages;
-    //         this.currentPage = data.currentPage;
-    //         // Dynamically update meta tags based on the loaded games
-    //         this.updateMetaTags(this.news);
-    //     });
-    // }
+    loadNews(page: number, filters: any = {}, orderBy?: string, name?: string) {
+        // this.newsService.cancelRequest();
+        this.newsService.getGames(page, 10, filters, orderBy, name).subscribe((data: any) => {
+            this.news = data.results;
+            this.totalPages = data.totalPages;
+            this.currentPage = data.currentPage;
+            // Dynamically update meta tags based on the loaded games
+            this.updateMetaTags(this.news);
+            console.log(this.news);
+        });
+    }
 
     updateMetaTags(news: any[]) {
         const gameNames = news.map(news => news.name).join(', ');

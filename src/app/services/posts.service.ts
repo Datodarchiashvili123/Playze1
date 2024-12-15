@@ -22,7 +22,9 @@ export class PostsService {
       private http: HttpClient,
       private transferState: TransferState,
       @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) {
+    console.log('post service works')
+  }
 
   /**
    * Get games with TransferState, in-memory caching, and cancelable requests

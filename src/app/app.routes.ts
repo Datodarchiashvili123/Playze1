@@ -28,4 +28,5 @@ export const routes: Routes = [
         import('./pages/news-details/news-details.component').then((m) => m.NewsDetailsComponent),
   }
 
+
 ];

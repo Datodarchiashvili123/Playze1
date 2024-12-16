@@ -1,1 +1,46 @@
-<p>news-details works!</p>
+<div class="" style="display: flex; gap: 24px">
+    <div class="">
+        <div class="header">
+            @if (news?.headline) {
+                <h2>{{ news.headline }}</h2>
+            }
+
+            <div class="header__secondary">
+                @if (news?.published) {
+                    Added
+                    <span>{{ news.published }}</span>
+                }
+                @if (news?.publishedBy) {
+                    BY:
+                    <span>{{ news.publishedBy }}</span>
+                }
+                @if (news?.announcementTypeColor && news?.announcementTypeName) {
+                    <button
+                            [ngStyle]="{ 'background-color': getBorderColorWithOpacity(news.announcementTypeColor,0.7),
+                        'border': '2px solid ' + news.announcementTypeColor}">{{ news.announcementTypeName }}
+                    </button>
+                }
+            </div>
+        </div>
+        <div class="cover">
+            @if (news?.imgUrl) {
+                <img ngSrc="{{news?.imgUrl}}" alt="" width="1000" height="370">
+            }
+        </div>
+        <div class="content">
+            <h1 class="primary-keyword">{{ news?.primaryKeyword }}</h1>
+            <div [innerHTML]="sanitizedAboutTheNews"></div>
+        </div>
+    </div>
+    <div class="hot-news" >
+        <p style="color: #fff">HOT NEWS</p>
+        @if (hotNews) {
+            @for (hotnews of hotNews; track hotNews) {
+                <div class="hot-news__item" [routerLink]="['/news', hotnews.urlName]">
+                    <img src="{{hotnews.imgUrl}}" alt="">
+                    <p class="title">{{hotnews.primaryKeyword}}</p>
+                </div>
+            }
+        }
+    </div>
+</div>

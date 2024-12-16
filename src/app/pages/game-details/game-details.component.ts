@@ -151,7 +151,6 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     loadGameDetail(gameId: any) {
         this.gameDetailsService.getGameDetails(gameId).subscribe((res) => {
             this.game = res;
-            console.log(this.game);
             this.sanitizedAboutTheGame = this.sanitizer.bypassSecurityTrustHtml(
                 this.game.about.aboutTheGame
             );
@@ -172,7 +171,6 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     loadGameOffers(gameId: any) {
         this.gameDetailsService.getGameOffers(gameId).subscribe({
             next: (res: any) => {
-                console.log(res, " res ");
                 this.offers = res.deals[0];
             },
         });

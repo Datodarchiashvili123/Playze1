@@ -1,0 +1,89 @@
+.header {
+  margin-top: 44px;
+  margin-bottom: 12px;
+  background-color: #1B1B1B;
+  border-radius: 8px;
+  padding: 18px;
+
+  h2 {
+    color: white;
+    margin-bottom: 10px;
+  }
+
+  .header__secondary {
+    font-weight: 500;
+    font-size: 14px;
+    color: rgba(white, 0.8);
+    margin-bottom: 10px;
+  }
+
+  button {
+    margin-top: 10px;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 14px;
+    font-family: Jura, sans-serif;
+    border-radius: 20px;
+    padding: 6px 12px;
+    height: 24px;
+    min-width: 116px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize; /* Transforms the first character of each word to uppercase */
+  }
+}
+
+.cover {
+  margin-bottom: 12px;
+
+  img {
+    border-radius: 12px;
+  }
+}
+
+.content {
+  border-radius: 12px;
+  background-color: #1B1B1B;
+  padding: 32px;
+
+  .primary-keyword {
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFFFFF;
+    max-width: 700px;
+    border-left: 2px solid #C9FF58;
+    padding-left: 10px;
+    line-height: 20px;
+  }
+
+  color: rgba(white, 0.8);
+}
+
+.hot-news {
+  height: 100%;
+  border-radius: 8px;
+  margin-top: 44px;
+  background-color: #1B1B1B;
+  padding: 18px;
+
+  &__item {
+    display: flex;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(white,0.05);
+
+    img {
+      border-radius: 8px;
+      margin-right: 12px;
+      width: 112px;
+      height: 60px;
+    }
+
+    .title {
+      color: #FFFFFF;
+      font-weight: 500;
+      font-size: 12px;
+      max-width: 180px;
+    }
+  }
+}

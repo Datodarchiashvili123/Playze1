@@ -1,66 +1,77 @@
-<div class="presets">
-    <app-tag (tagClicked)="onSortChange($event)" [value]="'Popularity'" [isActive]="orderBy=='Popularity'"
-             [text]="'Most Popular'"></app-tag>
-    <app-tag (tagClicked)="onSortChange($event)" [value]="'PriceHighest'" [text]="'Premium'"
-             [isActive]="orderBy=='PriceHighest'"></app-tag>
-    <app-tag (tagClicked)="onSortChange($event)" [value]="'PriceLowest'" [text]="'Best Deals'"
-             [isActive]="orderBy=='PriceLowest'"></app-tag>
-    <app-tag (tagClicked)="onSortChange($event)" [value]="'AZ'" [text]="'A to Z'"
-             [isActive]="orderBy=='AZ'"></app-tag>
+<div class="" style="margin-bottom: 24px">
+
+    <h1 class="page__title">Popular News</h1>
+    <p class="page__description">Keep up with the latest gaming buzz! We deliver the freshest updates, trends, and news
+        from the world of gaming, spanning both consoles and PCs. Whether it’s exciting game launches, industry updates,
+        or insights, we’ve got it all. Stay in the loop on sales, hardware deals, and game bundles!</p>
 </div>
-<app-filters
+
+<!--<div class="presets">-->
+<!--    <app-tag (tagClicked)="onSortChange($event)" [value]="'Popularity'" [isActive]="orderBy=='Popularity'"-->
+<!--             [text]="'Most Popular'"></app-tag>-->
+<!--    <app-tag (tagClicked)="onSortChange($event)" [value]="'PriceHighest'" [text]="'Premium'"-->
+<!--             [isActive]="orderBy=='PriceHighest'"></app-tag>-->
+<!--    <app-tag (tagClicked)="onSortChange($event)" [value]="'PriceLowest'" [text]="'Best Deals'"-->
+<!--             [isActive]="orderBy=='PriceLowest'"></app-tag>-->
+<!--    <app-tag (tagClicked)="onSortChange($event)" [value]="'AZ'" [text]="'A to Z'"-->
+<!--             [isActive]="orderBy=='AZ'"></app-tag>-->
+<!--</div>-->
+<app-filters-for-news
         (filtersChanged)="handleFilterChange($event)"
         (searchChanged)="handleSearchChange($event)"
-></app-filters>
+></app-filters-for-news>
 
-<h3 class="results-text">We found 12332 results.</h3>
-<div class="games-cards-container">
-    @for (newsCard of news; track newsCard) {
-        <div class="card-container" [routerLink]="newsCard.urlName">
-            <div class="card-image">
-                @if(newsCard.imgSrc){
-                    <img ngSrc="{{newsCard.imgSrc}}" width="840" height="480" alt="news"/>
-                }
-            </div>
-            <div class="two-div">
-                <div class="card-text-container">
-                    <div class="card-text1">
-                        <p>Added: {{ newsCard.publishDate }}</p>
-                        <button [ngStyle]="{
+<!--<h3 class="results-text">We found 12332 results.</h3>-->
+<div class="" style="display: flex; gap: 10px">
+    <div class="games-cards-container">
+        @for (newsCard of news; track newsCard) {
+            <div class="card-container" [routerLink]="newsCard.urlName">
+                <div class="card-image">
+                    @if (newsCard.imageUrl) {
+                        <img ngSrc="{{newsCard.imageUrl}}" width="840" height="480" alt="news"/>
+                    }
+                </div>
+                <div class="two-div">
+                    <div class="card-text-container">
+                        <div class="card-text1">
+                            <p>Added: {{ newsCard.publishDate }}</p>
+                            <button [ngStyle]="{
                                             'background-color': getBorderColorWithOpacity(newsCard.typeColor,0.7),
                                             'border': '2px solid ' + newsCard.typeColor
                                           }">{{ newsCard.type }}
-                        </button>
-                        <div class="card-icons">
-                            @for (platform of newsCard.platforms; track platform) {
-                                <img
-                                        ngSrc='/assets/svg/{{platform}}.svg'
-                                        class="windows-img"
-                                        alt="windows"
-                                        [width]="16"
-                                        [height]="16"/>
-                            }
+                            </button>
+                            <div class="card-icons">
+                                @for (platform of newsCard.platforms; track platform) {
+                                    <img
+                                            ngSrc='/assets/svg/{{platform}}.svg'
+                                            class="windows-img"
+                                            alt="windows"
+                                            [width]="16"
+                                            [height]="16"/>
+                                }
+                            </div>
                         </div>
+                        <h2 class="multi-line-fixed-height">
+                            {{ newsCard.primaryKeyword }}
+                        </h2>
+                        <p>
+                            {{ newsCard.headline }}
+                        </p>
                     </div>
-                    <h2 class="multi-line-fixed-height">
-                        {{ newsCard.primaryKeyword }}
-                    </h2>
-                    <p>
-                        {{ newsCard.headline }}
-                    </p>
-                </div>
-                <div class="read-more-button">
-                    <h4>Read more</h4>
-                    <img ngSrc="./assets/svg/right-arrow.svg" height="16" width="18" alt="right-arrow"/>
+                    <div class="read-more-button">
+                        <h4>Read more</h4>
+                        <img ngSrc="./assets/svg/right-arrow.svg" height="16" width="18" alt="right-arrow"/>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+        <app-pagination (pageChange)="onPageChange($event)" [currentPage]="currentPage"
+                        [totalPages]="totalPages"></app-pagination>
+    </div>
+
+    <app-soc-medias/>
+
 </div>
-
-<app-pagination (pageChange)="onPageChange($event)" [currentPage]="currentPage"
-                [totalPages]="totalPages"></app-pagination>
-
 
 <!--&lt;!&ndash; new section 3 &ndash;&gt;-->
 

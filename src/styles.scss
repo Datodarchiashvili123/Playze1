@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* You can add global styles to this file, and also import other style files */
-*{
+* {
   box-sizing: border-box;
 }
 
@@ -9,7 +9,7 @@ html {
   overflow-x: hidden;
 }
 
-body{
+body {
   background-color: #121212;
   box-sizing: border-box;
   font-family: "Jura", sans-serif !important;
@@ -20,22 +20,38 @@ body{
   overflow-x: hidden;
 }
 
-h3{
+h1 {
   margin-block-start: 0;
   margin-block-end: 0;
 }
 
-p{
+h2 {
   margin-block-start: 0;
   margin-block-end: 0;
 }
-html{
+
+h3 {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+h4 {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+html {
   box-sizing: border-box;
 }
 
 /* For WebKit-based browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-  width: 6px;  /* Adjust for thinness */
+  width: 6px; /* Adjust for thinness */
 }
 
 ::-webkit-scrollbar-track {
@@ -46,7 +62,7 @@ html{
 
 ::-webkit-scrollbar-thumb {
   background-color: #C9FF58; /* Blue color for the thumb */
-  border-radius: 10px;       /* Rounded corners */
+  border-radius: 10px; /* Rounded corners */
   border: 2px solid transparent; /* Padding around the thumb */
 }
 

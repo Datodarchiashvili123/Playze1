@@ -1,5 +1,5 @@
-<div class="" style="display: flex; gap: 24px">
-    <div class="">
+<div class="" style="display: flex; gap: 24px; width: 100%;">
+    <div class="" style=" max-width: 1000px; width: 100%">
         <div class="header">
             @if (news?.headline) {
                 <h2>{{ news.headline }}</h2>
@@ -29,11 +29,14 @@
         </div>
         <div class="content">
             <h1 class="primary-keyword">{{ news?.primaryKeyword }}</h1>
-            <div [innerHTML]="sanitizedAboutTheNews"></div>
+            <div class="inner-content" [innerHTML]="sanitizedAboutTheNews"></div>
         </div>
     </div>
     <div class="hot-news" >
-        <p style="color: #fff">HOT NEWS</p>
+        <div class="" style="display: flex; align-items: center; gap: 10px">
+            <img  ngSrc="./assets/svg/fire.svg" height="24" width="24" alt="svg">
+            <p style="color: #fff; font-weight: bold">HOT NEWS</p>
+        </div>
         @if (hotNews) {
             @for (hotnews of hotNews; track hotNews) {
                 <div class="hot-news__item" [routerLink]="['/news', hotnews.urlName]">

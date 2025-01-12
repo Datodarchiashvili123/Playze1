@@ -7,9 +7,14 @@ const axios = require('axios'); // For making HTTP requests
     const sitemapStream = new SitemapStream({ hostname: 'https://playze.io' });
 
     // Array to store the URLs for the sitemap
+
+
+
+
     const urls = [];
     urls.push({ url: `/`, changefreq: 'daily', priority: 1 });
     urls.push({ url: `/games`, changefreq: 'daily', priority: 0.85 });
+    urls.push({ url: `/news`, changefreq: 'daily', priority: 0.85 });
 
     try {
         // Fetch the game URL names from your backend API

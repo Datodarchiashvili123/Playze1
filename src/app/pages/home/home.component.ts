@@ -54,7 +54,8 @@ export class HomeComponent implements OnInit {
                 img: game.headerImageUrl,
                 price: game.lowestPriceText,
                 hasPrice: game.hasPrice,
-                gameId: game.gameId
+                gameId: game.gameId,
+                urlName: game.urlName
             }));
 
             const keywords = x.popularGames.map((game: any) => game.name).join(', ');

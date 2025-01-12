@@ -14,7 +14,7 @@
     }
     @if (games && (searchService.searchInput$ | async)) {
         @for (game of games; track game) {
-            <div class="searched-games" routerLink="games/{{game.gameId}}" (click)="updateIsVisible()">
+            <div class="searched-games" routerLink="games/{{game.urlName}}" (click)="updateIsVisible()">
                 <div class="searched-games__container">
                     <img src="{{game.imgUrl}}" alt="" height="60" width="160">
                     <div class="searched-games__name">{{ game.name }}</div>

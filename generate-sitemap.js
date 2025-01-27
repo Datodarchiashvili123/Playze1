@@ -1,53 +1,125 @@
 const fs = require('fs');
 const { SitemapStream, streamToPromise } = require('sitemap');
-const axios = require('axios'); // For making HTTP requests
+const axios = require('axios');
 
-(async () => {
-    // Create a sitemap stream
-    const sitemapStream = new SitemapStream({ hostname: 'https://playze.io' });
+// Static URLs for the first sitemap
+const staticUrls = [
+    { url: '/', changefreq: 'daily', priority: 1 },
+    { url: '/games', changefreq: 'daily', priority: 0.85 },
+    { url: '/news', changefreq: 'daily', priority: 0.85 },
+    // Add more static URLs here
+];
 
-    // Array to store the URLs for the sitemap
-
-
-
-
-    const urls = [];
-    urls.push({ url: `/`, changefreq: 'daily', priority: 1 });
-    urls.push({ url: `/games`, changefreq: 'daily', priority: 0.85 });
-    urls.push({ url: `/news`, changefreq: 'daily', priority: 0.85 });
+async function generateStaticSitemap(hostname = 'https://playze.io') {
+    const sitemapStream = new SitemapStream({ hostname });
 
     try {
-        // Fetch the game URL names from your backend API
-        const response = await axios.get('https://playze.betterdevjobs.com/game/gameurls'); // Replace with your API endpoint
+        // Add static URLs to the sitemap stream
+        staticUrls.forEach((url) => sitemapStream.write(url));
+        sitemapStream.end();
 
-        console.log('API Response:', response.data); // Log the API response
+        // Generate sitemap content
+        const data = await streamToPromise(sitemapStream);
 
-        // Access the array inside the object (e.g., response.data.games)
+        // Write static sitemap file
+        fs.writeFileSync(
+            './dist/play/browser/sitemap-1.xml',
+            data.toString()
+        );
+
+        return staticUrls.length;
+    } catch (error) {
+        console.error('Error generating static sitemap:', error.message);
+        throw error;
+    }
+}
+
+async function generateDynamicSitemap(streamId, hostname = 'https://playze.io') {
+    const sitemapStream = new SitemapStream({ hostname });
+    const urls = [];
+
+    try {
+        const response = await axios.get(
+            `https://playze.betterdevjobs.com/source/urls?SourceTypeId=1&StreamId=${streamId}`
+        );
+
+        console.log(`API Response for Stream ${streamId}:`, response.data);
+
         if (response.data && Array.isArray(response.data.urlNames)) {
             response.data.urlNames.forEach((game) => {
                 urls.push({
-                    url: `/games/${game.urlName}`, // Use the dynamically fetched URL name
+                    url: `/games/${game.urlName}`,
                     changefreq: 'monthly',
                     priority: 0.5,
                 });
             });
         } else {
-            console.error('Invalid data received from API.');
-            console.log('Expected "games" array, but got:', response.data);
-            return;
+            throw new Error(`Invalid data received from API for Stream ${streamId}`);
         }
 
         // Add URLs to the sitemap stream
         urls.forEach((url) => sitemapStream.write(url));
-
-        // End the stream
         sitemapStream.end();
 
-        // Write the sitemap to a file
+        // Generate sitemap content
         const data = await streamToPromise(sitemapStream);
-        fs.writeFileSync('./dist/play/browser/sitemap.xml', data.toString());
-        console.log('Sitemap generated successfully!');
+
+        // Write dynamic sitemap file (sitemap-2.xml, sitemap-3.xml, sitemap-4.xml)
+        const sitemapNumber = streamId + 1; // streamId 1 -> sitemap-2.xml, etc.
+        fs.writeFileSync(
+            `./dist/play/browser/sitemap-${sitemapNumber}.xml`,
+            data.toString()
+        );
+
+        return urls.length;
     } catch (error) {
-        console.error('Error generating sitemap:', error.message);
+        console.error(`Error generating dynamic sitemap ${streamId}:`, error.message);
+        throw error;
+    }
+}
+
+async function generateSitemapIndex(totalSitemaps, hostname = 'https://playze.io') {
+    const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
+    <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        ${Array.from({ length: totalSitemaps }, (_, i) => i + 1)
+        .map(
+            (id) => `
+        <sitemap>
+            <loc>${hostname}/sitemap-${id}.xml</loc>
+            <lastmod>${new Date().toISOString()}</lastmod>
+        </sitemap>`
+        )
+        .join('')}
+    </sitemapindex>`;
+
+    fs.writeFileSync('./dist/play/browser/sitemap.xml', sitemapIndex);
+}
+
+// Main execution
+(async () => {
+    try {
+        const results = [];
+        const totalSitemaps = 4; // 1 static + 3 dynamic sitemaps
+
+        // Generate static sitemap (sitemap-1.xml)
+        const staticUrlCount = await generateStaticSitemap();
+        results.push({ sitemapId: 1, type: 'static', urlCount: staticUrlCount });
+        console.log(`Static sitemap generated with ${staticUrlCount} URLs`);
+
+        // Generate dynamic sitemaps (sitemap-2.xml, sitemap-3.xml, sitemap-4.xml)
+        for (let streamId = 1; streamId <= 3; streamId++) {
+            const urlCount = await generateDynamicSitemap(streamId);
+            results.push({ sitemapId: streamId + 1, type: 'dynamic', urlCount });
+            console.log(`Dynamic sitemap ${streamId + 1} generated with ${urlCount} URLs`);
+        }
+
+        // Generate sitemap index file
+        await generateSitemapIndex(totalSitemaps);
+
+        console.log('All sitemaps generated successfully!');
+        console.log('Summary:', results);
+    } catch (error) {
+        console.error('Error in sitemap generation process:', error);
+        process.exit(1);
     }
 })();

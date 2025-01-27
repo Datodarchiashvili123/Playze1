@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+
+
     "postbuild": "node generate-sitemap.js",
     "start": "ng serve",
     "build": "ng build",

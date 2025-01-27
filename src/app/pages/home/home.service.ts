@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
     providedIn: 'root',
 })
 export class HomeService {
-    private cacheTTL = 300000; // Cache expires after 5 minutes (in milliseconds)
+    private cacheTTL = 3000; // Cache expires after 5 minutes (in milliseconds)
 
     private dealCardCache: { [id: number]: { data: any; timestamp: number } } = {};
     private topGameCardsCache: { data: any; timestamp: number } | null = null;

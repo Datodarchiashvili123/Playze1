@@ -4,7 +4,7 @@ import {FiltersService} from "../../../services/filters.service";
 import {ReactiveFormsModule} from "@angular/forms";
 import {isPlatformBrowser} from '@angular/common';
 
-type FilterType = 'price' | 'developers' | 'publishers' | 'genres' | 'primaryPlatforms' | 'announcementTypes';
+type FilterType = 'price' | 'developers' | 'publishers' | 'genres' | 'primaryPlatforms' | 'AnnouncementTypeId';
 
 
 @Component({
@@ -74,7 +74,7 @@ export class FiltersForNewsComponent implements OnInit {
         publishers: [],
         genres: [],
         primaryPlatforms: [],
-        announcementTypes:[]
+        AnnouncementTypeId:[]
     };
 
     onFilterChange(filterType: FilterType, value: any) {

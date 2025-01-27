@@ -99,7 +99,7 @@ async function generateSitemapIndex(totalSitemaps, hostname = 'https://playze.io
 (async () => {
     try {
         const results = [];
-        const totalSitemaps = 4; // 1 static + 3 dynamic sitemaps
+        const totalSitemaps = 5; // 1 static + 3 dynamic sitemaps
 
         // Generate static sitemap (sitemap-1.xml)
         const staticUrlCount = await generateStaticSitemap();
@@ -107,7 +107,7 @@ async function generateSitemapIndex(totalSitemaps, hostname = 'https://playze.io
         console.log(`Static sitemap generated with ${staticUrlCount} URLs`);
 
         // Generate dynamic sitemaps (sitemap-2.xml, sitemap-3.xml, sitemap-4.xml)
-        for (let streamId = 1; streamId <= 3; streamId++) {
+        for (let streamId = 1; streamId <= 4; streamId++) {
             const urlCount = await generateDynamicSitemap(streamId);
             results.push({ sitemapId: streamId + 1, type: 'dynamic', urlCount });
             console.log(`Dynamic sitemap ${streamId + 1} generated with ${urlCount} URLs`);

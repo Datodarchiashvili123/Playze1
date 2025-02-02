@@ -1,0 +1,156 @@
+@media screen and (max-width: 768px) {
+  .similar-games__container {
+    justify-content: center;
+  }
+  .similar-games{
+    justify-content: center;
+    border-right: 2px solid #C9FF58;
+
+  }
+}
+
+
+.similar-games__container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.slide {
+  &__img-div {
+    width: 320px;
+
+    img {
+      width: 320px;
+      height: 150px;
+    }
+  }
+
+  &__description {
+    width: 320px;
+    min-height: 85px;
+    padding: 12px;
+    gap: 8px;
+  }
+}
+
+.slide {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+
+  &:hover {
+    .slide__description {
+      background-color: #242424;
+    }
+  }
+
+  &__img-div {
+    position: relative;
+
+    img {
+      flex-shrink: 0;
+      position: relative;
+      border-top-right-radius: 12px;
+      border-top-left-radius: 12px;
+    }
+
+    &__tag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      border-radius: 24px;
+      background: rgba(0, 0, 0, 0.4);
+      right: 8px;
+      top: 8px;
+
+      span {
+        color: #fff;
+        font-family: Jura, sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+    }
+  }
+
+  &__description {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #1b1b1b;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+
+    &__title {
+      color: #fff;
+      font-family: Jura, sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      display: flex;
+      flex-shrink: 0;
+      -webkit-box-orient: horizontal;
+      height: 20px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 200px;
+      display: block;
+      overflow: hidden;
+      // height: 38px;
+    }
+
+    &__price-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      align-self: stretch;
+
+      &__from {
+        color: #fff;
+        font-family: Jura, sans-serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        opacity: 0.6;
+      }
+
+      &__price {
+        color: #c9ff58;
+        font-family: Jura, sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+    }
+  }
+}
+
+.similar-games {
+  font-size: 20px;
+  font-weight: bold;
+  color: #FFFFFF;
+  max-width: 700px;
+  border-left: 2px solid #C9FF58;
+  padding-left: 10px;
+  line-height: 20px;
+  margin-bottom: 24px;
+  margin-top: 38px;
+}
+
+
+//.slick-list{
+//  margin-left: -10px;
+//}

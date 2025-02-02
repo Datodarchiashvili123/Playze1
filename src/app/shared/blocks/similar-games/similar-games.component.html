@@ -1,0 +1,26 @@
+<h3 class="similar-games">Similar Games</h3>
+<div class="similar-games__container">
+    @for (game of games; track $index) {
+        <div class="slide" routerLink="/games/{{game.urlName}}" aria-hidden="true">
+            <div class="slide__img-div">
+                @if (game?.imgUrl) {
+                    <img ngSrc="{{ game.imgUrl }}" alt="{{game.imgUrl}}" width="320" height="150">
+                }
+                <div class="slide__img-div__tag"><span>#{{ 1 + $index }}</span></div>
+            </div>
+            <div class="slide__description">
+                <p class="slide__description__title">{{ game.name }}</p>
+                <!--            <div class="slide__description__price-container">-->
+                <!--                @if (slide.price) {-->
+                <!--                    <p class="slide__description__price-container__from">From:</p>-->
+                <!--                    <p class="slide__description__price-container__price">{{ slide.price.split(' ')[0] }}</p>-->
+                <!--                }-->
+                <!--                @if (slide.isFree) {-->
+                <!--                    <p class="slide__description__price-container__price">Free</p>-->
+                <!--                }-->
+                <!--            </div>-->
+            </div>
+        </div>
+    }
+</div>
+    

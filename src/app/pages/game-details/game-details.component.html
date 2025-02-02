@@ -46,7 +46,7 @@
 
 @if (game?.about?.aboutTheGame !== '' || gallery !== undefined &&
 gallery?.length) {
-<h2 class="about-title">About {{ game?.name }}</h2>
+<h3 class="about-title">About {{ game?.name }}</h3>
 }
 
 <div class="main-container">
@@ -137,6 +137,6 @@ gallery?.length) {
       [gameName]="game?.name"
     ></app-game-detail-card>
   </div>
-</div>
-<app-similar-games [games]="similarGames"></app-similar-games>
 
+</div>
+    <app-similar-games [games]="similarGames"></app-similar-games>

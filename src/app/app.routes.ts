@@ -1,10 +1,10 @@
-import {ActivatedRouteSnapshot, Routes} from '@angular/router';
+import {Routes} from '@angular/router';
+import {HomeComponent} from "./pages/home/home.component";
 
 export const routes: Routes = [
     {
         path: '',
-        loadComponent: () =>
-            import('./pages/home/home.component').then((m) => m.HomeComponent),
+        component: HomeComponent,
     },
     {
         path: 'games',
@@ -13,12 +13,9 @@ export const routes: Routes = [
     },
 
     {
-        path: 'games/:id',
+        path: 'game/:id',
         loadComponent: () =>
             import('./pages/game-details/game-details.component').then((m) => m.GameDetailsComponent),
-        data: {
-            canonical: (route: ActivatedRouteSnapshot) => `https://playze.io/games/${route.params['id']}`
-        }
     },
     {
         path: 'news',

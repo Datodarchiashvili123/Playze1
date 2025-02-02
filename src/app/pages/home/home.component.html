@@ -4,20 +4,20 @@
         <img priority src="assets/cover.webp" alt="most popular games">
     </div>
     <!-- You can now use your library component in app.component.html -->
-<!--    <div class="slider-header">-->
-<!--        <div class="slider-header__left">-->
-<!--            <img ngSrc="assets/svg/fire.svg" alt="most popular games" width="24" height="24">-->
-<!--            <h4>MOST POPULAR GAMES</h4>-->
-<!--        </div>-->
-<!--        <div class="slider-header__right" routerLink="/games">-->
-<!--            See All-->
-<!--        </div>-->
-<!--    </div>-->
+    <div class="slider-header">
+        <div class="slider-header__left">
+            <img ngSrc="assets/svg/fire.svg" alt="most popular games" width="24" height="24">
+            <h4>MOST POPULAR GAMES</h4>
+        </div>
+        <div class="slider-header__right" routerLink="/games">
+            See All
+        </div>
+    </div>
 
 
-<!--    @if (sliderData) {-->
-<!--        <app-item-slider [slides]="sliderData"/>-->
-<!--    }-->
+    @if (sliderData) {
+        <app-item-slider [slides]="sliderData"/>
+    }
     <div class="deals-container">
         @if (newDeals) {
             <app-deals-cards [title]="'New Deals'" [dealsCards]="newDeals" class="deals-box"/>

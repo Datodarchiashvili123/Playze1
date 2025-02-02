@@ -31,8 +31,6 @@ export class HomeComponent implements OnInit {
         private homeService: HomeService,
         private titleService: Title,
         private metaService: Meta,
-        private renderer: Renderer2, // Inject Renderer2 for DOM manipulation
-        @Inject(PLATFORM_ID) private platformId: Object
     ) {
     }
 
@@ -40,12 +38,6 @@ export class HomeComponent implements OnInit {
         this.titleService.setTitle('Game Deals - Best Discount and Offers on Top Games');
 
         this.updateMetaTags();
-
-        // // Set the canonical URL dynamically
-        // if (isPlatformBrowser(this.platformId)) {
-        //     this.setCanonicalURL(window.location.href);
-        // }
-
 
         this.homeService.getTopGameCards().subscribe((x: any) => {
             this.gamesData = x.popularGames;
@@ -98,18 +90,4 @@ export class HomeComponent implements OnInit {
         }
     }
 
-    // Method to dynamically set the canonical URL
-    // setCanonicalURL(url: string) {
-    //     const link: HTMLLinkElement = this.renderer.createElement('link');
-    //     link.setAttribute('rel', 'canonical');
-    //     link.setAttribute('href', url);
-    //
-    //     // Remove any existing canonical tag before adding a new one
-    //     const existingCanonical = document.querySelector('link[rel="canonical"]');
-    //     if (existingCanonical) {
-    //         this.renderer.removeChild(document.head, existingCanonical);
-    //     }
-    //
-    //     this.renderer.appendChild(document.head, link);
-    // }
 }

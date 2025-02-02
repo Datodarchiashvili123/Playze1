@@ -1,4 +1,4 @@
-import {Inject, Injectable, PLATFORM_ID, TransferState} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {catchError, map, throwError} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
@@ -9,8 +9,6 @@ import {HttpClient} from '@angular/common/http';
 export class HomeService {
     constructor(
         private http: HttpClient,
-        private transferState: TransferState,
-        @Inject(PLATFORM_ID) private platformId: Object
     ) {
     }
 

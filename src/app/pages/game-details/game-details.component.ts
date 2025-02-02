@@ -1,10 +1,10 @@
-import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID, Renderer2,} from "@angular/core";
+import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID,} from "@angular/core";
 import {GameDetailsService} from "./game-details.service";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
 import {DomSanitizer, Meta, Title} from "@angular/platform-browser";
 import {SlickCarouselModule} from "ngx-slick-carousel";
-import {isPlatformBrowser, NgForOf, NgIf, NgOptimizedImage,} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage,} from "@angular/common";
 import {GameDetailCardComponent} from "../../shared/game-detail-card/game-detail-card.component";
 import {SimilarGamesComponent} from "../../shared/blocks/similar-games/similar-games.component";
 
@@ -127,7 +127,7 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     gallery: any;
     sanitizedAboutTheGame: any;
     offers: any;
-    similarGames:any;
+    similarGames: any;
     private routeSub: Subscription | undefined;
 
     constructor(
@@ -137,7 +137,6 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
         private sanitizer: DomSanitizer,
         private titleService: Title,
         private metaService: Meta,
-        private renderer: Renderer2 // Inject Renderer2 for DOM manipulation
     ) {
         this.gameId = this.route.snapshot.paramMap.get("id");
     }

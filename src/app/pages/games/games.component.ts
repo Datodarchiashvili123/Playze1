@@ -54,7 +54,7 @@ export class GamesComponent implements OnInit {
 
 
         // Canonical URL დამატება სერვერზე და ბრაუზერში
-        const canonicalUrl = `https://playze.io${this.route.snapshot.url.join('/')}`;
+        const canonicalUrl = `https://playze.io/${this.route.snapshot.url.join('/')}`;
         this.seoService.setCanonicalURL(canonicalUrl);
 
         // Set static meta title

@@ -16,7 +16,7 @@ export const routes: Routes = [
     //         import('./pages/game-details/game-details.component').then((m) => m.GameDetailsComponent),
     // },
     {
-        path: 'games/:id',
+        path: 'games/:gameName',
         component: GameDetailsComponent,
     },
     {

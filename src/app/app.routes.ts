@@ -13,7 +13,7 @@ export const routes: Routes = [
     },
 
     {
-        path: 'game/:id',
+        path: 'games/:id',
         loadComponent: () =>
             import('./pages/game-details/game-details.component').then((m) => m.GameDetailsComponent),
     },

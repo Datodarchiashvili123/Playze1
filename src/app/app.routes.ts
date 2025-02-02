@@ -28,7 +28,10 @@ export const routes: Routes = [
         path: 'news/:id',
         loadComponent: () =>
             import('./pages/news-details/news-details.component').then((m) => m.NewsDetailsComponent),
+    },
+    {
+        path: '**',
+        component: HomeComponent,
     }
-
 
 ];

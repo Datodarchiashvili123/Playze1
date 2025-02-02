@@ -55,9 +55,7 @@ export function app(): express.Express {
                 url: `${protocol}://${headers.host}${originalUrl}`,
                 publicPath: browserDistFolder,
                 providers: [
-                    { provide: APP_BASE_HREF, useValue: baseUrl },
                     { provide: REQUEST, useValue: req }, // **ამატებს REQUEST პროვაიდერს**
-
                 ],
             })
             .then((html) => res.send(html))

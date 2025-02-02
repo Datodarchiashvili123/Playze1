@@ -9,7 +9,7 @@ import {BrowserAnimationsModule, provideAnimations} from "@angular/platform-brow
 export const appConfig: ApplicationConfig = {
     providers: [
         provideAnimations(),  // Use provideAnimations instead of BrowserAnimationsModule
-        provideRouter(routes, withPreloading(NoPreloading)),
+        provideRouter(routes),
         provideHttpClient(withFetch()),
         provideClientHydration(
             withHttpTransferCacheOptions({

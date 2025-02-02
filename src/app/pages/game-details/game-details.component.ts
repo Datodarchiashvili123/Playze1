@@ -138,7 +138,7 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
         private titleService: Title,
         private metaService: Meta,
     ) {
-        this.gameId = this.route.snapshot.paramMap.get("gameName");
+        this.gameId = this.route.snapshot.paramMap.get("id");
     }
 
     ngOnInit() {

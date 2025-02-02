@@ -1,5 +1,5 @@
 import {ApplicationConfig} from '@angular/core';
-import {PreloadAllModules, provideRouter, withPreloading} from '@angular/router';
+import {NoPreloading, PreloadAllModules, provideRouter, withPreloading} from '@angular/router';
 
 import {routes} from './app.routes';
 import {provideClientHydration, withHttpTransferCacheOptions} from '@angular/platform-browser';
@@ -9,11 +9,12 @@ import {BrowserAnimationsModule, provideAnimations} from "@angular/platform-brow
 export const appConfig: ApplicationConfig = {
     providers: [
         provideAnimations(),  // Use provideAnimations instead of BrowserAnimationsModule
-        provideRouter(routes, withPreloading(PreloadAllModules)),
+        provideRouter(routes, withPreloading(NoPreloading)),
         provideHttpClient(withFetch()),
         provideClientHydration(
             withHttpTransferCacheOptions({
                 includePostRequests: false,
+                includeRequestsWithAuthHeaders: false,
             })
         ),
     ]

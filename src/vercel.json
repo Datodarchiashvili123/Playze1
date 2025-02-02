@@ -1,13 +1,13 @@
 {
   "version": 2,
   "public": true,
-  "name": "play",
+  "name": "თქვენი_პროექტის_სახელი",
   "rewrites": [
     { "source": "/(.*)", "destination": "/api" }
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "dist/play/**"
+      "includeFiles": "dist/play/browser/**"
     }
   }
 }

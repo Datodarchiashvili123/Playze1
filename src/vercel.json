@@ -1,34 +1,13 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist/play"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
+  "public": true,
+  "name": "play",
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/"
-    }
+    { "source": "/(.*)", "destination": "/api" }
   ],
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "destination": "/",
-      "statusCode": 200
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "dist/play/**"
     }
-  ]
+  }
 }

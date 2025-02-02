@@ -19,6 +19,7 @@ export const routes: Routes = [
         data: {
             canonical: (route: ActivatedRouteSnapshot) => `https://playze.io/games/${route.params['id']}`
         }
+
     },
     {
         path: 'news',

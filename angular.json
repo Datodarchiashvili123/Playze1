@@ -14,6 +14,38 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
+        "server": {
+          "builder": "@angular/ssr:server",
+          "options": {
+            "outputPath": "dist/play/server",
+            "main": "src/main.server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve-ssr": {
+          "builder": "@angular/ssr:serve",
+          "options": {
+            "browserTarget": "play:build",
+            "serverTarget": "play:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "play:build:production",
+              "serverTarget": "play:server:production"
+            }
+          }
+        },
+
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
@@ -41,10 +73,10 @@
               "node_modules/slick-carousel/slick/slick.min.js"
             ],
             "server": "src/main.server.ts",
-            "prerender": true,
             "ssr": {
-              "entry": "server.ts"
-            }
+              "entry": "src/server.ts"
+            },
+            "outputMode": "server"
           },
           "configurations": {
             "production": {

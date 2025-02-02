@@ -14,11 +14,5 @@ import {SearchDropdownComponent} from "./shared/search-dropdown/search-dropdown.
 export class AppComponent {
     title = 'play';
 
-    constructor() {
-    }
-
-    ngOnInit(): void {
-
-    }
 }
 

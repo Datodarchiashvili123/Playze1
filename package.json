@@ -3,16 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-
-
     "postbuild": "node generate-sitemap.js",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "npm run build:ssr && npm run serve:ssr:play",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-
-
-    "serve:ssr:play": "node dist/play/server/server.mjs"
+    "serve:ssr:play": "node dist/play/server/server.mjs",
+    "build:ssr": "ng build && ng run play:server",
+    "serve:ssr": "node dist/play/server/main.js"
   },
   "private": true,
   "dependencies": {

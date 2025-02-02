@@ -51,7 +51,7 @@ export class NewsComponent implements OnInit {
         // Set static meta title
         this.titleService.setTitle('Popular Games - Discover Top-Rated Titles and Must-Play Releases');
 
-        // Set canonical URL
+        // Set canonical URL\
         if (isPlatformBrowser(this.platformId)) {
             this.setCanonicalURL(window.location.href);  // Set the canonical URL to the current page URL
         }

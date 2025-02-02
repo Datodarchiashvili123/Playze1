@@ -18,17 +18,20 @@ import {isPlatformBrowser} from "@angular/common";
 export class AppComponent {
     title = 'play';
 
-    constructor(private router: Router, private seoService: SeoService, @Inject(PLATFORM_ID) private platformId: object) {}
+    constructor(
+        private router: Router,
+        private seoService: SeoService,
+        @Inject(PLATFORM_ID) private platformId: object
+    ) {}
 
     ngOnInit(): void {
-        // მხოლოდ ბრაუზერში უნდა გაშვდეს ეს ლოგიკა
-        if (isPlatformBrowser(this.platformId)) {
-            this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+        this.router.events
+            .pipe(filter(event => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => {
                 const canonicalUrl = `https://playze.io${event.urlAfterRedirects}`;
-                console.log('Canonical URL:', canonicalUrl);
+                console.log(canonicalUrl, 'canonicalUrl', event);
                 this.seoService.setCanonicalURL(canonicalUrl);
             });
-        }
     }
 }
 

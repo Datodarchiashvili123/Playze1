@@ -1,27 +1,38 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Meta, Title } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeoService {
-  constructor(@Inject(DOCUMENT) private document: Document, @Inject(PLATFORM_ID) private platformId: object) {}
+  constructor(
+      private meta: Meta,
+      private titleService: Title,
+      @Inject(PLATFORM_ID) private platformId: object
+  ) {}
 
-  setCanonicalURL(url?: string): void {
-    // მხოლოდ მაშინ ვაწვდით canonical URL-ს, თუ კოდი ბრაუზერში მუშაობს
+  setCanonicalURL(url: string): void {
+    if (!url) return;
+
     if (isPlatformBrowser(this.platformId)) {
-      const canonicalURL = url || this.document.location.href;
-
-      let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+      // ბრაუზერში დინამიურად დაამატებს canonical-ს
+      let link: HTMLLinkElement | null = document.querySelector("link[rel='canonical']");
       if (link) {
-        link.setAttribute('href', canonicalURL);
+        link.setAttribute('href', url);
       } else {
-        link = this.document.createElement('link');
+        link = document.createElement('link');
         link.setAttribute('rel', 'canonical');
-        link.setAttribute('href', canonicalURL);
-        this.document.head.appendChild(link);
+        link.setAttribute('href', url);
+        document.head.appendChild(link);
       }
+    } else {
+      // სერვერზე დაამატებს canonical meta-ს, რომ იგი ფეიჯ სორსშიც იყოს
+      this.meta.updateTag({ rel: 'canonical', href: url });
     }
+  }
+
+  setTitle(title: string): void {
+    this.titleService.setTitle(title);
   }
 }

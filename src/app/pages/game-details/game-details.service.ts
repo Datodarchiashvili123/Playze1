@@ -35,4 +35,14 @@ export class GameDetailsService {
                 catchError((error: Error) => throwError(() => error))
             );
     }
+
+    similarGames(id: string) {
+        return this.http.get(`${environment.apiUrl}/game/similargames?UrlName=${id}`)
+            .pipe(
+                map((res: any) => res),
+                catchError((error: Error) => throwError(() => error))
+            );
+    }
+
+
 }

@@ -6,6 +6,7 @@ import {DomSanitizer, Meta, Title} from "@angular/platform-browser";
 import {SlickCarouselModule} from "ngx-slick-carousel";
 import {isPlatformBrowser, NgForOf, NgIf, NgOptimizedImage,} from "@angular/common";
 import {GameDetailCardComponent} from "../../shared/game-detail-card/game-detail-card.component";
+import {SimilarGamesComponent} from "../../shared/blocks/similar-games/similar-games.component";
 
 @Component({
     selector: "app-game-details",
@@ -16,6 +17,7 @@ import {GameDetailCardComponent} from "../../shared/game-detail-card/game-detail
         NgIf,
         NgOptimizedImage,
         GameDetailCardComponent,
+        SimilarGamesComponent,
     ],
     templateUrl: "./game-details.component.html",
     styleUrls: ["./game-details.component.scss"],
@@ -125,6 +127,7 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     gallery: any;
     sanitizedAboutTheGame: any;
     offers: any;
+    similarGames:any;
     private routeSub: Subscription | undefined;
 
     constructor(
@@ -145,6 +148,7 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
             this.loadGameDetail(this.gameId);
             this.loadGalleryDetail(this.gameId);
             this.loadGameOffers(this.gameId);
+            this.loadSimilarGames(this.gameId);
         });
     }
 
@@ -176,6 +180,15 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
+    loadSimilarGames(gameId: any) {
+        this.gameDetailsService.similarGames(gameId).subscribe({
+            next: (res: any) => {
+                this.similarGames = res.hotAnnouncements;
+                console.log(this.similarGames, 'this similarGames');
+            },
+        });
+    }
+
     // Method to update meta tags dynamically based on game data
     updateMetaTags() {
         const title = `${this.game.name} - Buy Now at Best Price!`;
@@ -193,11 +206,6 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
             {name: "description", content: description},
             {name: "keywords", content: keywords},
         ]);
-
-        // Add or update the canonical tag
-        if (isPlatformBrowser(this.platformId)) {
-            this.setCanonicalURL(window.location.href); // Set the canonical URL to the current page URL
-        }
     }
 
     // Method to remove existing meta tags
@@ -211,21 +219,6 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
         if (keywordsTag) {
             this.metaService.removeTag('name="keywords"');
         }
-    }
-
-    // Method to dynamically set the canonical URL
-    setCanonicalURL(url: string) {
-        const link: HTMLLinkElement = this.renderer.createElement("link");
-        link.setAttribute("rel", "canonical");
-        link.setAttribute("href", url);
-
-        // Remove any existing canonical tag before adding a new one
-        const existingCanonical = document.querySelector('link[rel="canonical"]');
-        if (existingCanonical) {
-            this.renderer.removeChild(document.head, existingCanonical);
-        }
-
-        this.renderer.appendChild(document.head, link);
     }
 
     ngOnDestroy() {

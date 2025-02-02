@@ -27,6 +27,7 @@ export class AppComponent {
             .subscribe((event: NavigationEnd) => {
                 // გამოიყენეთ სერვისის საშუალებით მიმდინარე URL-ის საფუძველზე შესაბამისი canonical URL-ის განახლება
                 const canonicalUrl = `https://playze.io${event.urlAfterRedirects}`;
+                console.log('Canonical URL:', canonicalUrl);
                 this.seoService.setCanonicalURL(canonicalUrl);
             });
     }

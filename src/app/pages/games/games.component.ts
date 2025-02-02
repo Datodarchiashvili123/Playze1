@@ -53,20 +53,9 @@ export class GamesComponent implements OnInit {
         this.loadGames(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
 
 
-        // მიიღეთ canonical URL data (თუ ფუნქციას გადააქვს, გამოიძახეთ იგი)
-        let canonicalUrl: string = '';
-
-        const data = this.route.snapshot.data;
-        if (data['canonical'] && typeof data['canonical'] === 'function') {
-            canonicalUrl = data['canonical'](this.route.snapshot);
-        } else if (data['canonical']) {
-            canonicalUrl = data['canonical'];
-        }
-
-        // სერვერზე გაშვება მნიშვნელოვანია, რომ SSR-ს მიერ უკვე შეიქმნას სწორი HTML.
-        if (isPlatformServer(this.platformId) && canonicalUrl) {
-            this.seoService.setCanonicalURL(canonicalUrl);
-        }
+        // Canonical URL დამატება სერვერზე და ბრაუზერში
+        const canonicalUrl = `https://playze.io${this.route.snapshot.url.join('/')}`;
+        this.seoService.setCanonicalURL(canonicalUrl);
 
         // Set static meta title
         this.titleService.setTitle('Popular Games - Discover Top-Rated Titles and Must-Play Releases');

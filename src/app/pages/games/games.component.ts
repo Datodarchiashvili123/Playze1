@@ -1,12 +1,14 @@
 import {Component, HostListener, Inject, OnInit, PLATFORM_ID, Renderer2} from '@angular/core';
 import {FiltersComponent} from "../../shared/blocks/filters/filters.component";
-import {isPlatformBrowser} from "@angular/common";
+import {isPlatformBrowser, isPlatformServer} from "@angular/common";
 import {TagComponent} from "../../shared/tag/tag.component";
 import {GameCardComponent} from "../../shared/game-card/game-card.component";
 import {PaginationComponent} from "../../shared/pagination/pagination.component";
 import {GamesService} from "./games.service";
 import {GameDetailCardComponent} from "../../shared/game-detail-card/game-detail-card.component";
 import {Meta, Title} from "@angular/platform-browser";
+import {ActivatedRoute} from "@angular/router";
+import {SeoService} from "../../services/seo.service";
 
 @Component({
     selector: 'app-games',
@@ -38,6 +40,10 @@ export class GamesComponent implements OnInit {
         private gamesService: GamesService,
         private titleService: Title,
         private metaService: Meta,
+        private route: ActivatedRoute,
+        private seoService: SeoService,
+
+
         private renderer: Renderer2  // Inject Renderer2 for DOM manipulation
     ) {
         this.mobileSize = isPlatformBrowser(this.platformId) ? window.innerWidth <= 768 : false;
@@ -45,6 +51,22 @@ export class GamesComponent implements OnInit {
 
     ngOnInit() {
         this.loadGames(this.currentPage, this.currentFilters, this.orderBy, this.searchValue);
+
+
+        // მიიღეთ canonical URL data (თუ ფუნქციას გადააქვს, გამოიძახეთ იგი)
+        let canonicalUrl: string = '';
+
+        const data = this.route.snapshot.data;
+        if (data['canonical'] && typeof data['canonical'] === 'function') {
+            canonicalUrl = data['canonical'](this.route.snapshot);
+        } else if (data['canonical']) {
+            canonicalUrl = data['canonical'];
+        }
+
+        // სერვერზე გაშვება მნიშვნელოვანია, რომ SSR-ს მიერ უკვე შეიქმნას სწორი HTML.
+        if (isPlatformServer(this.platformId) && canonicalUrl) {
+            this.seoService.setCanonicalURL(canonicalUrl);
+        }
 
         // Set static meta title
         this.titleService.setTitle('Popular Games - Discover Top-Rated Titles and Must-Play Releases');

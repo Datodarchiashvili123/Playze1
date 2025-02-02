@@ -1,9 +1,9 @@
 {
   "version": 2,
   "public": true,
-  "name": "თქვენი_პროექტის_სახელი",
+  "name": "play",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api" }
+    { "source": "/(.*)", "destination": "/" }
   ],
   "functions": {
     "api/index.js": {

@@ -4,8 +4,10 @@ import {HomeComponent} from "./pages/home/home.component";
 export const routes: Routes = [
     {
         path: '',
-        component: HomeComponent,
+        redirectTo: 'home',
+        pathMatch: 'full',
     },
+    {path: 'home', component: HomeComponent},
     {
         path: 'games',
         loadComponent: () =>

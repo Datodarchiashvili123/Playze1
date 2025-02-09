@@ -1,5 +1,5 @@
-import {Component, Inject, OnInit, PLATFORM_ID, Renderer2, ViewEncapsulation} from '@angular/core';
-import {isPlatformBrowser, NgOptimizedImage} from "@angular/common";
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {NgOptimizedImage} from "@angular/common";
 import {SlickCarouselModule} from "ngx-slick-carousel";
 import {ItemSliderComponent} from "../../shared/item-slider/item-slider.component";
 import {DealsCardsComponent} from "../../shared/blocks/deals-cards/deals-cards.component";

@@ -9,7 +9,7 @@ import {provideAnimations} from "@angular/platform-browser/animations";
 export const appConfig: ApplicationConfig = {
     providers: [
         provideAnimations(),  // Use provideAnimations instead of BrowserAnimationsModule
-        provideRouter(routes, {initialNavigation: 'enabledBlocking'}, withPreloading(PreloadAllModules)),
+        provideRouter(routes, withPreloading(PreloadAllModules)),
         provideHttpClient(withFetch()),
         provideClientHydration(
             withHttpTransferCacheOptions({

@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID,} from "@angular/core";
+import {Component, OnDestroy, OnInit,} from "@angular/core";
 import {GameDetailsService} from "./game-details.service";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
@@ -131,7 +131,6 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     private routeSub: Subscription | undefined;
 
     constructor(
-        @Inject(PLATFORM_ID) private platformId: Object,
         private route: ActivatedRoute,
         private gameDetailsService: GameDetailsService,
         private sanitizer: DomSanitizer,

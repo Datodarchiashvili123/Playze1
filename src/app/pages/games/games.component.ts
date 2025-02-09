@@ -1,6 +1,6 @@
 import {Component, HostListener, Inject, OnInit, PLATFORM_ID, Renderer2} from '@angular/core';
 import {FiltersComponent} from "../../shared/blocks/filters/filters.component";
-import {isPlatformBrowser, isPlatformServer} from "@angular/common";
+import {isPlatformBrowser} from "@angular/common";
 import {TagComponent} from "../../shared/tag/tag.component";
 import {GameCardComponent} from "../../shared/game-card/game-card.component";
 import {PaginationComponent} from "../../shared/pagination/pagination.component";
@@ -42,8 +42,6 @@ export class GamesComponent implements OnInit {
         private metaService: Meta,
         private route: ActivatedRoute,
         private seoService: SeoService,
-
-
         private renderer: Renderer2  // Inject Renderer2 for DOM manipulation
     ) {
         this.mobileSize = isPlatformBrowser(this.platformId) ? window.innerWidth <= 768 : false;

@@ -1,17 +1,21 @@
-import {ApplicationConfig} from '@angular/core';
-import {PreloadAllModules, provideRouter, withPreloading} from '@angular/router';
+import { ApplicationConfig } from '@angular/core';
+import { PreloadAllModules, provideRouter, withPreloading, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 
-import {routes} from './app.routes';
-import {provideClientHydration, withHttpTransferCacheOptions} from '@angular/platform-browser';
+import { routes } from './app.routes';
+import { provideClientHydration, withHttpTransferCacheOptions } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from "@angular/common/http";
-import {BrowserAnimationsModule, provideAnimations} from "@angular/platform-browser/animations";
+import { provideAnimations } from "@angular/platform-browser/animations";
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideAnimations(),  // Use provideAnimations instead of BrowserAnimationsModule
-        provideRouter(routes, withPreloading(PreloadAllModules)),
+        provideAnimations(),  // Angular 19-ისთვის სწორი ანიმაციების მხარდაჭერა
+        provideRouter(routes,
+            withPreloading(PreloadAllModules),
+            withComponentInputBinding(),
+            withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }) // მომხმარებლის ფანჯრის პოზიციის აღდგენა
+        ),
         provideHttpClient(withFetch()),
-        provideClientHydration(
+        provideClientHydration( // `defer: true` აღარ არის საჭირო
             withHttpTransferCacheOptions({
                 includePostRequests: false,
             })

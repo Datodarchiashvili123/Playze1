@@ -144,9 +144,9 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
         this.routeSub = this.route.params.subscribe((params) => {
             this.gameId = params["id"];
             this.loadGameDetail(this.gameId);
-            this.loadGalleryDetail(this.gameId);
-            this.loadGameOffers(this.gameId);
-            this.loadSimilarGames(this.gameId);
+            // this.loadGalleryDetail(this.gameId);
+            // this.loadGameOffers(this.gameId);
+            // this.loadSimilarGames(this.gameId);
         });
     }
 
@@ -162,30 +162,30 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    loadGalleryDetail(gameId: any) {
-        this.gameDetailsService.getGameGallery(gameId).subscribe({
-            next: (res: any) => {
-                this.gallery = res.galleryContent;
-            },
-        });
-    }
-
-    loadGameOffers(gameId: any) {
-        this.gameDetailsService.getGameOffers(gameId).subscribe({
-            next: (res: any) => {
-                this.offers = res.deals[0];
-            },
-        });
-    }
-
-    loadSimilarGames(gameId: any) {
-        this.gameDetailsService.similarGames(gameId).subscribe({
-            next: (res: any) => {
-                this.similarGames = res.hotAnnouncements;
-                console.log(this.similarGames, 'this similarGames');
-            },
-        });
-    }
+    // loadGalleryDetail(gameId: any) {
+    //     this.gameDetailsService.getGameGallery(gameId).subscribe({
+    //         next: (res: any) => {
+    //             this.gallery = res.galleryContent;
+    //         },
+    //     });
+    // }
+    //
+    // loadGameOffers(gameId: any) {
+    //     this.gameDetailsService.getGameOffers(gameId).subscribe({
+    //         next: (res: any) => {
+    //             this.offers = res.deals[0];
+    //         },
+    //     });
+    // }
+    //
+    // loadSimilarGames(gameId: any) {
+    //     this.gameDetailsService.similarGames(gameId).subscribe({
+    //         next: (res: any) => {
+    //             this.similarGames = res.hotAnnouncements;
+    //             console.log(this.similarGames, 'this similarGames');
+    //         },
+    //     });
+    // }
 
     // Method to update meta tags dynamically based on game data
     updateMetaTags() {

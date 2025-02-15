@@ -15,7 +15,7 @@ const serverConfig: ApplicationConfig = {
         withHttpTransferCacheOptions({
           includePostRequests: false,
           includeRequestsWithAuthHeaders: false,
-        })
+        }),
     ),
 
   ]

@@ -4,7 +4,7 @@ import {GameDetailsComponent} from "./pages/game-details/game-details.component"
 
 export const routes: Routes = [
 
-    {path: '/', component: HomeComponent},
+    {path: '', component: HomeComponent},
     {
         path: 'games',
         loadComponent: () =>

@@ -4,9 +4,8 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
-import {REQUEST} from "@angular/core";
+import { REQUEST } from "@angular/core";
 
-// The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
     const server = express();
     const serverDistFolder = dirname(fileURLToPath(import.meta.url));
@@ -18,9 +17,7 @@ export function app(): express.Express {
     server.set('view engine', 'html');
     server.set('views', browserDistFolder);
 
-    // Example Express Rest API endpoints
-    // server.get('/api/**', (req, res) => { });
-    // Serve static files from /browser
+    // Serve static files first
     server.get('*.*', express.static(browserDistFolder, {
         maxAge: '1y'
     }));
@@ -48,6 +45,11 @@ export function app(): express.Express {
     server.get('*', (req, res, next) => {
         const { protocol, originalUrl, baseUrl, headers } = req;
 
+        // Add cache control headers
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+
         commonEngine
             .render({
                 bootstrap,
@@ -56,11 +58,16 @@ export function app(): express.Express {
                 publicPath: browserDistFolder,
                 providers: [
                     { provide: APP_BASE_HREF, useValue: baseUrl },
-                    { provide: REQUEST, useValue: req }, // **ამატებს REQUEST პროვაიდერს**
-                ],
+                    { provide: REQUEST, useValue: req }
+                ]
             })
-            .then((html) => res.send(html))
-            .catch((err) => next(err));
+            .then((html) => {
+                res.status(200).send(html);
+            })
+            .catch((err) => {
+                console.error(`Error rendering page: ${err}`);
+                next(err);
+            });
     });
 
     return server;

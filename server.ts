@@ -62,7 +62,9 @@ export function app(): express.Express {
                 ]
             })
             .then((html) => {
-                res.status(200).send(html);
+                res.status(200)
+                    .set('Cache-Control', 'no-cache, no-store, must-revalidate')
+                    .send(html);
             })
             .catch((err) => {
                 console.error(`Error rendering page: ${err}`);

@@ -10,14 +10,10 @@ export const routes: Routes = [
         loadComponent: () =>
             import('./pages/games/games.component').then((m) => m.GamesComponent),
     },
-    // {
-    //     path: 'games/:id',
-    //     loadComponent: () =>
-    //         import('./pages/game-details/game-details.component').then((m) => m.GameDetailsComponent),
-    // },
     {
         path: 'games/:id',
-        component: GameDetailsComponent,
+        loadComponent: () =>
+            import('./pages/game-details/game-details.component').then((m) => m.GameDetailsComponent),
     },
     {
         path: 'news',

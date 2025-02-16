@@ -12,19 +12,14 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes,
             withPreloading(PreloadAllModules),
             withComponentInputBinding(),
-            withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }), // მომხმარებლის ფანჯრის პოზიციის აღდგენა
+            withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }) // მომხმარებლის ფანჯრის პოზიციის აღდგენა
         ),
-
         provideHttpClient(withFetch()),
         provideClientHydration( // `defer: true` აღარ არის საჭირო
             withHttpTransferCacheOptions({
                 includePostRequests: false,
-            }),
-
+            })
         ),
-
-
-
     ]
 };
 

@@ -27,14 +27,14 @@
             </div>
         }
         <nav [ngClass]="{ open: isMenuOpen }">
-<!--            <ul>-->
-<!--                <li     routerLink="/"-->
-<!--                        routerLinkActive="active"-->
-<!--                        [routerLinkActiveOptions]="{ exact: true }"-->
-<!--                        (click)="isMenuOpen = !isMenuOpen">Home</li>-->
-<!--                <li routerLink="/games" routerLinkActive="active" (click)="isMenuOpen = !isMenuOpen">Games</li>-->
-<!--                <li routerLink="/news" routerLinkActive="active" (click)="isMenuOpen = !isMenuOpen">News</li>-->
-<!--            </ul>-->
+            <ul>
+                <li     routerLink="/"
+                        routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                        (click)="isMenuOpen = !isMenuOpen">Home</li>
+                <li routerLink="/games" routerLinkActive="active" (click)="isMenuOpen = !isMenuOpen">Games</li>
+                <li routerLink="/news" routerLinkActive="active" (click)="isMenuOpen = !isMenuOpen">News</li>
+            </ul>
             @if (!mobileSize) {
                 <app-search></app-search>
             }

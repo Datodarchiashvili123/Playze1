@@ -7,18 +7,18 @@ import {provideHttpClient, withFetch} from "@angular/common/http";
 import {provideClientHydration, withHttpTransferCacheOptions} from "@angular/platform-browser";
 
 const serverConfig: ApplicationConfig = {
-  providers: [
-    provideServerRendering(),
-    provideRouter(routes),
-    provideHttpClient(withFetch()),
-    provideClientHydration(
-        withHttpTransferCacheOptions({
-          includePostRequests: false,
-          includeRequestsWithAuthHeaders: false,
-        }),
-    ),
-
-  ]
+    providers: [
+        provideServerRendering(),
+        provideRouter(routes),
+        provideHttpClient(withFetch()),
+        provideClientHydration(
+            withHttpTransferCacheOptions({
+                includePostRequests: false,
+                includeRequestsWithAuthHeaders: false,
+            })
+        ),
+    ]
 };
 
 export const config = mergeApplicationConfig(appConfig, serverConfig);
+

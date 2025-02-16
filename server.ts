@@ -57,7 +57,7 @@ export function app(): express.Express {
                 url: `${protocol}://${headers.host}${originalUrl}`,
                 publicPath: browserDistFolder,
                 providers: [
-                    { provide: APP_BASE_HREF, useValue: baseUrl },
+                    { provide: APP_BASE_HREF, useValue: '/' },
                     { provide: REQUEST, useValue: req }
                 ]
             })

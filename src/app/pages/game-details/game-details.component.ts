@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit,} from "@angular/core";
 import {GameDetailsService} from "./game-details.service";
 import {ActivatedRoute} from "@angular/router";
-import {Subscription} from "rxjs";
+import {filter, Subscription} from "rxjs";
 import {DomSanitizer, Meta, Title} from "@angular/platform-browser";
 import {SlickCarouselModule} from "ngx-slick-carousel";
 import {NgForOf, NgIf, NgOptimizedImage,} from "@angular/common";
@@ -141,8 +141,12 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.gameId = params["id"];
+
+        this.routeSub =      this.route.params.pipe(
+            filter(params => !!params['id'])
+        ).subscribe(params => {
+            const id = params['id'];
+            // Load your game details here
             this.loadGameDetail(this.gameId);
             this.loadGalleryDetail(this.gameId);
             this.loadGameOffers(this.gameId);

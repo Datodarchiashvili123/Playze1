@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit,} from "@angular/core";
+import {Component, OnInit,} from "@angular/core";
 import {GameDetailsService} from "./game-details.service";
 import {ActivatedRoute} from "@angular/router";
-import {filter, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {DomSanitizer, Meta, Title} from "@angular/platform-browser";
 import {SlickCarouselModule} from "ngx-slick-carousel";
 import {NgForOf, NgIf, NgOptimizedImage,} from "@angular/common";
@@ -22,7 +22,7 @@ import {SimilarGamesComponent} from "../../shared/blocks/similar-games/similar-g
     templateUrl: "./game-details.component.html",
     styleUrls: ["./game-details.component.scss"],
 })
-export class GameDetailsComponent implements OnInit, OnDestroy {
+export class GameDetailsComponent implements OnInit {
     mainSlideConfig = {
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -128,7 +128,7 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     sanitizedAboutTheGame: any;
     offers: any;
     similarGames: any;
-    private routeSub: Subscription | undefined;
+    // private routeSub: Subscription | undefined;
 
     constructor(
         private route: ActivatedRoute,
@@ -141,12 +141,8 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-
-        this.routeSub =      this.route.params.pipe(
-            filter(params => !!params['id'])
-        ).subscribe(params => {
-            const id = params['id'];
-            // Load your game details here
+         this.route.params.subscribe((params) => {
+            this.gameId = params["id"];
             this.loadGameDetail(this.gameId);
             this.loadGalleryDetail(this.gameId);
             this.loadGameOffers(this.gameId);
@@ -223,9 +219,9 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnDestroy() {
-        if (this.routeSub) {
-            this.routeSub.unsubscribe();
-        }
-    }
+    // ngOnDestroy() {
+    //     if (this.routeSub) {
+    //         this.routeSub.unsubscribe();
+    //     }
+    // }
 }

@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies and build SSR app
         run: |
           npm install --legacy-peer-deps
-          npm run build:ssr || exit 1
+          npm run build:ssr -- --project=Playze_group
 
       - name: List dist directory
         run: ls -R dist

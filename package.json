@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test ",
     "serve:ssr:play": "node dist/play/server/server.mjs",
-    "build:ssr": "ng build && ng run play:serve",
+    "build:ssr": "ng build --configuration production && ng run Playze_group:server:production",
     "serve:ssr": "node dist/play/server/server.mjs"
   },
   "private": true,

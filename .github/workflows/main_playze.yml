@@ -1,4 +1,4 @@
-name: Deploy Angular SSR to Azure Web App - Playze
+name: Deploy Angular SSR to Azure Web App - Play
 
 on:
   push:
@@ -24,10 +24,10 @@ jobs:
       - name: Install dependencies and build SSR app
         run: |
           npm install --legacy-peer-deps
-          npm run build:ssr
+          npm run build
 
       - name: Zip SSR build for deployment
-        run: zip -r release.zip dist/playze
+        run: zip -r release.zip dist/play
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -65,9 +65,9 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'Playze'
+          app-name: 'Play'
           slot-name: 'Production'
-          package: dist/playze
+          package: dist/play
 
       - name: Set startup command
-        run: az webapp config set --name Playze --resource-group <RESOURCE_GROUP> --startup-file "node dist/play/server/server.mjs"
+        run: az webapp config set --name Play --resource-group Playze_group --startup-file "node dist/play/server/server.mjs"

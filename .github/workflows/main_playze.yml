@@ -16,6 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Clear cached Azure CLI accounts
+        run: az account clear
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:

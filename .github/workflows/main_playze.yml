@@ -75,3 +75,4 @@ jobs:
 
       - name: Set startup command
         run: az webapp config set --name Play --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --startup-file "node dist/play/server/server.mjs"
+

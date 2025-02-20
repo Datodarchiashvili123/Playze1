@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --watch=false --browsers=ChromeHeadless --no-sandbox",
+    "test": "ng test ",
     "serve:ssr:play": "node dist/play/server/server.mjs"
   },
   "private": true,

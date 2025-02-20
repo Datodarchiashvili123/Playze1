@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # Required for actions/checkout
+      contents: read
 
     steps:
       - name: Checkout code
@@ -27,7 +27,10 @@ jobs:
       - name: Install dependencies and build SSR app
         run: |
           npm install --legacy-peer-deps
-          npm run build
+          npm run build:ssr || exit 1
+
+      - name: List dist directory
+        run: ls -R dist
 
       - name: Zip SSR build for deployment
         run: zip -r release.zip dist/play
@@ -45,8 +48,8 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # Required for requesting the JWT
-      contents: read  # Required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
       - name: Download artifact from build job
@@ -74,4 +77,3 @@ jobs:
 
       - name: Set startup command
         run: az webapp config set --name Play --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --startup-file "node dist/play/server/server.mjs"
-
